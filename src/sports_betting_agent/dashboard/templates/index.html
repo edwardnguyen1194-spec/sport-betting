@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="{{ language }}">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sport Betting AI — Bảng điều khiển</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+</head>
+<body>
+<header class="app-header">
+  <h1>Sport Betting AI</h1>
+  <p class="tagline">Trí tuệ nhân tạo cược thể thao — dữ liệu từ {{ sources|length }} nguồn miễn phí</p>
+</header>
+
+<section class="stats-grid">
+  <div class="stat-card">
+    <span class="stat-label">Bankroll</span>
+    <span class="stat-value">${{ "%.2f"|format(stats.bankroll) }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Tỷ lệ thắng</span>
+    <span class="stat-value">{{ "%.1f"|format(stats.win_rate * 100) }}%</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">ROI</span>
+    <span class="stat-value">{{ "%.1f"|format(stats.roi * 100) }}%</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Kèo đã cược</span>
+    <span class="stat-value">{{ stats.closed_bets }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Đang mở</span>
+    <span class="stat-value">{{ stats.open_bets }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">P/L</span>
+    <span class="stat-value">${{ "%.2f"|format(stats.pnl) }}</span>
+  </div>
+</section>
+
+<section class="sources-bar">
+  <strong>Nguồn kèo miễn phí đang bật:</strong>
+  {% for src in sources %}
+  <span class="chip">{{ src }}</span>
+  {% endfor %}
+</section>
+
+<section class="controls">
+  <label for="sport-select">Môn:</label>
+  <select id="sport-select">
+    {% for sport in sports %}
+    <option value="{{ sport }}">{{ sport }}</option>
+    {% endfor %}
+  </select>
+  <button id="btn-refresh">Làm mới</button>
+  <button id="btn-recs">Đề xuất từ AI</button>
+</section>
+
+<section class="layout">
+  <div class="column">
+    <h2>Kèo trực tiếp</h2>
+    <div id="odds-list" class="list">Đang tải...</div>
+  </div>
+
+  <div class="column">
+    <h2>Gợi ý AI</h2>
+    <div id="rec-list" class="list">Nhấn "Đề xuất từ AI" để chạy.</div>
+  </div>
+
+  <div class="column">
+    <h2>Trò chuyện với Claude</h2>
+    <div id="chat-log" class="chat-log"></div>
+    <form id="chat-form">
+      <input id="chat-input" type="text" placeholder="Hỏi về một trận hoặc chiến lược..." />
+      <button type="submit">Gửi</button>
+    </form>
+  </div>
+</section>
+
+<footer class="app-footer">
+  Chỉ dành cho mục đích nghiên cứu. Vui lòng cược có trách nhiệm.
+</footer>
+
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>

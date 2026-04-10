@@ -1,0 +1,28 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+.venv/
+venv/
+env/
+build/
+dist/
+
+# Runtime data
+data/
+/data/
+*.log
+ledger.json
+ledger.json.tmp
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store

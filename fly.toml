@@ -1,0 +1,34 @@
+app = "sports-betting-ai-agent"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  SBA_AUTO_TRADE = "1"
+  SBA_AUTO_TRADE_INTERVAL = "300"
+  SBA_LANG = "vi"
+  SBA_DATA_DIR = "/data/sba"
+  SBA_ENABLED_SOURCES = "bovada,espn,scoresandodds,vegasinsider,covers,actionnetwork,sbr"
+
+[[mounts]]
+  source = "sba_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 50
+    hard_limit = 100
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1

@@ -1,0 +1,17 @@
+# Core
+flask>=3.0.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+numpy>=1.26.0
+
+# LSTM (optional but recommended). CPU wheel works on fly.io micro VMs.
+torch>=2.2.0; python_version >= "3.9"
+
+# Claude AI chat (optional: falls back gracefully if missing)
+anthropic>=0.34.0
+
+# SBR / Pinnacle sharp odds (optional)
+sbrscrape>=0.0.7
+
+# Development / tests
+pytest>=8.0.0

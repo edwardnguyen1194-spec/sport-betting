@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sports_betting_agent"
+version = "0.3.0"
+description = "Multi-source sports betting AI agent with LSTM player props and heavy-favorite filter."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Sport Betting AI" }]
+license = { text = "Proprietary" }
+dependencies = [
+  "flask>=3.0.0",
+  "requests>=2.31.0",
+  "beautifulsoup4>=4.12.0",
+  "numpy>=1.26.0",
+]
+
+[project.optional-dependencies]
+torch = ["torch>=2.2.0"]
+anthropic = ["anthropic>=0.34.0"]
+sbr = ["sbrscrape>=0.0.7"]
+dev = ["pytest>=8.0.0"]
+
+[project.scripts]
+sports-betting-agent = "sports_betting_agent.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["sports_betting_agent*"]
+
+[tool.setuptools.package-data]
+"sports_betting_agent" = ["dashboard/templates/*.html", "dashboard/static/*.css", "dashboard/static/*.js"]
+
+[tool.pytest.ini_options]
+testpaths = ["src/sports_betting_agent/tests"]
+pythonpath = ["src"]
