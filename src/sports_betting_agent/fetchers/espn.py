@@ -61,7 +61,10 @@ class ESPNFetcher(BaseFetcher):
         league_label: str,
     ) -> Iterable[GameOdds]:
         for event in payload.get("events", []) or []:
-            game = self._parse_event(event, sport_label, league_label)
+            try:
+                game = self._parse_event(event, sport_label, league_label)
+            except Exception:
+                continue
             if game is not None:
                 yield game
 
@@ -118,6 +121,17 @@ class ESPNFetcher(BaseFetcher):
 
             home_ml = _parse_float(home_odds.get("moneyLine"))
             away_ml = _parse_float(away_odds.get("moneyLine"))
+
+            # ESPN sometimes returns a "consensus" entry where every
+            # numeric field is None -- skip it rather than emitting
+            # phantom lines.
+            if (
+                home_ml is None
+                and away_ml is None
+                and over_under is None
+                and spread is None
+            ):
+                continue
             if home_ml is not None:
                 game.lines.append(
                     OddsLine(
@@ -138,9 +152,21 @@ class ESPNFetcher(BaseFetcher):
                 )
 
             if spread is not None:
-                # ESPN's spread is from the favorite's perspective; we
-                # still record it as a line on the favored side.
-                favored = home_team if (home_odds.get("favorite") or spread < 0) else away_team
+                # ESPN's "spread" is typically the favorite's
+                # handicap (a negative number when home is favored).
+                # Determining who's favored is a three-step fallback:
+                # explicit booleans on the team odds block, then the
+                # sign of `spread`, then home by default for pick'ems.
+                if home_odds.get("favorite") is True:
+                    favored = home_team
+                elif away_odds.get("favorite") is True:
+                    favored = away_team
+                elif spread < 0:
+                    favored = home_team
+                elif spread > 0:
+                    favored = away_team
+                else:
+                    favored = home_team  # pick'em -- arbitrary
                 under = away_team if favored == home_team else home_team
                 game.lines.append(
                     OddsLine(
@@ -148,7 +174,7 @@ class ESPNFetcher(BaseFetcher):
                         market="spread",
                         selection=favored,
                         american=-110,
-                        line=-abs(spread),
+                        line=-abs(spread) if spread != 0 else 0.0,
                     )
                 )
                 game.lines.append(
@@ -157,7 +183,7 @@ class ESPNFetcher(BaseFetcher):
                         market="spread",
                         selection=under,
                         american=-110,
-                        line=abs(spread),
+                        line=abs(spread) if spread != 0 else 0.0,
                     )
                 )
 

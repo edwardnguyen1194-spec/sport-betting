@@ -123,7 +123,12 @@ class BovadaFetcher(BaseFetcher):
             if not isinstance(block, dict):
                 continue
             for event in block.get("events", []) or []:
-                game = self._parse_event(event, sport_label, league_label)
+                try:
+                    game = self._parse_event(event, sport_label, league_label)
+                except Exception:
+                    # Defensive: skip malformed events rather than
+                    # letting one bad game crash the whole fetch.
+                    continue
                 if game is not None:
                     yield game
 
@@ -162,26 +167,42 @@ class BovadaFetcher(BaseFetcher):
 
         for group in event.get("displayGroups", []) or []:
             group_desc = str(group.get("description") or "").lower()
-            # Main Game Lines group holds ML / spread / total.
-            if group_desc and "game lines" not in group_desc and "lines" not in group_desc:
-                # Still parse in case Bovada renames things, but skip
-                # props groups that would explode the response.
-                if "props" in group_desc or "futures" in group_desc:
-                    continue
+            # Only parse the "Game Lines" group by default. Everything
+            # else (props, futures, alternate lines, team totals,
+            # 1st-half/quarter lines) lives in other groups and would
+            # pollute the moneyline/spread/total normalisation. A
+            # dedicated props fetcher can opt in later.
+            if group_desc and "game lines" not in group_desc and group_desc != "lines":
+                continue
             for market in group.get("markets", []) or []:
-                period = market.get("period") or {}
-                if not period.get("main", True):
-                    continue  # only full-game lines for now
-                market_desc = str(market.get("description") or "").lower()
-                for outcome in market.get("outcomes", []) or []:
-                    line = self._outcome_to_line(
-                        outcome,
-                        market_desc,
-                        home_name=home_name,
-                        away_name=away_name,
-                    )
-                    if line is not None:
-                        game.lines.append(line)
+                try:
+                    period = market.get("period") or {}
+                    # ``main`` defaults to True because some markets
+                    # omit the period entirely and those are always the
+                    # full-game lines.
+                    if period and period.get("main") is False:
+                        continue
+                    market_desc = str(market.get("description") or "").lower()
+                    # Soccer's 3-way market is labelled "Moneyline"
+                    # too but has three outcomes including a draw.
+                    # Skip it here -- the 2-way merge math in the
+                    # strategy layer can't use it, and a future 3-way
+                    # strategy can parse it from raw data.
+                    outcomes = market.get("outcomes", []) or []
+                    if "moneyline" in market_desc and len(outcomes) > 2:
+                        continue
+                    for outcome in outcomes:
+                        line = self._outcome_to_line(
+                            outcome,
+                            market_desc,
+                            home_name=home_name,
+                            away_name=away_name,
+                        )
+                        if line is not None:
+                            game.lines.append(line)
+                except Exception:
+                    # Never let one malformed market kill the event.
+                    continue
 
         return game
 

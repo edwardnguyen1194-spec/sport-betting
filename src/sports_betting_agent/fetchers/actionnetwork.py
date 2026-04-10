@@ -70,8 +70,14 @@ class ActionNetworkFetcher(BaseFetcher):
         league_label: str,
     ) -> List[GameOdds]:
         games: List[GameOdds] = []
-        for event in payload.get("games", []) or []:
-            game = self._parse_game(event, sport_label, league_label)
+        # AN has also used ``events`` as the top-level key in some
+        # API versions -- accept either.
+        raw_games = payload.get("games") or payload.get("events") or []
+        for event in raw_games:
+            try:
+                game = self._parse_game(event, sport_label, league_label)
+            except Exception:
+                continue
             if game is not None:
                 games.append(game)
         return games
@@ -110,68 +116,111 @@ class ActionNetworkFetcher(BaseFetcher):
             event_id=str(ev.get("id") or ""),
         )
 
+        # The "odds" block has drifted across Action Network API
+        # versions:
+        # * Older: a flat list of entries, each with a book_id.
+        # * Newer: a dict { "event": [...] } or a dict keyed by
+        #   book_id -> entry.
         odds_block = ev.get("odds") or []
         if isinstance(odds_block, dict):
-            odds_block = odds_block.get("event") or []
+            nested = odds_block.get("event")
+            if isinstance(nested, list):
+                odds_block = nested
+            else:
+                # dict keyed by book_id
+                flat = []
+                for key, value in odds_block.items():
+                    if isinstance(value, dict):
+                        value = dict(value)
+                        value.setdefault("book_id", key)
+                        flat.append(value)
+                    elif isinstance(value, list):
+                        for v in value:
+                            if isinstance(v, dict):
+                                v = dict(v)
+                                v.setdefault("book_id", key)
+                                flat.append(v)
+                odds_block = flat
 
         for entry in odds_block:
             if not isinstance(entry, dict):
                 continue
-            book_id = entry.get("book_id")
-            book = BOOK_LABELS.get(book_id, f"book_{book_id}")
-            # Moneyline
-            if entry.get("ml_home") is not None:
-                game.lines.append(
-                    OddsLine(book=book, market="moneyline", selection=home_team, american=_n(entry.get("ml_home")))
-                )
-            if entry.get("ml_away") is not None:
-                game.lines.append(
-                    OddsLine(book=book, market="moneyline", selection=away_team, american=_n(entry.get("ml_away")))
-                )
-            # Spread
-            if entry.get("spread_home") is not None:
-                game.lines.append(
-                    OddsLine(
-                        book=book,
-                        market="spread",
-                        selection=home_team,
-                        american=_n(entry.get("spread_home_line")) or -110.0,
-                        line=_n(entry.get("spread_home")),
-                    )
-                )
-            if entry.get("spread_away") is not None:
-                game.lines.append(
-                    OddsLine(
-                        book=book,
-                        market="spread",
-                        selection=away_team,
-                        american=_n(entry.get("spread_away_line")) or -110.0,
-                        line=_n(entry.get("spread_away")),
-                    )
-                )
-            # Total
-            if entry.get("total") is not None:
-                total = _n(entry.get("total"))
-                game.lines.append(
-                    OddsLine(
-                        book=book,
-                        market="total",
-                        selection="Over",
-                        american=_n(entry.get("over")) or -110.0,
-                        line=total,
-                    )
-                )
-                game.lines.append(
-                    OddsLine(
-                        book=book,
-                        market="total",
-                        selection="Under",
-                        american=_n(entry.get("under")) or -110.0,
-                        line=total,
-                    )
-                )
+            try:
+                self._apply_entry(entry, game, home_team, away_team)
+            except Exception:
+                continue
 
         return game
+
+    @staticmethod
+    def _apply_entry(
+        entry: Dict[str, Any],
+        game: GameOdds,
+        home_team: str,
+        away_team: str,
+    ) -> None:
+        book_id = entry.get("book_id")
+        try:
+            book_id_int = int(book_id) if book_id is not None else None
+        except (TypeError, ValueError):
+            book_id_int = None
+        book = BOOK_LABELS.get(book_id_int, f"book_{book_id}")
+
+        # Moneyline -- accept multiple historical key spellings.
+        ml_home = _first_float(entry, ("ml_home", "home_ml", "moneyline_home", "ml"))
+        ml_away = _first_float(entry, ("ml_away", "away_ml", "moneyline_away"))
+        if ml_home is not None:
+            game.lines.append(
+                OddsLine(book=book, market="moneyline", selection=home_team, american=ml_home)
+            )
+        if ml_away is not None:
+            game.lines.append(
+                OddsLine(book=book, market="moneyline", selection=away_team, american=ml_away)
+            )
+
+        # Spread (handicap + juice separately).
+        spread_home = _first_float(entry, ("spread_home", "home_spread", "spread"))
+        spread_home_juice = _first_float(
+            entry,
+            ("spread_home_line", "home_spread_line", "spread_home_price", "spread_line"),
+        )
+        spread_away = _first_float(entry, ("spread_away", "away_spread"))
+        spread_away_juice = _first_float(
+            entry,
+            ("spread_away_line", "away_spread_line", "spread_away_price"),
+        )
+        if spread_home is not None:
+            game.lines.append(
+                OddsLine(
+                    book=book,
+                    market="spread",
+                    selection=home_team,
+                    american=spread_home_juice if spread_home_juice is not None else -110.0,
+                    line=spread_home,
+                )
+            )
+        if spread_away is not None:
+            game.lines.append(
+                OddsLine(
+                    book=book,
+                    market="spread",
+                    selection=away_team,
+                    american=spread_away_juice if spread_away_juice is not None else -110.0,
+                    line=spread_away,
+                )
+            )
+
+        # Total
+        total = _first_float(entry, ("total", "over_under", "ou"))
+        if total is not None:
+            over_juice = _first_float(entry, ("over", "over_line", "over_price")) or -110.0
+            under_juice = _first_float(entry, ("under", "under_line", "under_price")) or -110.0
+            game.lines.append(
+                OddsLine(book=book, market="total", selection="Over", american=over_juice, line=total)
+            )
+            game.lines.append(
+                OddsLine(book=book, market="total", selection="Under", american=under_juice, line=total)
+            )
 
 
 def _n(value) -> Optional[float]:
@@ -181,3 +230,15 @@ def _n(value) -> Optional[float]:
         return float(value)
     except (TypeError, ValueError):
         return None
+
+
+def _first_float(entry: Dict[str, Any], keys: tuple[str, ...]) -> Optional[float]:
+    """Return the first non-None numeric value from ``keys`` in ``entry``."""
+
+    for key in keys:
+        if key not in entry:
+            continue
+        parsed = _n(entry.get(key))
+        if parsed is not None:
+            return parsed
+    return None
