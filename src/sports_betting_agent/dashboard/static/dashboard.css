@@ -19,17 +19,47 @@ body {
 }
 
 .app-header {
-  padding: 28px 40px 12px;
+  padding: 28px 40px 16px;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  color: #001;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
 }
 .app-header h1 {
-  font-size: 2.1rem;
+  font-size: 2.4rem;
   margin: 0;
   background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-.tagline { color: var(--muted); margin: 6px 0 0; }
+.tagline { color: var(--muted); margin: 8px 0 0; font-size: 0.95rem; }
+.hero-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+.feature-chip {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(77, 163, 255, 0.3);
+  background: rgba(77, 163, 255, 0.08);
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
 
 .stats-grid {
   display: grid;
@@ -113,6 +143,17 @@ body {
 }
 .card.rec { border-left: 3px solid var(--accent-2); }
 .card .teams { font-weight: 600; }
+.lock-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-left: 6px;
+}
+.stars { color: #ffd700; font-size: 0.85rem; margin-right: 4px; }
 .card .meta { color: var(--muted); font-size: 0.85rem; }
 .card .reason { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
 
@@ -137,6 +178,7 @@ body {
   border: 1px solid rgba(255,255,255,0.1);
   background: rgba(255,255,255,0.02);
   color: var(--text);
+  font-size: 16px;
 }
 #chat-form button {
   background: var(--accent);
@@ -148,9 +190,438 @@ body {
   cursor: pointer;
 }
 
+/* ===== Learning Log ===== */
+.learning-section {
+  padding: 20px 40px 10px;
+}
+.learning-section h2 {
+  font-size: 1.3rem;
+  margin: 0;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.learning-subtitle {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 4px 0 14px;
+}
+.learning-entries {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+.learning-card {
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 16px;
+  min-width: 300px;
+  flex-shrink: 0;
+}
+.learning-date {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+.learning-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.skill-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(126, 247, 161, 0.1);
+  border: 1px solid rgba(126, 247, 161, 0.25);
+  color: var(--accent-2);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+.learning-insights .insight {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-bottom: 4px;
+}
+.strat-perf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.strat-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(77, 163, 255, 0.1);
+  border: 1px solid rgba(77, 163, 255, 0.2);
+  color: var(--accent);
+  font-size: 0.7rem;
+}
+
+/* ===== Best Picks Today ===== */
+.best-picks-section {
+  padding: 20px 40px 10px;
+}
+.best-picks-section h2 {
+  font-size: 1.3rem;
+  margin: 0;
+  background: linear-gradient(90deg, #ff9f43 0%, #ee5a24 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.best-picks-btn {
+  background: linear-gradient(135deg, #ff9f43, #ee5a24);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin: 10px 0;
+}
+.best-picks-btn:hover { opacity: 0.9; }
+.best-picks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+.best-pick-card {
+  border-left: 3px solid #ff9f43;
+}
+.best-pick-sport {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 159, 67, 0.15);
+  color: #ff9f43;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* ===== News Section ===== */
+.news-section {
+  padding: 20px 40px 10px;
+}
+.news-section h2 {
+  font-size: 1.3rem;
+  margin: 0;
+  background: linear-gradient(90deg, #e74c3c 0%, #f39c12 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.news-card {
+  border-left: 3px solid #e74c3c;
+}
+
+/* ===== Bet History ===== */
+.bet-history-section {
+  padding: 20px 40px 10px;
+}
+.bet-history-section h2 {
+  font-size: 1.3rem;
+  margin: 0 0 14px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.bet-tables {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 800px) {
+  .bet-tables { grid-template-columns: 1fr; }
+}
+.bet-table-wrap {
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.bet-table-wrap h3 {
+  color: var(--accent);
+  font-size: 1rem;
+  margin: 0 0 10px;
+}
+.bet-card {
+  border-left: 3px solid var(--muted);
+}
+.bet-card.open {
+  border-left-color: var(--accent);
+}
+.bet-card.won {
+  border-left-color: var(--accent-2);
+}
+.bet-card.lost {
+  border-left-color: var(--danger);
+}
+.bet-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.bet-details strong {
+  color: var(--text);
+}
+.win-pct {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(126, 247, 161, 0.15);
+  color: var(--accent-2);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.result-won {
+  color: var(--accent-2);
+  font-weight: 700;
+}
+.result-lost {
+  color: var(--danger);
+  font-weight: 700;
+}
+.result-push {
+  color: var(--muted);
+  font-weight: 600;
+}
+
 .app-footer {
   padding: 20px 40px;
   color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
+}
+
+/* ===== Mobile (phones) ===== */
+@media (max-width: 640px) {
+  .app-header {
+    padding: 16px 16px 10px;
+    text-align: center;
+  }
+  .hero-badge {
+    font-size: 0.7rem;
+    padding: 5px 14px;
+    margin-bottom: 8px;
+  }
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+  .tagline {
+    font-size: 0.75rem;
+  }
+  .hero-features {
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .feature-chip {
+    font-size: 0.65rem;
+    padding: 3px 10px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 12px 12px;
+  }
+  .stat-card {
+    padding: 10px 10px;
+    border-radius: 12px;
+    align-items: center;
+    text-align: center;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+  }
+  .stat-value {
+    font-size: 1.15rem;
+  }
+
+  .sources-bar {
+    padding: 4px 12px 6px;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  .sources-bar strong {
+    display: block;
+    margin-bottom: 6px;
+  }
+  .sources-bar .chip {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+  }
+
+  .controls {
+    padding: 8px 12px 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .controls label {
+    width: 100%;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .controls select {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+  .controls button {
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0 12px 24px;
+  }
+  .column {
+    border-radius: 14px;
+    padding: 14px 12px;
+  }
+  .column h2 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  .list {
+    max-height: 400px;
+    gap: 6px;
+  }
+  .card {
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .card .teams {
+    font-size: 0.92rem;
+  }
+  .card .meta {
+    font-size: 0.78rem;
+    word-break: break-word;
+  }
+  .card .reason {
+    font-size: 0.76rem;
+  }
+
+  .chat-log {
+    height: 280px;
+    padding: 8px;
+    border-radius: 12px;
+  }
+  .chat-log .msg {
+    font-size: 0.88rem;
+    padding: 8px 10px;
+    max-width: 85%;
+  }
+  #chat-form {
+    gap: 6px;
+  }
+  #chat-input {
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 16px;
+  }
+  #chat-form button {
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+  }
+
+  .app-footer {
+    padding: 16px 16px;
+    font-size: 0.78rem;
+  }
+
+  .learning-section {
+    padding: 16px 12px 8px;
+  }
+  .learning-section h2 {
+    font-size: 1.1rem;
+  }
+  .learning-entries {
+    gap: 10px;
+  }
+  .learning-card {
+    min-width: 260px;
+    padding: 12px;
+  }
+  .skill-chip {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+  }
+
+  /* Mobile: Best picks */
+  .best-picks-section {
+    padding: 12px 12px 8px;
+  }
+  .best-picks-section h2 {
+    font-size: 1.1rem;
+  }
+  .best-picks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Mobile: Bet history */
+  .bet-history-section {
+    padding: 12px 12px 8px;
+  }
+  .bet-history-section h2 {
+    font-size: 1.1rem;
+  }
+  .bet-tables {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .bet-table-wrap {
+    padding: 12px;
+  }
+  .bet-details {
+    gap: 6px;
+    font-size: 0.78rem;
+  }
+
+  /* Mobile: News */
+  .news-section {
+    padding: 12px 12px 8px;
+  }
+  .news-section h2 {
+    font-size: 1.1rem;
+  }
+  .news-grid {
+    grid-template-columns: 1fr;
+    max-height: 300px;
+  }
+  .news-card .teams {
+    font-size: 0.85rem;
+  }
 }

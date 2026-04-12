@@ -156,9 +156,12 @@ class PaperTrader:
             if stake > self.bankroll:
                 logger.debug("skipping rec %s: insufficient bankroll", rec.selection)
                 return None
-            # Don't double-book the same market.
+            # Don't double-book the same market — check BOTH open AND closed bets.
             dup_key = (rec.game_key, rec.market, rec.selection.lower())
             for existing in self.open_bets.values():
+                if (existing.game_key, existing.market, existing.selection.lower()) == dup_key:
+                    return None
+            for existing in self.closed_bets:
                 if (existing.game_key, existing.market, existing.selection.lower()) == dup_key:
                     return None
             bet_id = f"pt-{self._next_id:06d}"
@@ -178,8 +181,18 @@ class PaperTrader:
             )
             return bet
 
-    def place_many(self, recs: Iterable[BetRecommendation]) -> List[Bet]:
-        return [b for b in (self.place(r) for r in recs) if b is not None]
+    def place_many(self, recs: Iterable[BetRecommendation], max_bets: int = 5) -> List[Bet]:
+        """Place bets from recommendations, capped at max_bets per cycle.
+        Takes the top picks sorted by confidence * edge."""
+        sorted_recs = sorted(recs, key=lambda r: r.confidence * max(r.edge, 0), reverse=True)
+        placed = []
+        for r in sorted_recs:
+            if len(placed) >= max_bets:
+                break
+            bet = self.place(r)
+            if bet is not None:
+                placed.append(bet)
+        return placed
 
     def settle_bet(self, bet_id: str, outcome: str) -> Optional[Bet]:
         """Mark a bet won/lost/push/void and update bankroll."""

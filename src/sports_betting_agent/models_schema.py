@@ -114,11 +114,16 @@ class GameOdds:
 
     @property
     def game_key(self) -> str:
-        """Stable key used to merge the same game across sources."""
+        """Stable key used to merge the same game across sources.
 
+        Uses only league + normalized team names (no time) so that
+        sources with and without commence_time merge correctly.
+        The date portion uses only the date (not time) when available,
+        to handle doubleheaders where the same teams play twice.
+        """
         date_part = ""
         if self.commence_time is not None:
-            date_part = self.commence_time.astimezone(timezone.utc).strftime("%Y%m%d%H%M")
+            date_part = self.commence_time.astimezone(timezone.utc).strftime("%Y%m%d")
         raw = f"{self.league}|{_norm(self.home_team)}|{_norm(self.away_team)}|{date_part}"
         return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
 
@@ -149,6 +154,38 @@ class GameOdds:
         p_away = sum(l.implied_probability for l in aways) / len(aways)
         p_home, p_away = remove_vig_two_way(p_home, p_away)
         return p_home if side == "home" else p_away
+
+    def spread_lines_grouped(self) -> Dict[tuple, List[OddsLine]]:
+        """Group spread lines by (normalized_selection, handicap)."""
+        groups: Dict[tuple, List[OddsLine]] = {}
+        for l in self.lines:
+            if l.market != "spread" or l.line is None or l.american is None:
+                continue
+            key = (_norm(l.selection), l.line)
+            groups.setdefault(key, []).append(l)
+        return groups
+
+    def total_lines_grouped(self) -> Dict[tuple, List[OddsLine]]:
+        """Group total lines by (Over/Under, total_number)."""
+        groups: Dict[tuple, List[OddsLine]] = {}
+        for l in self.lines:
+            if l.market != "total" or l.line is None or l.american is None:
+                continue
+            key = (l.selection.lower(), l.line)
+            groups.setdefault(key, []).append(l)
+        return groups
+
+    def best_line_for(self, market: str, selection: str,
+                      handicap: Optional[float] = None) -> Optional[OddsLine]:
+        """Best (highest decimal payout) line for a market/selection/handicap."""
+        candidates = [
+            l for l in self.lines
+            if l.market == market
+            and _norm(l.selection) == _norm(selection)
+            and l.decimal is not None
+            and (handicap is None or l.line == handicap)
+        ]
+        return max(candidates, key=lambda l: l.decimal or 0.0) if candidates else None
 
     def to_dict(self) -> Dict:
         data = {
@@ -237,6 +274,9 @@ def merge_games(games: Iterable[GameOdds]) -> List[GameOdds]:
             sources = existing.meta.setdefault("sources", [])
             if g.source not in sources:
                 sources.append(g.source)
+            # Propagate commence_time if the existing entry lacks one
+            if existing.commence_time is None and g.commence_time is not None:
+                existing.commence_time = g.commence_time
     return list(bucket.values())
 
 

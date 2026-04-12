@@ -52,8 +52,8 @@ class BaseFetcher:
         *,
         params: Optional[Dict[str, Any]] = None,
         headers: Optional[Dict[str, str]] = None,
-        retries: int = 3,
-        backoff: float = 1.5,
+        retries: int = 1,
+        backoff: float = 0.5,
         expect_json: bool = True,
     ) -> Any:
         """HTTP GET with retry + exponential backoff."""

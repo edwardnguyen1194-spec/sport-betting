@@ -3,18 +3,32 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sport Betting AI — Bảng điều khiển</title>
+<title>AI Thể Thao Phụng Gà — Best AI Agent Sports Betting</title>
+<meta name="description" content="Best AI Agent Sports Betting - Powered by Claude AI. Real-time odds from 6+ free sources, value bet detection, heavy favorite strategy, LSTM player props model, and 24/7 automated paper trading." />
+<meta name="keywords" content="best ai agent sports betting, ai sports betting, sports betting ai, automated betting, value bets, odds comparison, NCAA baseball odds, NFL odds, NBA odds" />
+<meta property="og:title" content="AI Thể Thao Phụng Gà — Best AI Agent Sports Betting" />
+<meta property="og:description" content="Best AI Agent Sports Betting powered by Claude AI. Real-time odds aggregation, value bet detection, and automated trading strategies." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://sports-betting-ai-agent.fly.dev/" />
 <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
 </head>
 <body>
 <header class="app-header">
-  <h1>Sport Betting AI</h1>
-  <p class="tagline">Trí tuệ nhân tạo cược thể thao — dữ liệu từ {{ sources|length }} nguồn miễn phí</p>
+  <div class="hero-badge">AI Cá Cược Thể Thao Tốt Nhất</div>
+  <h1>AI Thể Thao Phụng Gà</h1>
+  <p class="tagline">AI Cá Cược Thể Thao Tốt Nhất — Hỗ trợ bởi Claude AI | Dữ liệu từ {{ sources|length }} nguồn miễn phí</p>
+  <div class="hero-features">
+    <span class="feature-chip">Kèo Trực Tiếp</span>
+    <span class="feature-chip">Phát Hiện Giá Trị</span>
+    <span class="feature-chip">Mạng Nơ-ron LSTM</span>
+    <span class="feature-chip">Tự Động Giao Dịch</span>
+    <span class="feature-chip">Trò Chuyện Claude AI</span>
+  </div>
 </header>
 
 <section class="stats-grid">
   <div class="stat-card">
-    <span class="stat-label">Bankroll</span>
+    <span class="stat-label">Số dư</span>
     <span class="stat-value">${{ "%.2f"|format(stats.bankroll) }}</span>
   </div>
   <div class="stat-card">
@@ -22,7 +36,7 @@
     <span class="stat-value">{{ "%.1f"|format(stats.win_rate * 100) }}%</span>
   </div>
   <div class="stat-card">
-    <span class="stat-label">ROI</span>
+    <span class="stat-label">Lợi nhuận</span>
     <span class="stat-value">{{ "%.1f"|format(stats.roi * 100) }}%</span>
   </div>
   <div class="stat-card">
@@ -34,7 +48,7 @@
     <span class="stat-value">{{ stats.open_bets }}</span>
   </div>
   <div class="stat-card">
-    <span class="stat-label">P/L</span>
+    <span class="stat-label">Lãi/Lỗ</span>
     <span class="stat-value">${{ "%.2f"|format(stats.pnl) }}</span>
   </div>
 </section>
@@ -49,6 +63,7 @@
 <section class="controls">
   <label for="sport-select">Môn:</label>
   <select id="sport-select">
+    <option value="all">Tất cả môn</option>
     {% for sport in sports %}
     <option value="{{ sport }}">{{ sport }}</option>
     {% endfor %}
@@ -75,6 +90,133 @@
       <input id="chat-input" type="text" placeholder="Hỏi về một trận hoặc chiến lược..." />
       <button type="submit">Gửi</button>
     </form>
+  </div>
+</section>
+
+<section class="bet-history-section">
+  <h2>Lịch Sử Cược AI</h2>
+  <div class="bet-tables">
+    <div class="bet-table-wrap">
+      <h3>Đang mở ({{ stats.open_bets }})</h3>
+      <div id="open-bets" class="list">
+        {% for bet in open_bets %}
+        {% if bet.selection %}
+        <div class="card bet-card open">
+          <div class="best-pick-sport">{{ bet.sport|upper }}</div>
+          <div class="teams">{{ bet.selection }}</div>
+          <div class="meta">{{ bet.away_team }} @ {{ bet.home_team }} • {{ bet.market|market_vi }}{% if bet.line %} {{ bet.line }}{% endif %}</div>
+          <div class="bet-details">
+            <span>Kèo: <strong>{{ "%+.0f"|format(bet.american) }}</strong></span>
+            <span>Đặt: <strong>${{ "%.0f"|format(bet.stake) }}</strong></span>
+            <span>Thắng: <strong>${{ "%.0f"|format(bet.stake * (bet.decimal - 1)) }}</strong></span>
+            <span class="win-pct">{{ "%.0f"|format(bet.confidence * 100) }}% thắng</span>
+            <span class="strat-badge">{{ bet.strategy }}</span>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% if not open_bets %}
+        <div class="card">Chưa có kèo đang mở.</div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="bet-table-wrap">
+      <h3>Đã kết thúc ({{ closed_bets|length }})</h3>
+      <div id="closed-bets" class="list">
+        {% for bet in closed_bets %}
+        <div class="card bet-card {{ bet.status }}">
+          <div class="best-pick-sport">{{ bet.sport|upper }}</div>
+          <div class="teams">{{ bet.selection }}</div>
+          <div class="meta">{{ bet.away_team }} @ {{ bet.home_team }} • {{ bet.market }}{% if bet.line %} {{ bet.line }}{% endif %}</div>
+          <div class="bet-details">
+            <span>Kèo: <strong>{{ "%+.0f"|format(bet.american) }}</strong></span>
+            <span>Đặt: <strong>${{ "%.0f"|format(bet.stake) }}</strong></span>
+            <span class="result-{{ bet.status }}">
+              {% if bet.status == 'won' %}THẮNG +${{ "%.0f"|format(bet.result) }}{% elif bet.status == 'lost' %}THUA -${{ "%.0f"|format(bet.stake) }}{% else %}HÒA{% endif %}
+            </span>
+          </div>
+        </div>
+        {% endfor %}
+        {% if not closed_bets %}
+        <div class="card">Chưa có kết quả.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="news-section">
+  <h2>Tin Tức Thể Thao 24/7</h2>
+  <p class="learning-subtitle">AI agent đọc tin tức ESPN mỗi 5 phút để đưa ra quyết định tốt hơn</p>
+  <div class="news-grid">
+    {% for item in news_headlines %}
+    <div class="card news-card">
+      <div class="best-pick-sport">{{ item.sport|upper }}</div>
+      <div class="teams">{{ item.title }}</div>
+    </div>
+    {% endfor %}
+    {% if not news_headlines %}
+    <div class="card">Đang tải tin tức...</div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="learning-section">
+  <h2>Nhật Ký Học Tập AI</h2>
+  <p class="learning-subtitle">AI agent tự học và cải thiện mỗi ngày</p>
+  <div class="learning-entries">
+    {% for entry in learning %}
+    <div class="learning-card">
+      <div class="learning-date">{{ entry.date }}</div>
+      <div class="learning-skills">
+        {% for skill in entry.skills_learned %}
+        <span class="skill-chip">{{ skill }}</span>
+        {% endfor %}
+      </div>
+      <div class="learning-insights">
+        {% for insight in entry.insights %}
+        <div class="insight">{{ insight }}</div>
+        {% endfor %}
+      </div>
+      {% if entry.strategy_performance %}
+      <div class="strat-perf">
+        {% for strat, perf in entry.strategy_performance.items() %}
+        <span class="strat-badge">{{ strat }}: {{ perf.won }}W-{{ perf.lost }}L</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% if not learning %}
+    <div class="learning-card">
+      <div class="learning-date">Hôm nay</div>
+      <div class="learning-skills">
+        {% if brain_summary and brain_summary.skills %}
+        {% for skill in brain_summary.skills %}
+        <span class="skill-chip">{{ skill }}</span>
+        {% endfor %}
+        {% else %}
+        <span class="skill-chip">Quét kèo từ 6 nguồn mỗi 5 phút</span>
+        <span class="skill-chip">7 chiến lược AI đang chạy</span>
+        <span class="skill-chip">Theo dõi CLV tự động</span>
+        <span class="skill-chip">Đọc tin tức ESPN 24/7</span>
+        <span class="skill-chip">Tự điều chỉnh chiến lược</span>
+        <span class="skill-chip">Phát hiện kèo giữa (middle)</span>
+        {% endif %}
+      </div>
+      {% if brain_summary and brain_summary.research_notes %}
+      <div class="learning-insights">
+        {% for note in brain_summary.research_notes %}
+        <div class="insight">{{ note }}</div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="learning-insights">
+        <div class="insight">AI agent đang học từ dữ liệu thị trường...</div>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
   </div>
 </section>
 

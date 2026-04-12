@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timezone
 from typing import Dict, Iterable, List, Optional, Type
 
 from ..config import Settings, get_settings
@@ -17,6 +18,7 @@ from .actionnetwork import ActionNetworkFetcher
 from .base import BaseFetcher, FetcherError
 from .bovada import BovadaFetcher
 from .covers import CoversFetcher
+from .draftkings import DraftKingsFetcher
 from .espn import ESPNFetcher
 from .sbr import SBRFetcher
 from .scoresandodds import ScoresAndOddsFetcher
@@ -29,6 +31,7 @@ logger = logging.getLogger(__name__)
 _FETCHER_REGISTRY: Dict[str, Type[BaseFetcher]] = {
     "bovada": BovadaFetcher,
     "espn": ESPNFetcher,
+    "draftkings": DraftKingsFetcher,
     "scoresandodds": ScoresAndOddsFetcher,
     "vegasinsider": VegasInsiderFetcher,
     "covers": CoversFetcher,
@@ -72,22 +75,45 @@ class OddsAggregator:
                 pool.submit(self._safe_fetch, fetcher, sport_key): name
                 for name, fetcher in self.fetchers.items()
             }
-            for fut in as_completed(future_map):
-                name = future_map[fut]
-                try:
-                    results.extend(fut.result())
-                except Exception as exc:  # pragma: no cover
-                    logger.warning("aggregator: %s raised %s", name, exc)
+            try:
+                for fut in as_completed(future_map, timeout=5):
+                    name = future_map[fut]
+                    try:
+                        results.extend(fut.result())
+                    except Exception as exc:  # pragma: no cover
+                        logger.warning("aggregator: %s raised %s", name, exc)
+            except TimeoutError:
+                logger.warning("aggregator: some sources timed out for %s", sport_key)
 
         merged = merge_games(results)
+        # Strict filtering:
+        # 1. Drop games with no commence_time (can't verify they're upcoming)
+        # 2. Drop games that already started or start within 5 min (lines are stale)
+        # 3. Drop games more than 3 days away (odds not reliable yet)
+        now = datetime.now(timezone.utc)
+        from datetime import timedelta
+        cutoff_soon = now + timedelta(minutes=5)
+        cutoff_far = now + timedelta(days=3)
+        upcoming = [
+            g for g in merged
+            if g.commence_time is not None
+            and g.commence_time > cutoff_soon
+            and g.commence_time < cutoff_far
+        ]
+        dropped_no_time = sum(1 for g in merged if g.commence_time is None)
+        dropped_past = sum(1 for g in merged if g.commence_time is not None and (g.commence_time <= cutoff_soon or g.commence_time >= cutoff_far))
         logger.info(
-            "aggregator.fetch_sport(%s): %d raw -> %d merged games across %d sources",
+            "aggregator.fetch_sport(%s): %d raw -> %d merged -> %d upcoming "
+            "(dropped %d no-time, %d past/soon) across %d sources",
             sport_key,
             len(results),
             len(merged),
+            len(upcoming),
+            dropped_no_time,
+            dropped_past,
             len(self.fetchers),
         )
-        return merged
+        return upcoming
 
     def fetch_sports(self, sport_keys: Iterable[str]) -> List[GameOdds]:
         """Fetch and merge multiple sports."""

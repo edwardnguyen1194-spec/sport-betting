@@ -150,7 +150,43 @@ class ActionNetworkFetcher(BaseFetcher):
             except Exception:
                 continue
 
+        # Extract public betting percentages if available
+        self._extract_public_pcts(ev, game)
+
         return game
+
+    @staticmethod
+    def _extract_public_pcts(ev: Dict[str, Any], game: GameOdds) -> None:
+        """Try to extract public betting % from various AN API key paths."""
+        # AN has used different structures across versions
+        for key in ("betting", "public_betting", "betting_splits", "ticket_counts"):
+            data = ev.get(key)
+            if isinstance(data, dict):
+                for src_key, meta_key in (
+                    ("ml_home_pct", "public_ml_home_pct"),
+                    ("ml_away_pct", "public_ml_away_pct"),
+                    ("home_ml_pct", "public_ml_home_pct"),
+                    ("away_ml_pct", "public_ml_away_pct"),
+                    ("spread_home_pct", "public_spread_home_pct"),
+                    ("spread_away_pct", "public_spread_away_pct"),
+                    ("total_over_pct", "public_total_over_pct"),
+                    ("total_under_pct", "public_total_under_pct"),
+                ):
+                    val = _n(data.get(src_key))
+                    if val is not None:
+                        game.meta[meta_key] = val / 100.0 if val > 1.0 else val
+                return
+
+        # Also check top-level event keys
+        for src_key, meta_key in (
+            ("home_ticket_pct", "public_ml_home_pct"),
+            ("away_ticket_pct", "public_ml_away_pct"),
+            ("home_money_pct", "public_ml_home_pct"),
+            ("away_money_pct", "public_ml_away_pct"),
+        ):
+            val = _n(ev.get(src_key))
+            if val is not None:
+                game.meta[meta_key] = val / 100.0 if val > 1.0 else val
 
     @staticmethod
     def _apply_entry(

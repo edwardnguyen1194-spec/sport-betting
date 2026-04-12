@@ -49,7 +49,6 @@ DEFAULT_FREE_SOURCES = [
     "espn",
     "scoresandodds",
     "vegasinsider",
-    "covers",
     "actionnetwork",
     "sbr",
 ]
@@ -87,14 +86,30 @@ class Settings:
 
     # --- Strategy thresholds ---
     heavy_fav_min_american: int = field(
-        default_factory=lambda: _env_int("SBA_HEAVY_FAV_MIN_AMERICAN", -400)
+        default_factory=lambda: _env_int("SBA_HEAVY_FAV_MIN_AMERICAN", -450)
     )
     heavy_fav_max_american: int = field(
-        default_factory=lambda: _env_int("SBA_HEAVY_FAV_MAX_AMERICAN", -150)
+        default_factory=lambda: _env_int("SBA_HEAVY_FAV_MAX_AMERICAN", -130)
     )
     heavy_fav_min_books: int = field(default_factory=lambda: _env_int("SBA_HEAVY_FAV_MIN_BOOKS", 2))
     min_confidence: float = field(
-        default_factory=lambda: _env_float("SBA_MIN_CONFIDENCE", 0.65)
+        default_factory=lambda: _env_float("SBA_MIN_CONFIDENCE", 0.55)
+    )
+
+    # --- Spread / Total value ---
+    spread_value_min_edge: float = field(
+        default_factory=lambda: _env_float("SBA_SPREAD_MIN_EDGE", 0.025)
+    )
+    total_value_min_edge: float = field(
+        default_factory=lambda: _env_float("SBA_TOTAL_MIN_EDGE", 0.025)
+    )
+
+    # --- Contrarian ---
+    contrarian_public_threshold: float = field(
+        default_factory=lambda: _env_float("SBA_CONTRARIAN_PUBLIC_THRESHOLD", 0.70)
+    )
+    contrarian_min_books: int = field(
+        default_factory=lambda: _env_int("SBA_CONTRARIAN_MIN_BOOKS", 3)
     )
 
     # --- Auto trading loop ---

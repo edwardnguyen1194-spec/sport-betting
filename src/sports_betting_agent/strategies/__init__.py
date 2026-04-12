@@ -8,6 +8,13 @@ trader, dashboard, Claude chat) can reason about uniformly.
 from .base import BetRecommendation, Strategy
 from .heavy_favorite import HeavyFavoriteStrategy
 from .value_bets import ValueBetStrategy
+from .spread_value import SpreadValueStrategy
+from .total_value import TotalValueStrategy
+from .contrarian import ContrarianStrategy
+from .middle_detector import MiddleDetectorStrategy
+from .situational import SituationalStrategy
+from .elo_edge import EloEdgeStrategy
+from .pythagorean import PythagoreanStrategy
 from .ensemble import EnsembleStrategy
 from .player_props import PlayerPropsStrategy, PropMarket
 
@@ -16,6 +23,13 @@ __all__ = [
     "Strategy",
     "HeavyFavoriteStrategy",
     "ValueBetStrategy",
+    "SpreadValueStrategy",
+    "TotalValueStrategy",
+    "ContrarianStrategy",
+    "MiddleDetectorStrategy",
+    "SituationalStrategy",
+    "EloEdgeStrategy",
+    "PythagoreanStrategy",
     "EnsembleStrategy",
     "PlayerPropsStrategy",
     "PropMarket",
