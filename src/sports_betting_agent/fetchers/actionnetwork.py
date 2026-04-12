@@ -142,9 +142,16 @@ class ActionNetworkFetcher(BaseFetcher):
                                 flat.append(v)
                 odds_block = flat
 
+        # Only keep the FIRST odds entry per book (main market)
+        # Action Network returns alternate lines, half-time, quarters etc.
+        seen_books: set = set()
         for entry in odds_block:
             if not isinstance(entry, dict):
                 continue
+            book_id = entry.get("book_id")
+            if book_id in seen_books:
+                continue  # Skip duplicate entries for same book
+            seen_books.add(book_id)
             try:
                 self._apply_entry(entry, game, home_team, away_team)
             except Exception:

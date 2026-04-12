@@ -86,6 +86,9 @@ class OddsAggregator:
                 logger.warning("aggregator: some sources timed out for %s", sport_key)
 
         merged = merge_games(results)
+        # Remove outlier lines (bad data from alternate markets)
+        for game in merged:
+            self._remove_outlier_lines(game)
         # Strict filtering:
         # 1. Drop games with no commence_time (can't verify they're upcoming)
         # 2. Drop games that already started or start within 5 min (lines are stale)
@@ -124,6 +127,38 @@ class OddsAggregator:
         return all_games
 
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _remove_outlier_lines(game: GameOdds) -> None:
+        """Remove moneyline outliers that are likely alternate/quarter lines.
+
+        If a line's implied probability differs from the median by more
+        than 20 percentage points, it's probably from the wrong market.
+        Example: Caesars -120 when everyone else is -380.
+        """
+        from ..models_schema import american_to_implied
+        # Group ML lines by team
+        teams: Dict[str, list] = {}
+        for line in game.lines:
+            if line.market != "moneyline" or line.american is None:
+                continue
+            key = line.selection.lower()
+            teams.setdefault(key, []).append(line)
+
+        bad_lines = set()
+        for team, lines in teams.items():
+            if len(lines) < 3:
+                continue
+            implieds = [american_to_implied(l.american) for l in lines]
+            implieds.sort()
+            median = implieds[len(implieds) // 2]
+            for line in lines:
+                imp = american_to_implied(line.american)
+                if abs(imp - median) > 0.20:  # 20% off median = outlier
+                    bad_lines.add(id(line))
+
+        if bad_lines:
+            game.lines = [l for l in game.lines if id(l) not in bad_lines]
 
     @staticmethod
     def _safe_fetch(fetcher: BaseFetcher, sport_key: str) -> List[GameOdds]:
