@@ -86,12 +86,32 @@ class SBRFetcher(BaseFetcher):
             source=self.source_name,
         )
 
+        # Moneylines
         for book, ml in (game.get("home_ml") or {}).items():
             if ml is not None:
                 g.lines.append(OddsLine(book=str(book).lower(), market="moneyline", selection=home, american=float(ml)))
         for book, ml in (game.get("away_ml") or {}).items():
             if ml is not None:
                 g.lines.append(OddsLine(book=str(book).lower(), market="moneyline", selection=away, american=float(ml)))
+
+        # Spreads
+        for book, spread in (game.get("home_spread") or {}).items():
+            if spread is not None:
+                juice = (game.get("home_spread_juice") or {}).get(book, -110)
+                g.lines.append(OddsLine(book=str(book).lower(), market="spread", selection=home, american=float(juice or -110), line=float(spread)))
+        for book, spread in (game.get("away_spread") or {}).items():
+            if spread is not None:
+                juice = (game.get("away_spread_juice") or {}).get(book, -110)
+                g.lines.append(OddsLine(book=str(book).lower(), market="spread", selection=away, american=float(juice or -110), line=float(spread)))
+
+        # Totals
+        for book, total in (game.get("total") or {}).items():
+            if total is not None:
+                over_juice = (game.get("over_juice") or {}).get(book, -110)
+                under_juice = (game.get("under_juice") or {}).get(book, -110)
+                g.lines.append(OddsLine(book=str(book).lower(), market="total", selection="Over", american=float(over_juice or -110), line=float(total)))
+                g.lines.append(OddsLine(book=str(book).lower(), market="total", selection="Under", american=float(under_juice or -110), line=float(total)))
+
         return g
 
     def _parse_html(self, html: str, sport_label: str, league_label: str) -> List[GameOdds]:
