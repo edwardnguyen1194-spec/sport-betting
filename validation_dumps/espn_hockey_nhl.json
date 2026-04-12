@@ -1,0 +1,887 @@
+[
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Boston Bruins",
+    "away_team": "Tampa Bay Lightning",
+    "commence_time": "2026-04-11T16:30:00+00:00",
+    "source": "espn",
+    "event_id": "401803612",
+    "game_key": "89e7e8688f420b74",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Tampa Bay Lightning",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Boston Bruins",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Tampa Bay Lightning at Boston Bruins"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "New York Islanders",
+    "away_team": "Ottawa Senators",
+    "commence_time": "2026-04-11T17:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803613",
+    "game_key": "083afb437e2e11e7",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Ottawa Senators",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "New York Islanders",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Ottawa Senators at New York Islanders"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Pittsburgh Penguins",
+    "away_team": "Washington Capitals",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803614",
+    "game_key": "f386a2b241d5733b",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Pittsburgh Penguins",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Washington Capitals",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Washington Capitals at Pittsburgh Penguins"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Los Angeles Kings",
+    "away_team": "Edmonton Oilers",
+    "commence_time": "2026-04-11T20:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803615",
+    "game_key": "c8b05f924dc0353d",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Los Angeles Kings",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Edmonton Oilers",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Edmonton Oilers at Los Angeles Kings"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Detroit Red Wings",
+    "away_team": "New Jersey Devils",
+    "commence_time": "2026-04-11T21:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803616",
+    "game_key": "25174f31f206be3c",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Detroit Red Wings",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "New Jersey Devils",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "New Jersey Devils at Detroit Red Wings"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Chicago Blackhawks",
+    "away_team": "St. Louis Blues",
+    "commence_time": "2026-04-11T21:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803617",
+    "game_key": "1382dbe8fd9c5af6",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "St. Louis Blues",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Chicago Blackhawks",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 5.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 5.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "St. Louis Blues at Chicago Blackhawks"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Nashville Predators",
+    "away_team": "Minnesota Wild",
+    "commence_time": "2026-04-11T21:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803618",
+    "game_key": "d57d04a3f71aec21",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Minnesota Wild",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Nashville Predators",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Minnesota Wild at Nashville Predators"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Dallas Stars",
+    "away_team": "New York Rangers",
+    "commence_time": "2026-04-11T21:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803619",
+    "game_key": "ea5e26b43481836d",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Dallas Stars",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "New York Rangers",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 5.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 5.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "New York Rangers at Dallas Stars"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Utah Mammoth",
+    "away_team": "Carolina Hurricanes",
+    "commence_time": "2026-04-11T21:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803620",
+    "game_key": "7d6b3189248e8d3c",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Utah Mammoth",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Carolina Hurricanes",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Carolina Hurricanes at Utah Mammoth"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Toronto Maple Leafs",
+    "away_team": "Florida Panthers",
+    "commence_time": "2026-04-11T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803621",
+    "game_key": "154738fc16c281c0",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Toronto Maple Leafs",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Florida Panthers",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Florida Panthers at Toronto Maple Leafs"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Montreal Canadiens",
+    "away_team": "Columbus Blue Jackets",
+    "commence_time": "2026-04-11T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803622",
+    "game_key": "23c86db7abd906c7",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Montreal Canadiens",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Columbus Blue Jackets",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Columbus Blue Jackets at Montreal Canadiens"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Winnipeg Jets",
+    "away_team": "Philadelphia Flyers",
+    "commence_time": "2026-04-11T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803623",
+    "game_key": "76320aa1f94088b0",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Winnipeg Jets",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Philadelphia Flyers",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 5.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 5.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Philadelphia Flyers at Winnipeg Jets"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Seattle Kraken",
+    "away_team": "Calgary Flames",
+    "commence_time": "2026-04-11T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803624",
+    "game_key": "7ca994e5ac088795",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Seattle Kraken",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Calgary Flames",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Calgary Flames at Seattle Kraken"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Colorado Avalanche",
+    "away_team": "Vegas Golden Knights",
+    "commence_time": "2026-04-12T00:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803625",
+    "game_key": "8e21f3790b47efb8",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Colorado Avalanche",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Vegas Golden Knights",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Vegas Golden Knights at Colorado Avalanche"
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "San Jose Sharks",
+    "away_team": "Vancouver Canucks",
+    "commence_time": "2026-04-12T02:00:00+00:00",
+    "source": "espn",
+    "event_id": "401803626",
+    "game_key": "f1f6711242d9db1d",
+    "lines": [
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "San Jose Sharks",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "spread",
+        "selection": "Vancouver Canucks",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Over",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "draft_kings",
+        "market": "total",
+        "selection": "Under",
+        "american": -110,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "name": "Vancouver Canucks at San Jose Sharks"
+    }
+  }
+]

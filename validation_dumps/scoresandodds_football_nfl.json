@@ -1,0 +1,81 @@
+[
+  {
+    "sport": "football_nfl",
+    "league": "nfl",
+    "home_team": "Patriots",
+    "away_team": "Seahawks",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "bd399d102fd065a3",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Seahawks",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -4.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 45.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Seahawks",
+        "american": -230.0,
+        "decimal": 1.434782608695652,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Patriots",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 4.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 45.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Patriots",
+        "american": 190.0,
+        "decimal": 2.9,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  }
+]

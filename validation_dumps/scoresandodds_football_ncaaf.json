@@ -1,0 +1,3715 @@
+[
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Navy",
+    "away_team": "Army",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "c849528e9ee1eafb",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Army",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 37.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Army",
+        "american": 205.0,
+        "decimal": 3.05,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Navy",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 37.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Navy",
+        "american": -250.0,
+        "decimal": 1.4,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Washington",
+    "away_team": "Boise State",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "d0312d294d6f0bfb",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Boise State",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 10.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Boise State",
+        "american": 300.0,
+        "decimal": 4.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Washington",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": -10.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Washington",
+        "american": -375.0,
+        "decimal": 1.2666666666666666,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Jacksonville State",
+    "away_team": "Troy",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "e05baf7c4dc0327f",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Troy",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Troy",
+        "american": 130.0,
+        "decimal": 2.3,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Jacksonville State",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": -3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Jacksonville State",
+        "american": -155.0,
+        "decimal": 1.6451612903225805,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "South Florida",
+    "away_team": "Old Dominion",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "6e04bb17c74f186a",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Old Dominion",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 4.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 52.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Old Dominion",
+        "american": 160.0,
+        "decimal": 2.6,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "South Florida",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -4.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 52.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "South Florida",
+        "american": -192.0,
+        "decimal": 1.5208333333333335,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Delaware",
+    "away_team": "Louisiana",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "bdb53baa887a094f",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Louisiana",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 60.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Louisiana",
+        "american": -130.0,
+        "decimal": 1.7692307692307692,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Delaware",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 60.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Delaware",
+        "american": 110.0,
+        "decimal": 2.1,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Arkansas State",
+    "away_team": "Missouri State",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "f5391d03b07d3a01",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Missouri State",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Missouri State",
+        "american": 105.0,
+        "decimal": 2.05,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Arkansas State",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Arkansas State",
+        "american": -125.0,
+        "decimal": 1.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Western Michigan",
+    "away_team": "Kennesaw State",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "c66e7f023dcd9e07",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Kennesaw State",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 3.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Kennesaw State",
+        "american": 140.0,
+        "decimal": 2.4,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Western Michigan",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -3.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Western Michigan",
+        "american": -162.0,
+        "decimal": 1.617283950617284,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "NC State",
+    "away_team": "Memphis",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "3be706a8a5940050",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Memphis",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 3.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 56.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Memphis",
+        "american": 136.0,
+        "decimal": 2.3600000000000003,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "NC State",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -3.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 56.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "NC State",
+        "american": -166.0,
+        "decimal": 1.6024096385542168,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Oklahoma",
+    "away_team": "Alabama",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "1b7ebbe37f8354dd",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Alabama",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 42.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Alabama",
+        "american": 105.0,
+        "decimal": 2.05,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Oklahoma",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 42.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Oklahoma",
+        "american": -125.0,
+        "decimal": 1.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Texas A&M",
+    "away_team": "Miami (FL)",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "6199a2d28ad61aec",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Miami (FL)",
+        "american": -118.0,
+        "decimal": 1.847457627118644,
+        "line": 3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 48.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Miami (FL)",
+        "american": 120.0,
+        "decimal": 2.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Texas A&M",
+        "american": -102.0,
+        "decimal": 1.9803921568627452,
+        "line": -3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 48.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Texas A&M",
+        "american": -142.0,
+        "decimal": 1.704225352112676,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Ole Miss",
+    "away_team": "Tulane",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "756fdaf8e1346116",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Tulane",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 16.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 57.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Tulane",
+        "american": 625.0,
+        "decimal": 7.25,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Ole Miss",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -16.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 57.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Ole Miss",
+        "american": -950.0,
+        "decimal": 1.1052631578947367,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Oregon",
+    "away_team": "James Madison",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "56fed7e42ef44486",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "James Madison",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 20.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "James Madison",
+        "american": 950.0,
+        "decimal": 10.5,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Oregon",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -20.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Oregon",
+        "american": -1800.0,
+        "decimal": 1.0555555555555556,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Utah State",
+    "away_team": "Washington State",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "f610a19417ccd640",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Washington State",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Washington State",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Utah State",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Utah State",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Louisville",
+    "away_team": "Toledo",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "2516516e58f8f0a1",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Toledo",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 11.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 44.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Toledo",
+        "american": 360.0,
+        "decimal": 4.6,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Louisville",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -11.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 44.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Louisville",
+        "american": -485.0,
+        "decimal": 1.2061855670103092,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Southern Miss",
+    "away_team": "Western Kentucky",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "1da36aaba2157c6e",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Western Kentucky",
+        "american": -118.0,
+        "decimal": 1.847457627118644,
+        "line": 3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 59.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Western Kentucky",
+        "american": 120.0,
+        "decimal": 2.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Southern Miss",
+        "american": -102.0,
+        "decimal": 1.9803921568627452,
+        "line": -3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 59.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Southern Miss",
+        "american": -142.0,
+        "decimal": 1.704225352112676,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Ohio",
+    "away_team": "UNLV",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "875a6662f3d6dc76",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "UNLV",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": -6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 64.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "UNLV",
+        "american": -250.0,
+        "decimal": 1.4,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Ohio",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 64.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Ohio",
+        "american": 205.0,
+        "decimal": 3.05,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Hawai'i",
+    "away_team": "California",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "d73a1ec7ca53e2c3",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "California",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "California",
+        "american": -102.0,
+        "decimal": 1.9803921568627452,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Hawai'i",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Hawai'i",
+        "american": -118.0,
+        "decimal": 1.847457627118644,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Northwestern",
+    "away_team": "Central Michigan",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "eda5b31ac392da46",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Central Michigan",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 13.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 43.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Central Michigan",
+        "american": 390.0,
+        "decimal": 4.9,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Northwestern",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -13.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 43.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Northwestern",
+        "american": -485.0,
+        "decimal": 1.2061855670103092,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Minnesota",
+    "away_team": "New Mexico",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "7307443c0e30534d",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "New Mexico",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 44.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "New Mexico",
+        "american": -102.0,
+        "decimal": 1.9803921568627452,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Minnesota",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 44.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Minnesota",
+        "american": -118.0,
+        "decimal": 1.847457627118644,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "UTSA",
+    "away_team": "Florida International",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "c184ce0509b3c1fd",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Florida International",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 63.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Florida International",
+        "american": 215.0,
+        "decimal": 3.15,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "UTSA",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 63.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "UTSA",
+        "american": -265.0,
+        "decimal": 1.3773584905660377,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "East Carolina",
+    "away_team": "Pittsburgh",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "d66b352e76be149f",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Pittsburgh",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -13.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 51.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Pittsburgh",
+        "american": -520.0,
+        "decimal": 1.1923076923076923,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "East Carolina",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 13.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 51.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "East Carolina",
+        "american": 370.0,
+        "decimal": 4.7,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Clemson",
+    "away_team": "Penn State",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "4104f181a1a48f30",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Penn State",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 2.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Penn State",
+        "american": 110.0,
+        "decimal": 2.1,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Clemson",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -2.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Clemson",
+        "american": -130.0,
+        "decimal": 1.7692307692307692,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Army",
+    "away_team": "UConn",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "2792809897bf9e6b",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "UConn",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 41.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "UConn",
+        "american": 250.0,
+        "decimal": 3.5,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Army",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 41.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Army",
+        "american": -310.0,
+        "decimal": 1.3225806451612903,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "BYU",
+    "away_team": "Georgia Tech",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "c98f03186efd4562",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Georgia Tech",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 3.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Georgia Tech",
+        "american": 142.0,
+        "decimal": 2.42,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "BYU",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -3.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "BYU",
+        "american": -170.0,
+        "decimal": 1.5882352941176472,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Fresno State",
+    "away_team": "Miami (OH)",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "955025b903a20ff8",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Miami (OH)",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 5.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 40.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Miami (OH)",
+        "american": 164.0,
+        "decimal": 2.6399999999999997,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Fresno State",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -5.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 40.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Fresno State",
+        "american": -205.0,
+        "decimal": 1.4878048780487805,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "San Diego State",
+    "away_team": "North Texas",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "ee71ff57611c5ce6",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "North Texas",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "North Texas",
+        "american": -305.0,
+        "decimal": 1.3278688524590163,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "San Diego State",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "San Diego State",
+        "american": 245.0,
+        "decimal": 3.45,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Missouri",
+    "away_team": "Virginia",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "2b0cc46b3fba375b",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Virginia",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 4.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 43.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Virginia",
+        "american": 154.0,
+        "decimal": 2.54,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Missouri",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -4.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 43.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Missouri",
+        "american": -185.0,
+        "decimal": 1.5405405405405406,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Houston",
+    "away_team": "LSU",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "d8fbe63998a1986e",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "LSU",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -118.0,
+        "decimal": 1.847457627118644,
+        "line": 43.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "LSU",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Houston",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -102.0,
+        "decimal": 1.9803921568627452,
+        "line": 43.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Houston",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Appalachian State",
+    "away_team": "Georgia Southern",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "c990eca54d373e7a",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Georgia Southern",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": -10.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 58.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Georgia Southern",
+        "american": -360.0,
+        "decimal": 1.2777777777777777,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Appalachian State",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 10.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 58.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Appalachian State",
+        "american": 285.0,
+        "decimal": 3.85,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Louisiana Tech",
+    "away_team": "Coastal Carolina",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "1fee83aa6a4e0412",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Coastal Carolina",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 10.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 51.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Coastal Carolina",
+        "american": 310.0,
+        "decimal": 4.1,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Louisiana Tech",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -10.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 51.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Louisiana Tech",
+        "american": -380.0,
+        "decimal": 1.263157894736842,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Illinois",
+    "away_team": "Tennessee",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "355adffeba704f7c",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Tennessee",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 61.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Tennessee",
+        "american": -142.0,
+        "decimal": 1.704225352112676,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Illinois",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 61.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Illinois",
+        "american": 120.0,
+        "decimal": 2.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "TCU",
+    "away_team": "USC",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "f9d969755f70ffe5",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "USC",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -4.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 56.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "USC",
+        "american": -205.0,
+        "decimal": 1.4878048780487805,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "TCU",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 4.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 56.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "TCU",
+        "american": 170.0,
+        "decimal": 2.7,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Vanderbilt",
+    "away_team": "Iowa",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "0b03fc4ad7a8e97c",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Iowa",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Iowa",
+        "american": 136.0,
+        "decimal": 2.3600000000000003,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Vanderbilt",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Vanderbilt",
+        "american": -162.0,
+        "decimal": 1.617283950617284,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Duke",
+    "away_team": "Arizona State",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "d7ee115716bc4a33",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Arizona State",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 4.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 49.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Arizona State",
+        "american": 150.0,
+        "decimal": 2.5,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Duke",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -4.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 49.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Duke",
+        "american": -175.0,
+        "decimal": 1.5714285714285714,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Texas",
+    "away_team": "Michigan",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "57aa133ae338ecc6",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Michigan",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 4.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Michigan",
+        "american": 160.0,
+        "decimal": 2.6,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Texas",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -4.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Texas",
+        "american": -192.0,
+        "decimal": 1.5208333333333335,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Utah",
+    "away_team": "Nebraska",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "db7ac3c7776acdde",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Nebraska",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 13.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 51.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Nebraska",
+        "american": 380.0,
+        "decimal": 4.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Utah",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -13.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 51.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Utah",
+        "american": -500.0,
+        "decimal": 1.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Ohio State",
+    "away_team": "Miami (FL)",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "dffc2c376e81e994",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Miami (FL)",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -118.0,
+        "decimal": 1.847457627118644,
+        "line": 39.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Miami (FL)",
+        "american": 260.0,
+        "decimal": 3.6,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Ohio State",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -102.0,
+        "decimal": 1.9803921568627452,
+        "line": 39.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Ohio State",
+        "american": -325.0,
+        "decimal": 1.3076923076923077,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Texas Tech",
+    "away_team": "Oregon",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "90263548c25a318f",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Oregon",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Oregon",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Texas Tech",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Texas Tech",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Indiana",
+    "away_team": "Alabama",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "3af04e074f01510c",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Alabama",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 46.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Alabama",
+        "american": 225.0,
+        "decimal": 3.25,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Indiana",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 46.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Indiana",
+        "american": -278.0,
+        "decimal": 1.3597122302158273,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Georgia",
+    "away_team": "Ole Miss",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "e60d9211369b430c",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Ole Miss",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 53.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Ole Miss",
+        "american": 180.0,
+        "decimal": 2.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Georgia",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 53.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Georgia",
+        "american": -225.0,
+        "decimal": 1.4444444444444444,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Texas State",
+    "away_team": "Rice",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "d467adcf0f4fadb2",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Rice",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 19.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Rice",
+        "american": 600.0,
+        "decimal": 7.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Texas State",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -19.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Texas State",
+        "american": -800.0,
+        "decimal": 1.125,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Cincinnati",
+    "away_team": "Navy",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "42f010d8cf5d7c2e",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Navy",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 57.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Navy",
+        "american": -325.0,
+        "decimal": 1.3076923076923077,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Cincinnati",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 57.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Cincinnati",
+        "american": 260.0,
+        "decimal": 3.6,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Mississippi State",
+    "away_team": "Wake Forest",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "9ba05a70f90e1710",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Wake Forest",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 52.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Wake Forest",
+        "american": 124.0,
+        "decimal": 2.24,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Mississippi State",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 52.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Mississippi State",
+        "american": -148.0,
+        "decimal": 1.6756756756756757,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "SMU",
+    "away_team": "Arizona",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "782f3a2c53dcc66f",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Arizona",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 2.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -102.0,
+        "decimal": 1.9803921568627452,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Arizona",
+        "american": 120.0,
+        "decimal": 2.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "SMU",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -2.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -118.0,
+        "decimal": 1.847457627118644,
+        "line": 55.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "SMU",
+        "american": -142.0,
+        "decimal": 1.704225352112676,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Ole Miss",
+    "away_team": "Miami (FL)",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "e4c8d4390f02c513",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Miami (FL)",
+        "american": -118.0,
+        "decimal": 1.847457627118644,
+        "line": -3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 52.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Miami (FL)",
+        "american": -170.0,
+        "decimal": 1.5882352941176472,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Ole Miss",
+        "american": -102.0,
+        "decimal": 1.9803921568627452,
+        "line": 3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 52.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Ole Miss",
+        "american": 142.0,
+        "decimal": 2.42,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Indiana",
+    "away_team": "Oregon",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "392bfd0dbb141cf8",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Oregon",
+        "american": -102.0,
+        "decimal": 1.9803921568627452,
+        "line": 3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Oregon",
+        "american": 145.0,
+        "decimal": 2.45,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Indiana",
+        "american": -118.0,
+        "decimal": 1.847457627118644,
+        "line": -3.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Indiana",
+        "american": -170.0,
+        "decimal": 1.5882352941176472,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Indiana",
+    "away_team": "Miami (FL)",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "b30016fb2a44ad00",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Miami (FL)",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Miami (FL)",
+        "american": 260.0,
+        "decimal": 3.6,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Indiana",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Indiana",
+        "american": -325.0,
+        "decimal": 1.3076923076923077,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  }
+]

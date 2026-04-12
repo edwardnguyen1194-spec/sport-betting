@@ -1,0 +1,212 @@
+[
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Chicago Cubs",
+    "away_team": "Pittsburgh Pirates",
+    "commence_time": "2026-04-10T18:20:00+00:00",
+    "source": "espn",
+    "event_id": "401814886",
+    "game_key": "5f969600e818788a",
+    "lines": [],
+    "meta": {
+      "name": "Pittsburgh Pirates at Chicago Cubs"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Philadelphia Phillies",
+    "away_team": "Arizona Diamondbacks",
+    "commence_time": "2026-04-10T22:40:00+00:00",
+    "source": "espn",
+    "event_id": "401814877",
+    "game_key": "d8cdc862e90eeda5",
+    "lines": [],
+    "meta": {
+      "name": "Arizona Diamondbacks at Philadelphia Phillies"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Detroit Tigers",
+    "away_team": "Miami Marlins",
+    "commence_time": "2026-04-10T22:40:00+00:00",
+    "source": "espn",
+    "event_id": "401814880",
+    "game_key": "bcfcfda13b166fbc",
+    "lines": [],
+    "meta": {
+      "name": "Miami Marlins at Detroit Tigers"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Cincinnati Reds",
+    "away_team": "Los Angeles Angels",
+    "commence_time": "2026-04-10T22:45:00+00:00",
+    "source": "espn",
+    "event_id": "401814876",
+    "game_key": "4ca5232036cee0d7",
+    "lines": [],
+    "meta": {
+      "name": "Los Angeles Angels at Cincinnati Reds"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Toronto Blue Jays",
+    "away_team": "Minnesota Twins",
+    "commence_time": "2026-04-10T23:07:00+00:00",
+    "source": "espn",
+    "event_id": "401814881",
+    "game_key": "85f8a920ea7258e1",
+    "lines": [],
+    "meta": {
+      "name": "Minnesota Twins at Toronto Blue Jays"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "New York Mets",
+    "away_team": "Athletics",
+    "commence_time": "2026-04-10T23:10:00+00:00",
+    "source": "espn",
+    "event_id": "401814878",
+    "game_key": "0f7b0abe5c1301fb",
+    "lines": [],
+    "meta": {
+      "name": "Athletics Athletics at New York Mets"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Tampa Bay Rays",
+    "away_team": "New York Yankees",
+    "commence_time": "2026-04-10T23:10:00+00:00",
+    "source": "espn",
+    "event_id": "401814882",
+    "game_key": "eac29ad9d22bc8ca",
+    "lines": [],
+    "meta": {
+      "name": "New York Yankees at Tampa Bay Rays"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Atlanta Braves",
+    "away_team": "Cleveland Guardians",
+    "commence_time": "2026-04-10T23:15:00+00:00",
+    "source": "espn",
+    "event_id": "401814879",
+    "game_key": "ea15d7eb84df9a72",
+    "lines": [],
+    "meta": {
+      "name": "Cleveland Guardians at Atlanta Braves"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Baltimore Orioles",
+    "away_team": "San Francisco Giants",
+    "commence_time": "2026-04-10T23:15:00+00:00",
+    "source": "espn",
+    "event_id": "401814883",
+    "game_key": "c4543236575900ef",
+    "lines": [],
+    "meta": {
+      "name": "San Francisco Giants at Baltimore Orioles"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Kansas City Royals",
+    "away_team": "Chicago White Sox",
+    "commence_time": "2026-04-10T23:40:00+00:00",
+    "source": "espn",
+    "event_id": "401814885",
+    "game_key": "2b5121c1c6b781b4",
+    "lines": [],
+    "meta": {
+      "name": "Chicago White Sox at Kansas City Royals"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Milwaukee Brewers",
+    "away_team": "Washington Nationals",
+    "commence_time": "2026-04-10T23:40:00+00:00",
+    "source": "espn",
+    "event_id": "401814887",
+    "game_key": "b39b0a10cded7d4d",
+    "lines": [],
+    "meta": {
+      "name": "Washington Nationals at Milwaukee Brewers"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "St. Louis Cardinals",
+    "away_team": "Boston Red Sox",
+    "commence_time": "2026-04-11T00:15:00+00:00",
+    "source": "espn",
+    "event_id": "401814884",
+    "game_key": "34c1c6bd031a5078",
+    "lines": [],
+    "meta": {
+      "name": "Boston Red Sox at St. Louis Cardinals"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "San Diego Padres",
+    "away_team": "Colorado Rockies",
+    "commence_time": "2026-04-11T01:40:00+00:00",
+    "source": "espn",
+    "event_id": "401814888",
+    "game_key": "827a25155ba18e99",
+    "lines": [],
+    "meta": {
+      "name": "Colorado Rockies at San Diego Padres"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Seattle Mariners",
+    "away_team": "Houston Astros",
+    "commence_time": "2026-04-11T01:40:00+00:00",
+    "source": "espn",
+    "event_id": "401814889",
+    "game_key": "28397ead80a81a3b",
+    "lines": [],
+    "meta": {
+      "name": "Houston Astros at Seattle Mariners"
+    }
+  },
+  {
+    "sport": "baseball_mlb",
+    "league": "mlb",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "Texas Rangers",
+    "commence_time": "2026-04-11T02:10:00+00:00",
+    "source": "espn",
+    "event_id": "401814890",
+    "game_key": "7bc6b81e87f537d5",
+    "lines": [],
+    "meta": {
+      "name": "Texas Rangers at Los Angeles Dodgers"
+    }
+  }
+]

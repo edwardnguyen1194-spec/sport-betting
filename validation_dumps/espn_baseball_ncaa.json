@@ -1,0 +1,1010 @@
+[
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Texas State Bobcats",
+    "away_team": "Troy Trojans",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853555",
+    "game_key": "9736c517826e0bda",
+    "lines": [],
+    "meta": {
+      "name": "Troy Trojans at Texas State Bobcats"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Oregon State Beavers",
+    "away_team": "Cal Poly Mustangs",
+    "commence_time": "2026-04-11T00:05:00+00:00",
+    "source": "espn",
+    "event_id": "401849908",
+    "game_key": "d150fb772fd59ea3",
+    "lines": [],
+    "meta": {
+      "name": "Cal Poly Mustangs at Oregon State Beavers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Long Beach State Beach",
+    "away_team": "Cal State Fullerton Titans",
+    "commence_time": "2026-04-11T01:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856278",
+    "game_key": "5c16780c08bd0772",
+    "lines": [],
+    "meta": {
+      "name": "Cal State Fullerton Titans at Long Beach State Beach"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Arizona State Sun Devils",
+    "away_team": "Utah Utes",
+    "commence_time": "2026-04-11T01:30:00+00:00",
+    "source": "espn",
+    "event_id": "401848436",
+    "game_key": "d03aadde0c97caa2",
+    "lines": [],
+    "meta": {
+      "name": "Utah Utes at Arizona State Sun Devils"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "USC Trojans",
+    "away_team": "Iowa Hawkeyes",
+    "commence_time": "2026-04-11T02:00:00+00:00",
+    "source": "espn",
+    "event_id": "401850272",
+    "game_key": "7a48111d6cf0b824",
+    "lines": [],
+    "meta": {
+      "name": "Iowa Hawkeyes at USC Trojans"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Rutgers Scarlet Knights",
+    "away_team": "UCLA Bruins",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401852653",
+    "game_key": "7f5d78437d998b4c",
+    "lines": [],
+    "meta": {
+      "name": "UCLA Bruins at Rutgers Scarlet Knights"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Texas A&M Aggies",
+    "away_team": "Texas Longhorns",
+    "commence_time": "2026-04-11T00:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847629",
+    "game_key": "b34cb00cf81afaa5",
+    "lines": [],
+    "meta": {
+      "name": "Texas Longhorns at Texas A&M Aggies"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Georgia Tech Yellow Jackets",
+    "away_team": "Florida State Seminoles",
+    "commence_time": "2026-04-11T00:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847929",
+    "game_key": "7b0227c159af61dd",
+    "lines": [],
+    "meta": {
+      "name": "Florida State Seminoles at Georgia Tech Yellow Jackets"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Georgia Bulldogs",
+    "away_team": "Florida Gators",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847230",
+    "game_key": "8e9e8214e765c75c",
+    "lines": [],
+    "meta": {
+      "name": "Florida Gators at Georgia Bulldogs"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Clemson Tigers",
+    "away_team": "North Carolina Tar Heels",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847832",
+    "game_key": "84a5613123e12a3f",
+    "lines": [],
+    "meta": {
+      "name": "North Carolina Tar Heels at Clemson Tigers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Alabama Crimson Tide",
+    "away_team": "Arkansas Razorbacks",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847076",
+    "game_key": "1a43c620a726ade6",
+    "lines": [],
+    "meta": {
+      "name": "Arkansas Razorbacks at Alabama Crimson Tide"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Mississippi State Bulldogs",
+    "away_team": "Tennessee Volunteers",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847410",
+    "game_key": "bca69ffce61a21d7",
+    "lines": [],
+    "meta": {
+      "name": "Tennessee Volunteers at Mississippi State Bulldogs"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Louisiana Ragin' Cajuns",
+    "away_team": "Southern Miss Golden Eagles",
+    "commence_time": "2026-04-11T00:30:00+00:00",
+    "source": "espn",
+    "event_id": "401853192",
+    "game_key": "3c478173495186d1",
+    "lines": [],
+    "meta": {
+      "name": "Southern Miss Golden Eagles at Louisiana Ragin' Cajuns"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Arkansas State Red Wolves",
+    "away_team": "Coastal Carolina Chanticleers",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401852929",
+    "game_key": "bf05709152b83150",
+    "lines": [],
+    "meta": {
+      "name": "Coastal Carolina Chanticleers at Arkansas State Red Wolves"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Kansas Jayhawks",
+    "away_team": "UCF Knights",
+    "commence_time": "2026-04-10T21:00:00+00:00",
+    "source": "espn",
+    "event_id": "401848730",
+    "game_key": "f56bf6e96a21841f",
+    "lines": [],
+    "meta": {
+      "name": "UCF Knights at Kansas Jayhawks"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Notre Dame Fighting Irish",
+    "away_team": "Virginia Cavaliers",
+    "commence_time": "2026-04-10T21:30:00+00:00",
+    "source": "espn",
+    "event_id": "401848117",
+    "game_key": "2d7ef5088cb49a1a",
+    "lines": [],
+    "meta": {
+      "name": "Virginia Cavaliers at Notre Dame Fighting Irish"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Auburn Tigers",
+    "away_team": "Kentucky Wildcats",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847179",
+    "game_key": "82c96e4a8330f5f4",
+    "lines": [],
+    "meta": {
+      "name": "Kentucky Wildcats at Auburn Tigers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Vanderbilt Commodores",
+    "away_team": "Oklahoma Sooners",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847499",
+    "game_key": "b8b3319436fabef8",
+    "lines": [],
+    "meta": {
+      "name": "Oklahoma Sooners at Vanderbilt Commodores"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Texas Tech Red Raiders",
+    "away_team": "West Virginia Mountaineers",
+    "commence_time": "2026-04-10T23:30:00+00:00",
+    "source": "espn",
+    "event_id": "401849992",
+    "game_key": "2627203174d92788",
+    "lines": [],
+    "meta": {
+      "name": "West Virginia Mountaineers at Texas Tech Red Raiders"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Oregon Ducks",
+    "away_team": "Nebraska Cornhuskers",
+    "commence_time": "2026-04-10T22:05:00+00:00",
+    "source": "espn",
+    "event_id": "401851979",
+    "game_key": "ce1666c813c64867",
+    "lines": [],
+    "meta": {
+      "name": "Nebraska Cornhuskers at Oregon Ducks"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Boston College Eagles",
+    "away_team": "Virginia Tech Hokies",
+    "commence_time": "2026-04-10T19:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847726",
+    "game_key": "7fb700bf8bd0296f",
+    "lines": [],
+    "meta": {
+      "name": "Virginia Tech Hokies at Boston College Eagles"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Ole Miss Rebels",
+    "away_team": "LSU Tigers",
+    "commence_time": "2026-04-10T23:30:00+00:00",
+    "source": "espn",
+    "event_id": "401847367",
+    "game_key": "7f793645ef45333a",
+    "lines": [],
+    "meta": {
+      "name": "LSU Tigers at Ole Miss Rebels"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Hofstra Pride",
+    "away_team": "Stony Brook Seawolves",
+    "commence_time": "2026-04-10T18:00:00+00:00",
+    "source": "espn",
+    "event_id": "401857993",
+    "game_key": "def2b53569adc39d",
+    "lines": [],
+    "meta": {
+      "name": "Stony Brook Seawolves at Hofstra Pride"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Ohio State Buckeyes",
+    "away_team": "Penn State Nittany Lions",
+    "commence_time": "2026-04-10T18:00:00+00:00",
+    "source": "espn",
+    "event_id": "401852088",
+    "game_key": "fc4dc13f5c170870",
+    "lines": [],
+    "meta": {
+      "name": "Penn State Nittany Lions at Ohio State Buckeyes"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Northeastern Huskies",
+    "away_team": "Merrimack Warriors",
+    "commence_time": "2026-04-10T18:30:00+00:00",
+    "source": "espn",
+    "event_id": "401858030",
+    "game_key": "a2718ea443d18755",
+    "lines": [],
+    "meta": {
+      "name": "Merrimack Warriors at Northeastern Huskies"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Butler Bulldogs",
+    "away_team": "UConn Huskies",
+    "commence_time": "2026-04-10T18:30:00+00:00",
+    "source": "espn",
+    "event_id": "401852056",
+    "game_key": "fd0de412b8fba60a",
+    "lines": [],
+    "meta": {
+      "name": "UConn Huskies at Butler Bulldogs"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Monmouth Hawks",
+    "away_team": "Towson Tigers",
+    "commence_time": "2026-04-10T19:00:00+00:00",
+    "source": "espn",
+    "event_id": "401859245",
+    "game_key": "08f4a58ab1092e36",
+    "lines": [],
+    "meta": {
+      "name": "Towson Tigers at Monmouth Hawks"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "UTSA Roadrunners",
+    "away_team": "South Florida Bulls",
+    "commence_time": "2026-04-10T19:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853340",
+    "game_key": "85a87d98dc7d015c",
+    "lines": [],
+    "meta": {
+      "name": "South Florida Bulls at UTSA Roadrunners"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Xavier Musketeers",
+    "away_team": "Villanova Wildcats",
+    "commence_time": "2026-04-10T19:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853009",
+    "game_key": "5631db978f0f168d",
+    "lines": [],
+    "meta": {
+      "name": "Villanova Wildcats at Xavier Musketeers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "St. John's Red Storm",
+    "away_team": "Georgetown Hoyas",
+    "commence_time": "2026-04-10T19:00:00+00:00",
+    "source": "espn",
+    "event_id": "401852720",
+    "game_key": "d3a74f5e6443cd01",
+    "lines": [],
+    "meta": {
+      "name": "Georgetown Hoyas at St. John's Red Storm"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Pittsburgh Panthers",
+    "away_team": "California Golden Bears",
+    "commence_time": "2026-04-10T19:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847778",
+    "game_key": "91832d95d6041683",
+    "lines": [],
+    "meta": {
+      "name": "California Golden Bears at Pittsburgh Panthers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Minnesota Golden Gophers",
+    "away_team": "Washington Huskies",
+    "commence_time": "2026-04-10T19:05:00+00:00",
+    "source": "espn",
+    "event_id": "401851138",
+    "game_key": "ba72af8fc947a775",
+    "lines": [],
+    "meta": {
+      "name": "Washington Huskies at Minnesota Golden Gophers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "UC Santa Barbara Gauchos",
+    "away_team": "UC San Diego Tritons",
+    "commence_time": "2026-04-10T20:00:00+00:00",
+    "source": "espn",
+    "event_id": "401857358",
+    "game_key": "60c43ae4e9d50798",
+    "lines": [],
+    "meta": {
+      "name": "UC San Diego Tritons at UC Santa Barbara Gauchos"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Northwestern Wildcats",
+    "away_team": "Purdue Boilermakers",
+    "commence_time": "2026-04-10T20:00:00+00:00",
+    "source": "espn",
+    "event_id": "401852013",
+    "game_key": "271e379a154dcff9",
+    "lines": [],
+    "meta": {
+      "name": "Purdue Boilermakers at Northwestern Wildcats"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "UC Riverside Highlanders",
+    "away_team": "Cal State Northridge Matadors",
+    "commence_time": "2026-04-10T21:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856316",
+    "game_key": "61b214c9b4b31d13",
+    "lines": [],
+    "meta": {
+      "name": "Cal State Northridge Matadors at UC Riverside Highlanders"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "UC Davis Aggies",
+    "away_team": "Cal State Bakersfield Roadrunners",
+    "commence_time": "2026-04-10T21:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856236",
+    "game_key": "f2107324e043c62e",
+    "lines": [],
+    "meta": {
+      "name": "Cal State Bakersfield Roadrunners at UC Davis Aggies"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Delaware Blue Hens",
+    "away_team": "Missouri State Bears",
+    "commence_time": "2026-04-10T21:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853711",
+    "game_key": "3459176f0242bd3e",
+    "lines": [],
+    "meta": {
+      "name": "Missouri State Bears at Delaware Blue Hens"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Cincinnati Bearcats",
+    "away_team": "Baylor Bears",
+    "commence_time": "2026-04-10T21:00:00+00:00",
+    "source": "espn",
+    "event_id": "401848519",
+    "game_key": "251a836318896395",
+    "lines": [],
+    "meta": {
+      "name": "Baylor Bears at Cincinnati Bearcats"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Florida International Panthers",
+    "away_team": "Kennesaw State Owls",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858150",
+    "game_key": "f07f540e8dd84c98",
+    "lines": [],
+    "meta": {
+      "name": "Kennesaw State Owls at Florida International Panthers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Elon Phoenix",
+    "away_team": "William & Mary Tribe",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401857962",
+    "game_key": "5a84f919afc1d38f",
+    "lines": [],
+    "meta": {
+      "name": "William & Mary Tribe at Elon Phoenix"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Eastern Kentucky Colonels",
+    "away_team": "Bellarmine Knights",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401854197",
+    "game_key": "83ab245b6b292e7b",
+    "lines": [],
+    "meta": {
+      "name": "Bellarmine Knights at Eastern Kentucky Colonels"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Liberty Flames",
+    "away_team": "Jacksonville State Gamecocks",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853814",
+    "game_key": "f4c2bd4c3e54d6cf",
+    "lines": [],
+    "meta": {
+      "name": "Jacksonville State Gamecocks at Liberty Flames"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Charleston Cougars",
+    "away_team": "North Carolina A&T Aggies",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853680",
+    "game_key": "e5e3152290369dfd",
+    "lines": [],
+    "meta": {
+      "name": "North Carolina A&T Aggies at Charleston Cougars"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Campbell Fighting Camels",
+    "away_team": "UNC Wilmington Seahawks",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853517",
+    "game_key": "0155e7d4a0c357fb",
+    "lines": [],
+    "meta": {
+      "name": "UNC Wilmington Seahawks at Campbell Fighting Camels"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "UAB Blazers",
+    "away_team": "Wichita State Shockers",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853285",
+    "game_key": "ed413008b8de2d36",
+    "lines": [],
+    "meta": {
+      "name": "Wichita State Shockers at UAB Blazers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Marshall Thundering Herd",
+    "away_team": "Old Dominion Monarchs",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853214",
+    "game_key": "9b2c994be612a3a9",
+    "lines": [],
+    "meta": {
+      "name": "Old Dominion Monarchs at Marshall Thundering Herd"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Georgia State Panthers",
+    "away_team": "James Madison Dukes",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853123",
+    "game_key": "6109eac9d724d14d",
+    "lines": [],
+    "meta": {
+      "name": "James Madison Dukes at Georgia State Panthers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "App State Mountaineers",
+    "away_team": "UL Monroe Warhawks",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401852850",
+    "game_key": "05c4f2f7312e931a",
+    "lines": [],
+    "meta": {
+      "name": "UL Monroe Warhawks at App State Mountaineers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Charlotte 49ers",
+    "away_team": "Rice Owls",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401851662",
+    "game_key": "2f533c1a7f86e405",
+    "lines": [],
+    "meta": {
+      "name": "Rice Owls at Charlotte 49ers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Maryland Terrapins",
+    "away_team": "Indiana Hoosiers",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401850229",
+    "game_key": "5529b38ff7367785",
+    "lines": [],
+    "meta": {
+      "name": "Indiana Hoosiers at Maryland Terrapins"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Louisville Cardinals",
+    "away_team": "Stanford Cardinal",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401848012",
+    "game_key": "200f730aea438ed3",
+    "lines": [],
+    "meta": {
+      "name": "Stanford Cardinal at Louisville Cardinals"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "NC State Wolfpack",
+    "away_team": "Duke Blue Devils",
+    "commence_time": "2026-04-10T22:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847886",
+    "game_key": "60059bd0b45ab630",
+    "lines": [],
+    "meta": {
+      "name": "Duke Blue Devils at NC State Wolfpack"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Michigan State Spartans",
+    "away_team": "Michigan Wolverines",
+    "commence_time": "2026-04-10T22:02:00+00:00",
+    "source": "espn",
+    "event_id": "401851061",
+    "game_key": "42606f8603c84727",
+    "lines": [],
+    "meta": {
+      "name": "Michigan Wolverines at Michigan State Spartans"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Stetson Hatters",
+    "away_team": "Queens University Royals",
+    "commence_time": "2026-04-10T22:30:00+00:00",
+    "source": "espn",
+    "event_id": "401854431",
+    "game_key": "5fce9c231ac285f4",
+    "lines": [],
+    "meta": {
+      "name": "Queens University Royals at Stetson Hatters"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Florida Gulf Coast Eagles",
+    "away_team": "Jacksonville Dolphins",
+    "commence_time": "2026-04-10T22:30:00+00:00",
+    "source": "espn",
+    "event_id": "401854430",
+    "game_key": "5ae477dca8cfae24",
+    "lines": [],
+    "meta": {
+      "name": "Jacksonville Dolphins at Florida Gulf Coast Eagles"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "West Georgia Wolves",
+    "away_team": "North Florida Ospreys",
+    "commence_time": "2026-04-10T22:30:00+00:00",
+    "source": "espn",
+    "event_id": "401854427",
+    "game_key": "1ff907aabc136c73",
+    "lines": [],
+    "meta": {
+      "name": "North Florida Ospreys at West Georgia Wolves"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Georgia Southern Eagles",
+    "away_team": "South Alabama Jaguars",
+    "commence_time": "2026-04-10T22:30:00+00:00",
+    "source": "espn",
+    "event_id": "401853077",
+    "game_key": "6e91cb9c518d79ca",
+    "lines": [],
+    "meta": {
+      "name": "South Alabama Jaguars at Georgia Southern Eagles"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Minnesota Golden Gophers",
+    "away_team": "Washington Huskies",
+    "commence_time": "2026-04-10T22:35:00+00:00",
+    "source": "espn",
+    "event_id": "401851136",
+    "game_key": "6a93319a358ae7eb",
+    "lines": [],
+    "meta": {
+      "name": "Washington Huskies at Minnesota Golden Gophers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Lipscomb Bisons",
+    "away_team": "Central Arkansas Bears",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401854428",
+    "game_key": "66b8fb3de9ed2675",
+    "lines": [],
+    "meta": {
+      "name": "Central Arkansas Bears at Lipscomb Bisons"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Austin Peay Governors",
+    "away_team": "North Alabama Lions",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401854155",
+    "game_key": "44161eeb1cfce4b3",
+    "lines": [],
+    "meta": {
+      "name": "North Alabama Lions at Austin Peay Governors"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Louisiana Tech Bulldogs",
+    "away_team": "Middle Tennessee Blue Raiders",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853748",
+    "game_key": "0f34a545908d9b7a",
+    "lines": [],
+    "meta": {
+      "name": "Middle Tennessee Blue Raiders at Louisiana Tech Bulldogs"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Western Kentucky Hilltoppers",
+    "away_team": "New Mexico State Aggies",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401853474",
+    "game_key": "e985a2d8f072617e",
+    "lines": [],
+    "meta": {
+      "name": "New Mexico State Aggies at Western Kentucky Hilltoppers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Creighton Bluejays",
+    "away_team": "Seton Hall Pirates",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401852288",
+    "game_key": "e75bb0279c2e6ad1",
+    "lines": [],
+    "meta": {
+      "name": "Seton Hall Pirates at Creighton Bluejays"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Memphis Tigers",
+    "away_team": "Florida Atlantic Owls",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401851873",
+    "game_key": "ae99b067098870ac",
+    "lines": [],
+    "meta": {
+      "name": "Florida Atlantic Owls at Memphis Tigers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Illinois Fighting Illini",
+    "away_team": "New Orleans Privateers",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401850169",
+    "game_key": "a20c69f9a57635fa",
+    "lines": [],
+    "meta": {
+      "name": "New Orleans Privateers at Illinois Fighting Illini"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Kansas State Wildcats",
+    "away_team": "Oklahoma State Cowboys",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401849955",
+    "game_key": "de2c625941011ae7",
+    "lines": [],
+    "meta": {
+      "name": "Oklahoma State Cowboys at Kansas State Wildcats"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "TCU Horned Frogs",
+    "away_team": "Arizona Wildcats",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401848388",
+    "game_key": "3db54893b3e1a622",
+    "lines": [],
+    "meta": {
+      "name": "Arizona Wildcats at TCU Horned Frogs"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Miami Hurricanes",
+    "away_team": "Wake Forest Demon Deacons",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401848049",
+    "game_key": "3d4436ebd6959372",
+    "lines": [],
+    "meta": {
+      "name": "Wake Forest Demon Deacons at Miami Hurricanes"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Missouri Tigers",
+    "away_team": "South Carolina Gamecocks",
+    "commence_time": "2026-04-10T23:00:00+00:00",
+    "source": "espn",
+    "event_id": "401847455",
+    "game_key": "68210429b6695548",
+    "lines": [],
+    "meta": {
+      "name": "South Carolina Gamecocks at Missouri Tigers"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Sam Houston Bearkats",
+    "away_team": "Dallas Baptist Patriots",
+    "commence_time": "2026-04-10T23:30:00+00:00",
+    "source": "espn",
+    "event_id": "401853600",
+    "game_key": "04bafe67448056d5",
+    "lines": [],
+    "meta": {
+      "name": "Dallas Baptist Patriots at Sam Houston Bearkats"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Tulane Green Wave",
+    "away_team": "East Carolina Pirates",
+    "commence_time": "2026-04-10T23:30:00+00:00",
+    "source": "espn",
+    "event_id": "401851791",
+    "game_key": "67c343335ff23335",
+    "lines": [],
+    "meta": {
+      "name": "East Carolina Pirates at Tulane Green Wave"
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Houston Cougars",
+    "away_team": "BYU Cougars",
+    "commence_time": "2026-04-10T23:30:00+00:00",
+    "source": "espn",
+    "event_id": "401848571",
+    "game_key": "a12e88d663699bb3",
+    "lines": [],
+    "meta": {
+      "name": "BYU Cougars at Houston Cougars"
+    }
+  }
+]

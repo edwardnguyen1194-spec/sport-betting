@@ -1,0 +1,16 @@
+[
+  {
+    "sport": "football_nfl",
+    "league": "nfl",
+    "home_team": "New England Patriots",
+    "away_team": "Seattle Seahawks",
+    "commence_time": "2026-02-08T23:30:00+00:00",
+    "source": "espn",
+    "event_id": "401772988",
+    "game_key": "2e020000a9e83528",
+    "lines": [],
+    "meta": {
+      "name": "Seattle Seahawks at New England Patriots"
+    }
+  }
+]

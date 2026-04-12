@@ -1,0 +1,40 @@
+[
+  {
+    "sport": "football_nfl",
+    "league": "nfl",
+    "home_team": "AFC Conference",
+    "away_team": "NFC Conference",
+    "commence_time": "2027-02-08T01:00:00+00:00",
+    "source": "bovada",
+    "event_id": "23057899",
+    "game_key": "cad7bcf1b36d820a",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "NFC Conference",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "AFC Conference",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "NFC Conference @ AFC Conference",
+      "live": false
+    }
+  }
+]

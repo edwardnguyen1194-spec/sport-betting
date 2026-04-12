@@ -1,0 +1,1452 @@
+[
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Hawaii",
+    "away_team": "UC Irvine",
+    "commence_time": "2026-04-11T04:35:00+00:00",
+    "source": "bovada",
+    "event_id": "24173349",
+    "game_key": "1797d2eb7a674ba9",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "UC Irvine",
+        "american": -180.0,
+        "decimal": 1.555556,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Hawaii",
+        "american": 135.0,
+        "decimal": 2.35,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "UC Irvine",
+        "american": 105.0,
+        "decimal": 2.05,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Hawaii",
+        "american": -135.0,
+        "decimal": 1.741,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -120.0,
+        "decimal": 1.833333,
+        "line": 8.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 8.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "UC Irvine @ Hawaii",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Georgia",
+    "away_team": "Florida",
+    "commence_time": "2026-04-11T16:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24198745",
+    "game_key": "f0da1e3ab40fc7a2",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Florida",
+        "american": 115.0,
+        "decimal": 2.15,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Georgia",
+        "american": -150.0,
+        "decimal": 1.666667,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Florida @ Georgia",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Houston",
+    "away_team": "BYU",
+    "commence_time": "2026-04-11T18:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24199152",
+    "game_key": "d4161ce76fa42aa7",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "BYU",
+        "american": 110.0,
+        "decimal": 2.1,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Houston",
+        "american": -145.0,
+        "decimal": 1.69,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "BYU @ Houston",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Maryland",
+    "away_team": "Indiana",
+    "commence_time": "2026-04-11T18:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202899",
+    "game_key": "0a88d9ba0e95ead7",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Indiana",
+        "american": -160.0,
+        "decimal": 1.625,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Maryland",
+        "american": 120.0,
+        "decimal": 2.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Indiana @ Maryland",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Clemson",
+    "away_team": "North Carolina",
+    "commence_time": "2026-04-11T18:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24198744",
+    "game_key": "a286c864188321f8",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "North Carolina",
+        "american": -160.0,
+        "decimal": 1.625,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Clemson",
+        "american": 120.0,
+        "decimal": 2.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "North Carolina @ Clemson",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Vanderbilt",
+    "away_team": "Oklahoma",
+    "commence_time": "2026-04-11T18:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202704",
+    "game_key": "f2346579c2ebb1ea",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Oklahoma",
+        "american": 105.0,
+        "decimal": 2.05,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Vanderbilt",
+        "american": -135.0,
+        "decimal": 1.741,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Oklahoma @ Vanderbilt",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "San Francisco",
+    "away_team": "San Diego",
+    "commence_time": "2026-04-11T18:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202112",
+    "game_key": "651dc1f6f6c271d5",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "San Diego",
+        "american": -200.0,
+        "decimal": 1.5,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "San Francisco",
+        "american": 150.0,
+        "decimal": 2.5,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "San Diego @ San Francisco",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Louisville",
+    "away_team": "Stanford",
+    "commence_time": "2026-04-11T18:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202900",
+    "game_key": "9ee7b0a662e81469",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Stanford",
+        "american": 225.0,
+        "decimal": 3.25,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Louisville",
+        "american": -310.0,
+        "decimal": 1.322581,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Stanford @ Louisville",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Boston College",
+    "away_team": "Virginia Tech",
+    "commence_time": "2026-04-11T18:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202104",
+    "game_key": "1e8c0cee829fb943",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Virginia Tech",
+        "american": 200.0,
+        "decimal": 3.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Boston College",
+        "american": -275.0,
+        "decimal": 1.363636,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Virginia Tech @ Boston College",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Notre Dame",
+    "away_team": "Virginia",
+    "commence_time": "2026-04-11T18:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202102",
+    "game_key": "0cadcc57f60146fa",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Virginia",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Notre Dame",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Virginia @ Notre Dame",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Cincinnati",
+    "away_team": "Baylor",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24199157",
+    "game_key": "9d3a2bed064752db",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Baylor",
+        "american": 115.0,
+        "decimal": 2.15,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Cincinnati",
+        "american": -150.0,
+        "decimal": 1.666667,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Baylor @ Cincinnati",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Pittsburgh",
+    "away_team": "California",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24174508",
+    "game_key": "7ae477de1b6f858d",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "California",
+        "american": 180.0,
+        "decimal": 2.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Pittsburgh",
+        "american": -245.0,
+        "decimal": 1.408163,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "California @ Pittsburgh",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Sam Houston State",
+    "away_team": "Dallas Baptist",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24199351",
+    "game_key": "2dd5029190e7153c",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Dallas Baptist",
+        "american": -400.0,
+        "decimal": 1.25,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Sam Houston State",
+        "american": 275.0,
+        "decimal": 3.75,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Dallas Baptist @ Sam Houston State",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "NC State",
+    "away_team": "Duke",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202706",
+    "game_key": "208658fe154c6331",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Duke",
+        "american": 170.0,
+        "decimal": 2.7,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "NC State",
+        "american": -230.0,
+        "decimal": 1.434783,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Duke @ NC State",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Georgia Tech",
+    "away_team": "Florida State",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24199158",
+    "game_key": "582713b0be000fd7",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Florida State",
+        "american": 180.0,
+        "decimal": 2.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Georgia Tech",
+        "american": -245.0,
+        "decimal": 1.408163,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Florida State @ Georgia Tech",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Liberty",
+    "away_team": "Jacksonville State",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24198746",
+    "game_key": "27df50532d70ff84",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Jacksonville State",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Liberty",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Jacksonville State @ Liberty",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Missouri",
+    "away_team": "South Carolina",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24199346",
+    "game_key": "df1f7e8fd25da61b",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "South Carolina",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Missouri",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "South Carolina @ Missouri",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "UL Lafayette",
+    "away_team": "Southern Mississippi",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202705",
+    "game_key": "c79898fd6a9b955c",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Southern Mississippi",
+        "american": -230.0,
+        "decimal": 1.434783,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "UL Lafayette",
+        "american": 170.0,
+        "decimal": 2.7,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Southern Mississippi @ UL Lafayette",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Texas A&M",
+    "away_team": "Texas",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202108",
+    "game_key": "c9a9a3ea295264d0",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Texas",
+        "american": -145.0,
+        "decimal": 1.69,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Texas A&M",
+        "american": 110.0,
+        "decimal": 2.1,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Texas @ Texas A&M",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Rutgers",
+    "away_team": "UCLA",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202109",
+    "game_key": "860cae25fff218be",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "UCLA",
+        "american": -900.0,
+        "decimal": 1.111111,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Rutgers",
+        "american": 475.0,
+        "decimal": 5.75,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "UCLA @ Rutgers",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Texas Tech",
+    "away_team": "West Virginia",
+    "commence_time": "2026-04-11T19:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24198946",
+    "game_key": "e0019a40647a2667",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "West Virginia",
+        "american": -160.0,
+        "decimal": 1.625,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Texas Tech",
+        "american": 120.0,
+        "decimal": 2.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "West Virginia @ Texas Tech",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Oregon",
+    "away_team": "Nebraska",
+    "commence_time": "2026-04-11T19:05:00+00:00",
+    "source": "bovada",
+    "event_id": "24202107",
+    "game_key": "00247088f80c9aea",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Nebraska",
+        "american": 110.0,
+        "decimal": 2.1,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Oregon",
+        "american": -145.0,
+        "decimal": 1.69,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Nebraska @ Oregon",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Michigan State",
+    "away_team": "Michigan",
+    "commence_time": "2026-04-11T19:35:00+00:00",
+    "source": "bovada",
+    "event_id": "24199353",
+    "game_key": "50e836f254e2e01d",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Michigan",
+        "american": -200.0,
+        "decimal": 1.5,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Michigan State",
+        "american": 150.0,
+        "decimal": 2.5,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Michigan @ Michigan State",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "New Mexico",
+    "away_team": "San Diego State",
+    "commence_time": "2026-04-11T20:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202110",
+    "game_key": "832fc5443a8db3d3",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "San Diego State",
+        "american": -125.0,
+        "decimal": 1.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "New Mexico",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "San Diego State @ New Mexico",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "UC Santa Barbara",
+    "away_team": "UC San Diego",
+    "commence_time": "2026-04-11T20:05:00+00:00",
+    "source": "bovada",
+    "event_id": "24202904",
+    "game_key": "2649ea81858fbf67",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "UC San Diego",
+        "american": 265.0,
+        "decimal": 3.65,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "UC Santa Barbara",
+        "american": -380.0,
+        "decimal": 1.263158,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "UC San Diego @ UC Santa Barbara",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Alabama",
+    "away_team": "Arkansas",
+    "commence_time": "2026-04-11T21:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24199356",
+    "game_key": "9f55e7e69483838b",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Arkansas",
+        "american": 125.0,
+        "decimal": 2.25,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Alabama",
+        "american": -165.0,
+        "decimal": 1.606061,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Arkansas @ Alabama",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "USC",
+    "away_team": "Iowa",
+    "commence_time": "2026-04-11T21:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24199164",
+    "game_key": "e4c75aa5d95bfd71",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Iowa",
+        "american": 200.0,
+        "decimal": 3.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "USC",
+        "american": -275.0,
+        "decimal": 1.363636,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Iowa @ USC",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Mississippi",
+    "away_team": "LSU",
+    "commence_time": "2026-04-11T21:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24199358",
+    "game_key": "a1367c004d65aed6",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "LSU",
+        "american": -120.0,
+        "decimal": 1.833333,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Mississippi",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "LSU @ Mississippi",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Kansas State",
+    "away_team": "Oklahoma State",
+    "commence_time": "2026-04-11T21:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24199357",
+    "game_key": "104ea6c02e7256b1",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Oklahoma State",
+        "american": 125.0,
+        "decimal": 2.25,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Kansas State",
+        "american": -165.0,
+        "decimal": 1.606061,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Oklahoma State @ Kansas State",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Oregon State",
+    "away_team": "Cal Poly",
+    "commence_time": "2026-04-11T21:05:00+00:00",
+    "source": "bovada",
+    "event_id": "24202118",
+    "game_key": "35fad532d861517c",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Cal Poly",
+        "american": 240.0,
+        "decimal": 3.4,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Oregon State",
+        "american": -340.0,
+        "decimal": 1.294118,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Cal Poly @ Oregon State",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Miami Florida",
+    "away_team": "Wake Forest",
+    "commence_time": "2026-04-11T22:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202710",
+    "game_key": "f278c1361dac2b37",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Wake Forest",
+        "american": 125.0,
+        "decimal": 2.25,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Miami Florida",
+        "american": -165.0,
+        "decimal": 1.606061,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Wake Forest @ Miami Florida",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Arkansas State",
+    "away_team": "Coastal Carolina",
+    "commence_time": "2026-04-11T23:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24198751",
+    "game_key": "2c9c6118e8e3b358",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Coastal Carolina",
+        "american": -165.0,
+        "decimal": 1.606061,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Arkansas State",
+        "american": 125.0,
+        "decimal": 2.25,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Coastal Carolina @ Arkansas State",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Mississippi State",
+    "away_team": "Tennessee",
+    "commence_time": "2026-04-11T23:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202120",
+    "game_key": "8146fb98b185e0b0",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Tennessee",
+        "american": 200.0,
+        "decimal": 3.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Mississippi State",
+        "american": -275.0,
+        "decimal": 1.363636,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Tennessee @ Mississippi State",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Auburn",
+    "away_team": "Kentucky",
+    "commence_time": "2026-04-12T00:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202712",
+    "game_key": "3c17c2bfbfd41daa",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Kentucky",
+        "american": 130.0,
+        "decimal": 2.3,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Auburn",
+        "american": -170.0,
+        "decimal": 1.588235,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Kentucky @ Auburn",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Gonzaga",
+    "away_team": "Portland",
+    "commence_time": "2026-04-12T01:00:00+00:00",
+    "source": "bovada",
+    "event_id": "24202711",
+    "game_key": "39dc3b5960e68b4b",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Portland",
+        "american": 100.0,
+        "decimal": 2.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Gonzaga",
+        "american": -130.0,
+        "decimal": 1.76923,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Portland @ Gonzaga",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Long Beach State",
+    "away_team": "CS Fullerton",
+    "commence_time": "2026-04-12T01:05:00+00:00",
+    "source": "bovada",
+    "event_id": "24202122",
+    "game_key": "63062f7595d8ac1c",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "CS Fullerton",
+        "american": -220.0,
+        "decimal": 1.454545,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Long Beach State",
+        "american": 165.0,
+        "decimal": 2.65,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "CS Fullerton @ Long Beach State",
+      "live": false
+    }
+  },
+  {
+    "sport": "baseball_ncaa",
+    "league": "college-baseball",
+    "home_team": "Arizona State",
+    "away_team": "Utah",
+    "commence_time": "2026-04-12T01:30:00+00:00",
+    "source": "bovada",
+    "event_id": "24199166",
+    "game_key": "002e266ecfba4000",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Utah",
+        "american": 275.0,
+        "decimal": 3.75,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Arizona State",
+        "american": -400.0,
+        "decimal": 1.25,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Utah @ Arizona State",
+      "live": false
+    }
+  }
+]

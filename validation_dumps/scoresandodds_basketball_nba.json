@@ -1,0 +1,1187 @@
+[
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Trail Blazers",
+    "away_team": "Clippers",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "8f1c5c8a84d51767",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Clippers",
+        "american": -120.0,
+        "decimal": 1.8333333333333335,
+        "line": 18.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": 105.0,
+        "decimal": 2.05,
+        "line": 216.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Clippers",
+        "american": 4000.0,
+        "decimal": 41.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Trail Blazers",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": -18.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -135.0,
+        "decimal": 1.7407407407407407,
+        "line": 216.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Trail Blazers",
+        "american": -2500.0,
+        "decimal": 1.04,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Kings",
+    "away_team": "Warriors",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "74403bde0f1fcc82",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Warriors",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": 100.0,
+        "decimal": 2.0,
+        "line": 237.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Warriors",
+        "american": 120.0,
+        "decimal": 2.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Kings",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -130.0,
+        "decimal": 1.7692307692307692,
+        "line": 237.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Kings",
+        "american": -154.0,
+        "decimal": 1.6493506493506493,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Lakers",
+    "away_team": "Suns",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "9185840e736107ea",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Suns",
+        "american": -120.0,
+        "decimal": 1.8333333333333335,
+        "line": 14.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 191.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Suns",
+        "american": 2500.0,
+        "decimal": 26.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Lakers",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": -14.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -120.0,
+        "decimal": 1.8333333333333335,
+        "line": 191.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Lakers",
+        "american": -15000.0,
+        "decimal": 1.0066666666666666,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Hawks",
+    "away_team": "Cavaliers",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "473466a3136f3596",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Cavaliers",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 8.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 233.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Cavaliers",
+        "american": 280.0,
+        "decimal": 3.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Hawks",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -8.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 233.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Hawks",
+        "american": -355.0,
+        "decimal": 1.2816901408450705,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Hornets",
+    "away_team": "Pistons",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "a24cce9c7b6278d2",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Pistons",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 225.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Pistons",
+        "american": 180.0,
+        "decimal": 2.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Hornets",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 225.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Hornets",
+        "american": -218.0,
+        "decimal": 1.4587155963302751,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Wizards",
+    "away_team": "Heat",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "c5dfeda8b2c995d6",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Heat",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -15.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 243.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Heat",
+        "american": -1600.0,
+        "decimal": 1.0625,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Wizards",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 15.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 243.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Wizards",
+        "american": 900.0,
+        "decimal": 10.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Celtics",
+    "away_team": "Pelicans",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "63382ab24ba85faf",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Pelicans",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 17.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 227.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Pelicans",
+        "american": 1100.0,
+        "decimal": 12.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Celtics",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -17.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 227.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Celtics",
+        "american": -2100.0,
+        "decimal": 1.0476190476190477,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Knicks",
+    "away_team": "Raptors",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "6ff10b2c8e635ccf",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Raptors",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 218.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Raptors",
+        "american": 220.0,
+        "decimal": 3.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Knicks",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 218.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Knicks",
+        "american": -270.0,
+        "decimal": 1.3703703703703702,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Pacers",
+    "away_team": "76ers",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "848e6e21468a780d",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "76ers",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -14.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 234.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "76ers",
+        "american": -1100.0,
+        "decimal": 1.0909090909090908,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Pacers",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 14.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 234.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Pacers",
+        "american": 700.0,
+        "decimal": 8.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Spurs",
+    "away_team": "Mavericks",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "da9bd4af62ef34fc",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Mavericks",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 18.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 236.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Mavericks",
+        "american": 1100.0,
+        "decimal": 12.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Spurs",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -18.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.9090909090909092,
+        "line": 236.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Spurs",
+        "american": -2100.0,
+        "decimal": 1.0476190476190477,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Bulls",
+    "away_team": "Magic",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "867506eb06121102",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Magic",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": -16.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 246.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Magic",
+        "american": -1350.0,
+        "decimal": 1.074074074074074,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Bulls",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 16.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 246.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Bulls",
+        "american": 800.0,
+        "decimal": 9.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Bucks",
+    "away_team": "Nets",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "a755494b401797b1",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Nets",
+        "american": -118.0,
+        "decimal": 1.847457627118644,
+        "line": 10.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 218.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Nets",
+        "american": 380.0,
+        "decimal": 4.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Bucks",
+        "american": -102.0,
+        "decimal": 1.9803921568627452,
+        "line": -10.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": 218.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Bucks",
+        "american": -500.0,
+        "decimal": 1.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Nuggets",
+    "away_team": "Thunder",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "9a762fd27afc270a",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Thunder",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 2.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 223.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Thunder",
+        "american": 120.0,
+        "decimal": 2.2,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Nuggets",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": -2.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 223.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Nuggets",
+        "american": -142.0,
+        "decimal": 1.704225352112676,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Jazz",
+    "away_team": "Grizzlies",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "f37d4e17f0b510ec",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Grizzlies",
+        "american": -105.0,
+        "decimal": 1.9523809523809523,
+        "line": 4.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 247.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Grizzlies",
+        "american": 150.0,
+        "decimal": 2.5,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Jazz",
+        "american": -115.0,
+        "decimal": 1.8695652173913042,
+        "line": -4.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 247.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Jazz",
+        "american": -180.0,
+        "decimal": 1.5555555555555556,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  },
+  {
+    "sport": "basketball_nba",
+    "league": "nba",
+    "home_team": "Rockets",
+    "away_team": "Timberwolves",
+    "commence_time": null,
+    "source": "scoresandodds",
+    "event_id": null,
+    "game_key": "ba7d7e81fd46debd",
+    "lines": [
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Timberwolves",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 9.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": 227.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Timberwolves",
+        "american": 370.0,
+        "decimal": 4.7,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "spread",
+        "selection": "Rockets",
+        "american": -112.0,
+        "decimal": 1.8928571428571428,
+        "line": -9.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.925925925925926,
+        "line": 227.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "scoresandodds_consensus",
+        "market": "moneyline",
+        "selection": "Rockets",
+        "american": -485.0,
+        "decimal": 1.2061855670103092,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {}
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "sport": "basketball_ncaab",
+    "league": "mens-college-basketball",
+    "home_team": "Michigan Wolverines",
+    "away_team": "UConn Huskies",
+    "commence_time": "2026-04-07T00:50:00+00:00",
+    "source": "espn",
+    "event_id": "401856600",
+    "game_key": "fa475ac724877ad5",
+    "lines": [],
+    "meta": {
+      "name": "UConn Huskies at Michigan Wolverines"
+    }
+  }
+]

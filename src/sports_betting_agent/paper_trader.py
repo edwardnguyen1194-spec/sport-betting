@@ -156,6 +156,11 @@ class PaperTrader:
             if stake > self.bankroll:
                 logger.debug("skipping rec %s: insufficient bankroll", rec.selection)
                 return None
+            # Cap total exposure at 50% of starting bankroll
+            total_exposed = sum(b.stake for b in self.open_bets.values())
+            if total_exposed + stake > self.settings.bankroll_start * 0.50:
+                logger.debug("skipping rec %s: total exposure %.2f would exceed 50%% cap", rec.selection, total_exposed + stake)
+                return None
             # Don't double-book the same market — check BOTH open AND closed bets.
             dup_key = (rec.game_key, rec.market, rec.selection.lower())
             for existing in self.open_bets.values():

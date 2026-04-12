@@ -1,0 +1,740 @@
+[
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Virginia",
+    "away_team": "NC State",
+    "commence_time": "2026-08-29T16:00:00+00:00",
+    "source": "bovada",
+    "event_id": "23406099",
+    "game_key": "aad0762a59e9c225",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "NC State",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": 3.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Virginia",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": -3.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "NC State",
+        "american": 145.0,
+        "decimal": 2.45,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Virginia",
+        "american": -170.0,
+        "decimal": 1.588235,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": 54.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 54.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "NC State @ Virginia",
+      "live": false
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "TCU",
+    "away_team": "North Carolina",
+    "commence_time": "2026-08-29T16:00:00+00:00",
+    "source": "bovada",
+    "event_id": "23406100",
+    "game_key": "0f5d27b8bb1facf8",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "North Carolina",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "TCU",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": -7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "North Carolina",
+        "american": 240.0,
+        "decimal": 3.4,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "TCU",
+        "american": -290.0,
+        "decimal": 1.344828,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "North Carolina @ TCU",
+      "live": false
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Auburn",
+    "away_team": "Baylor",
+    "commence_time": "2026-09-05T16:00:00+00:00",
+    "source": "bovada",
+    "event_id": "23406899",
+    "game_key": "c80a7db9e720374d",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Baylor",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Auburn",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": -7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Baylor",
+        "american": 235.0,
+        "decimal": 3.35,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Auburn",
+        "american": -285.0,
+        "decimal": 1.350877,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 58.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 58.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Baylor @ Auburn",
+      "live": false
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "LSU",
+    "away_team": "Clemson",
+    "commence_time": "2026-09-05T16:00:00+00:00",
+    "source": "bovada",
+    "event_id": "23406500",
+    "game_key": "9a9ceeefbccb2233",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Clemson",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 11.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "LSU",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": -11.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Clemson",
+        "american": 355.0,
+        "decimal": 4.55,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "LSU",
+        "american": -490.0,
+        "decimal": 1.204082,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 50.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Clemson @ LSU",
+      "live": false
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Mississippi",
+    "away_team": "Louisville",
+    "commence_time": "2026-09-05T16:00:00+00:00",
+    "source": "bovada",
+    "event_id": "23406499",
+    "game_key": "78b1c6a6a4b46562",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Louisville",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Mississippi",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": -7.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Louisville",
+        "american": 240.0,
+        "decimal": 3.4,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Mississippi",
+        "american": -290.0,
+        "decimal": 1.344828,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 52.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": 52.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Louisville @ Mississippi",
+      "live": false
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "California",
+    "away_team": "UCLA",
+    "commence_time": "2026-09-05T16:00:00+00:00",
+    "source": "bovada",
+    "event_id": "23406501",
+    "game_key": "3647d70cbe65a4c6",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "UCLA",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 3.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "California",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": -3.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "UCLA",
+        "american": 130.0,
+        "decimal": 2.3,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "California",
+        "american": -150.0,
+        "decimal": 1.666667,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 53.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 53.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "UCLA @ California",
+      "live": false
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Notre Dame",
+    "away_team": "Wisconsin",
+    "commence_time": "2026-09-06T16:00:00+00:00",
+    "source": "bovada",
+    "event_id": "23406502",
+    "game_key": "a1dafe89b2b33818",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Wisconsin",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 18.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Notre Dame",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": -18.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Wisconsin",
+        "american": 800.0,
+        "decimal": 9.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Notre Dame",
+        "american": -1600.0,
+        "decimal": 1.0625,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 46.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": 46.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Wisconsin @ Notre Dame",
+      "live": false
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Texas",
+    "away_team": "Ohio State",
+    "commence_time": "2026-09-12T16:00:00+00:00",
+    "source": "bovada",
+    "event_id": "23406900",
+    "game_key": "8c9032edb6a30246",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Ohio State",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Texas",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Ohio State",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Texas",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": 47.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Ohio State @ Texas",
+      "live": false
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Michigan",
+    "away_team": "Oklahoma",
+    "commence_time": "2026-09-12T16:00:00+00:00",
+    "source": "bovada",
+    "event_id": "23406503",
+    "game_key": "00307f848bb12930",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Oklahoma",
+        "american": 100.0,
+        "decimal": 2.0,
+        "line": 2.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "spread",
+        "selection": "Michigan",
+        "american": -120.0,
+        "decimal": 1.833333,
+        "line": -2.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Oklahoma",
+        "american": 125.0,
+        "decimal": 2.25,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Michigan",
+        "american": -145.0,
+        "decimal": 1.69,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 45.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -110.0,
+        "decimal": 1.909091,
+        "line": 45.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Oklahoma @ Michigan",
+      "live": false
+    }
+  }
+]

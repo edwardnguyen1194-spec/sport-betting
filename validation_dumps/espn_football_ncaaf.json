@@ -1,0 +1,1318 @@
+[
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "TCU Horned Frogs",
+    "away_team": "North Carolina Tar Heels",
+    "commence_time": "2026-08-29T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856766",
+    "game_key": "6c4c03a50df23738",
+    "lines": [],
+    "meta": {
+      "name": "North Carolina Tar Heels at TCU Horned Frogs"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Stanford Cardinal",
+    "away_team": "Hawai'i Rainbow Warriors",
+    "commence_time": "2026-08-29T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858201",
+    "game_key": "6ed1507a65d38049",
+    "lines": [],
+    "meta": {
+      "name": "Hawai'i Rainbow Warriors at Stanford Cardinal"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Virginia Cavaliers",
+    "away_team": "NC State Wolfpack",
+    "commence_time": "2026-08-29T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858202",
+    "game_key": "25224ecf4bed13be",
+    "lines": [],
+    "meta": {
+      "name": "NC State Wolfpack at Virginia Cavaliers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "UNLV Rebels",
+    "away_team": "Memphis Tigers",
+    "commence_time": "2026-08-29T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401862693",
+    "game_key": "457b6ec2598d37d9",
+    "lines": [],
+    "meta": {
+      "name": "Memphis Tigers at UNLV Rebels"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "USC Trojans",
+    "away_team": "San Jos\u00e9 State Spartans",
+    "commence_time": "2026-08-29T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864494",
+    "game_key": "0cb14f4015d44ca8",
+    "lines": [],
+    "meta": {
+      "name": "San Jos\u00e9 State Spartans at USC Trojans"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Florida State Seminoles",
+    "away_team": "New Mexico State Aggies",
+    "commence_time": "2026-08-29T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864570",
+    "game_key": "760fac3bce5816dc",
+    "lines": [],
+    "meta": {
+      "name": "New Mexico State Aggies at Florida State Seminoles"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "North Dakota State Bison",
+    "away_team": "Jacksonville State Gamecocks",
+    "commence_time": "2026-08-29T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864577",
+    "game_key": "6f72f5554eb7f43a",
+    "lines": [],
+    "meta": {
+      "name": "Jacksonville State Gamecocks at North Dakota State Bison"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Eastern Michigan Eagles",
+    "away_team": "Sacramento State Hornets",
+    "commence_time": "2026-08-29T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401866408",
+    "game_key": "56d6544e5c530ddd",
+    "lines": [],
+    "meta": {
+      "name": "Sacramento State Hornets at Eastern Michigan Eagles"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Missouri Tigers",
+    "away_team": "Arkansas-Pine Bluff Golden Lions",
+    "commence_time": "2026-09-03T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856663",
+    "game_key": "20606ef10c55766f",
+    "lines": [],
+    "meta": {
+      "name": "Arkansas-Pine Bluff Golden Lions at Missouri Tigers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "UCF Knights",
+    "away_team": "Bethune-Cookman Wildcats",
+    "commence_time": "2026-09-03T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856767",
+    "game_key": "2005e360840d91e7",
+    "lines": [],
+    "meta": {
+      "name": "Bethune-Cookman Wildcats at UCF Knights"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Utah Utes",
+    "away_team": "Idaho Vandals",
+    "commence_time": "2026-09-03T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856768",
+    "game_key": "47eec6365b3a4dee",
+    "lines": [],
+    "meta": {
+      "name": "Idaho Vandals at Utah Utes"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Georgia Tech Yellow Jackets",
+    "away_team": "Colorado Buffaloes",
+    "commence_time": "2026-09-03T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856776",
+    "game_key": "9fda2363319da015",
+    "lines": [],
+    "meta": {
+      "name": "Colorado Buffaloes at Georgia Tech Yellow Jackets"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Wake Forest Demon Deacons",
+    "away_team": "Akron Zips",
+    "commence_time": "2026-09-03T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858204",
+    "game_key": "f91519480c2f720b",
+    "lines": [],
+    "meta": {
+      "name": "Akron Zips at Wake Forest Demon Deacons"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Minnesota Golden Gophers",
+    "away_team": "Eastern Illinois Panthers",
+    "commence_time": "2026-09-03T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858422",
+    "game_key": "8e12b2e247f21e22",
+    "lines": [],
+    "meta": {
+      "name": "Eastern Illinois Panthers at Minnesota Golden Gophers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Rutgers Scarlet Knights",
+    "away_team": "Massachusetts Minutemen",
+    "commence_time": "2026-09-03T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858423",
+    "game_key": "b36efbc02ed4a38c",
+    "lines": [],
+    "meta": {
+      "name": "Massachusetts Minutemen at Rutgers Scarlet Knights"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Delaware Blue Hens",
+    "away_team": "Merrimack Warriors",
+    "commence_time": "2026-09-03T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864424",
+    "game_key": "049b6a7ae4068c64",
+    "lines": [],
+    "meta": {
+      "name": "Merrimack Warriors at Delaware Blue Hens"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Kennesaw State Owls",
+    "away_team": "West Georgia Wolves",
+    "commence_time": "2026-09-03T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864425",
+    "game_key": "6cb09f596a978041",
+    "lines": [],
+    "meta": {
+      "name": "West Georgia Wolves at Kennesaw State Owls"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Buffalo Bulls",
+    "away_team": "UAlbany Great Danes",
+    "commence_time": "2026-09-03T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401866409",
+    "game_key": "fadab168c64aed45",
+    "lines": [],
+    "meta": {
+      "name": "UAlbany Great Danes at Buffalo Bulls"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Kansas Jayhawks",
+    "away_team": "Long Island University Sharks",
+    "commence_time": "2026-09-04T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856769",
+    "game_key": "039e5478a12123de",
+    "lines": [],
+    "meta": {
+      "name": "Long Island University Sharks at Kansas Jayhawks"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Stanford Cardinal",
+    "away_team": "Miami Hurricanes",
+    "commence_time": "2026-09-04T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858206",
+    "game_key": "297dd56a82a8566a",
+    "lines": [],
+    "meta": {
+      "name": "Miami Hurricanes at Stanford Cardinal"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Eastern Michigan Eagles",
+    "away_team": "San Jos\u00e9 State Spartans",
+    "commence_time": "2026-09-04T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864495",
+    "game_key": "ce73e47e8267e8cb",
+    "lines": [],
+    "meta": {
+      "name": "San Jos\u00e9 State Spartans at Eastern Michigan Eagles"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Georgia State Panthers",
+    "away_team": "North Carolina A&T Aggies",
+    "commence_time": "2026-09-04T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401866623",
+    "game_key": "ab25af7dba660179",
+    "lines": [],
+    "meta": {
+      "name": "North Carolina A&T Aggies at Georgia State Panthers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Alabama Crimson Tide",
+    "away_team": "East Carolina Pirates",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856634",
+    "game_key": "a4e295e8d573ba6d",
+    "lines": [],
+    "meta": {
+      "name": "East Carolina Pirates at Alabama Crimson Tide"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Arkansas Razorbacks",
+    "away_team": "North Alabama Lions",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856635",
+    "game_key": "a8babacd1fc97d55",
+    "lines": [],
+    "meta": {
+      "name": "North Alabama Lions at Arkansas Razorbacks"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Auburn Tigers",
+    "away_team": "Baylor Bears",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856636",
+    "game_key": "a7d424c846c15484",
+    "lines": [],
+    "meta": {
+      "name": "Baylor Bears at Auburn Tigers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Florida Gators",
+    "away_team": "Florida Atlantic Owls",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856637",
+    "game_key": "09db6de0063a7e2e",
+    "lines": [],
+    "meta": {
+      "name": "Florida Atlantic Owls at Florida Gators"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Georgia Bulldogs",
+    "away_team": "Tennessee State Tigers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856658",
+    "game_key": "0608b8c762564586",
+    "lines": [],
+    "meta": {
+      "name": "Tennessee State Tigers at Georgia Bulldogs"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Kentucky Wildcats",
+    "away_team": "Youngstown State Penguins",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856659",
+    "game_key": "4d4aa0f4b5872dd2",
+    "lines": [],
+    "meta": {
+      "name": "Youngstown State Penguins at Kentucky Wildcats"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "LSU Tigers",
+    "away_team": "Clemson Tigers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856660",
+    "game_key": "536b4e7e68e4496e",
+    "lines": [],
+    "meta": {
+      "name": "Clemson Tigers at LSU Tigers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Mississippi State Bulldogs",
+    "away_team": "UL Monroe Warhawks",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856662",
+    "game_key": "9936549bf85264e8",
+    "lines": [],
+    "meta": {
+      "name": "UL Monroe Warhawks at Mississippi State Bulldogs"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Oklahoma Sooners",
+    "away_team": "UTEP Miners",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856664",
+    "game_key": "8cd071da68c6ce54",
+    "lines": [],
+    "meta": {
+      "name": "UTEP Miners at Oklahoma Sooners"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "South Carolina Gamecocks",
+    "away_team": "Kent State Golden Flashes",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856665",
+    "game_key": "3c4c80900bdfcfd1",
+    "lines": [],
+    "meta": {
+      "name": "Kent State Golden Flashes at South Carolina Gamecocks"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Tennessee Volunteers",
+    "away_team": "Furman Paladins",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856666",
+    "game_key": "6abdb110aada7e97",
+    "lines": [],
+    "meta": {
+      "name": "Furman Paladins at Tennessee Volunteers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Texas Longhorns",
+    "away_team": "Texas State Bobcats",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856667",
+    "game_key": "55adb4378731297a",
+    "lines": [],
+    "meta": {
+      "name": "Texas State Bobcats at Texas Longhorns"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Texas A&M Aggies",
+    "away_team": "Missouri State Bears",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856668",
+    "game_key": "f2d190ada399e863",
+    "lines": [],
+    "meta": {
+      "name": "Missouri State Bears at Texas A&M Aggies"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Vanderbilt Commodores",
+    "away_team": "Austin Peay Governors",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856669",
+    "game_key": "2d8b428a3843fec1",
+    "lines": [],
+    "meta": {
+      "name": "Austin Peay Governors at Vanderbilt Commodores"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Texas Tech Red Raiders",
+    "away_team": "Abilene Christian Wildcats",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856770",
+    "game_key": "32b4212ae9668048",
+    "lines": [],
+    "meta": {
+      "name": "Abilene Christian Wildcats at Texas Tech Red Raiders"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Kansas State Wildcats",
+    "away_team": "Nicholls Colonels",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856771",
+    "game_key": "606c9b8483f1ad8c",
+    "lines": [],
+    "meta": {
+      "name": "Nicholls Colonels at Kansas State Wildcats"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Tulsa Golden Hurricane",
+    "away_team": "Oklahoma State Cowboys",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856772",
+    "game_key": "b98ff759d8362455",
+    "lines": [],
+    "meta": {
+      "name": "Oklahoma State Cowboys at Tulsa Golden Hurricane"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Arizona Wildcats",
+    "away_team": "Northern Arizona Lumberjacks",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856773",
+    "game_key": "2fc7fb22c5b9e9aa",
+    "lines": [],
+    "meta": {
+      "name": "Northern Arizona Lumberjacks at Arizona Wildcats"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Arizona State Sun Devils",
+    "away_team": "Morgan State Bears",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856774",
+    "game_key": "ebd9c52eea3dc26b",
+    "lines": [],
+    "meta": {
+      "name": "Morgan State Bears at Arizona State Sun Devils"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "BYU Cougars",
+    "away_team": "Utah Tech Trailblazers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856775",
+    "game_key": "6718cf43dfb28134",
+    "lines": [],
+    "meta": {
+      "name": "Utah Tech Trailblazers at BYU Cougars"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Cincinnati Bearcats",
+    "away_team": "Boston College Eagles",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856777",
+    "game_key": "0524230999285d90",
+    "lines": [],
+    "meta": {
+      "name": "Boston College Eagles at Cincinnati Bearcats"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Houston Cougars",
+    "away_team": "Oregon State Beavers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856778",
+    "game_key": "f0dc1b9593ad6282",
+    "lines": [],
+    "meta": {
+      "name": "Oregon State Beavers at Houston Cougars"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Iowa State Cyclones",
+    "away_team": "Southeast Missouri State Redhawks",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856779",
+    "game_key": "a487dcad4dcc4457",
+    "lines": [],
+    "meta": {
+      "name": "Southeast Missouri State Redhawks at Iowa State Cyclones"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "West Virginia Mountaineers",
+    "away_team": "Coastal Carolina Chanticleers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401856780",
+    "game_key": "3e7c77b20bf28d69",
+    "lines": [],
+    "meta": {
+      "name": "Coastal Carolina Chanticleers at West Virginia Mountaineers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Pittsburgh Panthers",
+    "away_team": "Miami (OH) RedHawks",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858207",
+    "game_key": "2c1e7d54dfe4fbc8",
+    "lines": [],
+    "meta": {
+      "name": "Miami (OH) RedHawks at Pittsburgh Panthers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Syracuse Orange",
+    "away_team": "New Hampshire Wildcats",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858208",
+    "game_key": "e71b885bb2d67236",
+    "lines": [],
+    "meta": {
+      "name": "New Hampshire Wildcats at Syracuse Orange"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Duke Blue Devils",
+    "away_team": "Tulane Green Wave",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858209",
+    "game_key": "00a66daf50fbd0dc",
+    "lines": [],
+    "meta": {
+      "name": "Tulane Green Wave at Duke Blue Devils"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "California Golden Bears",
+    "away_team": "UCLA Bruins",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858210",
+    "game_key": "dc2d0f8ec6db265b",
+    "lines": [],
+    "meta": {
+      "name": "UCLA Bruins at California Golden Bears"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Virginia Tech Hokies",
+    "away_team": "VMI Keydets",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858211",
+    "game_key": "e8ea1c7f3a18ff5e",
+    "lines": [],
+    "meta": {
+      "name": "VMI Keydets at Virginia Tech Hokies"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Illinois Fighting Illini",
+    "away_team": "UAB Blazers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858424",
+    "game_key": "ccb711588464de16",
+    "lines": [],
+    "meta": {
+      "name": "UAB Blazers at Illinois Fighting Illini"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Indiana Hoosiers",
+    "away_team": "North Texas Mean Green",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858425",
+    "game_key": "eac606f32aba470f",
+    "lines": [],
+    "meta": {
+      "name": "North Texas Mean Green at Indiana Hoosiers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Iowa Hawkeyes",
+    "away_team": "Northern Illinois Huskies",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858426",
+    "game_key": "2306b528a4ff3efc",
+    "lines": [],
+    "meta": {
+      "name": "Northern Illinois Huskies at Iowa Hawkeyes"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Maryland Terrapins",
+    "away_team": "Howard Bison",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858427",
+    "game_key": "92cabd2b02599fc7",
+    "lines": [],
+    "meta": {
+      "name": "Howard Bison at Maryland Terrapins"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Michigan Wolverines",
+    "away_team": "Western Michigan Broncos",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858428",
+    "game_key": "7439ffa513c15246",
+    "lines": [],
+    "meta": {
+      "name": "Western Michigan Broncos at Michigan Wolverines"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Michigan State Spartans",
+    "away_team": "Toledo Rockets",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858429",
+    "game_key": "88dead03acdaf323",
+    "lines": [],
+    "meta": {
+      "name": "Toledo Rockets at Michigan State Spartans"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Nebraska Cornhuskers",
+    "away_team": "Ohio Bobcats",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858430",
+    "game_key": "da25c2f873948a61",
+    "lines": [],
+    "meta": {
+      "name": "Ohio Bobcats at Nebraska Cornhuskers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Northwestern Wildcats",
+    "away_team": "South Dakota State Jackrabbits",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858431",
+    "game_key": "872aa7c69d9238ed",
+    "lines": [],
+    "meta": {
+      "name": "South Dakota State Jackrabbits at Northwestern Wildcats"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Ohio State Buckeyes",
+    "away_team": "Ball State Cardinals",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858432",
+    "game_key": "f1f3d801a03b021b",
+    "lines": [],
+    "meta": {
+      "name": "Ball State Cardinals at Ohio State Buckeyes"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Oregon Ducks",
+    "away_team": "Boise State Broncos",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858433",
+    "game_key": "26dd2da9d772d8dc",
+    "lines": [],
+    "meta": {
+      "name": "Boise State Broncos at Oregon Ducks"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Penn State Nittany Lions",
+    "away_team": "Marshall Thundering Herd",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858434",
+    "game_key": "8dea3e9b6f5f662c",
+    "lines": [],
+    "meta": {
+      "name": "Marshall Thundering Herd at Penn State Nittany Lions"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Purdue Boilermakers",
+    "away_team": "Indiana State Sycamores",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858435",
+    "game_key": "ededd77ef4ab5f17",
+    "lines": [],
+    "meta": {
+      "name": "Indiana State Sycamores at Purdue Boilermakers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "USC Trojans",
+    "away_team": "Fresno State Bulldogs",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858436",
+    "game_key": "012a8836511fc83b",
+    "lines": [],
+    "meta": {
+      "name": "Fresno State Bulldogs at USC Trojans"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Washington Huskies",
+    "away_team": "Washington State Cougars",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858437",
+    "game_key": "a5bd748e0790577e",
+    "lines": [],
+    "meta": {
+      "name": "Washington State Cougars at Washington Huskies"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Colorado State Rams",
+    "away_team": "Wyoming Cowboys",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401860878",
+    "game_key": "16209a99f436a4ee",
+    "lines": [],
+    "meta": {
+      "name": "Wyoming Cowboys at Colorado State Rams"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "San Diego State Aztecs",
+    "away_team": "Portland State Vikings",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401860879",
+    "game_key": "93333fa08f5a1cbb",
+    "lines": [],
+    "meta": {
+      "name": "Portland State Vikings at San Diego State Aztecs"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Utah State Aggies",
+    "away_team": "Idaho State Bengals",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401860880",
+    "game_key": "817bf2d8102bf790",
+    "lines": [],
+    "meta": {
+      "name": "Idaho State Bengals at Utah State Aggies"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "UConn Huskies",
+    "away_team": "Lafayette Leopards",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401861962",
+    "game_key": "97bdf9c2f32bdc02",
+    "lines": [],
+    "meta": {
+      "name": "Lafayette Leopards at UConn Huskies"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Charlotte 49ers",
+    "away_team": "The Citadel Bulldogs",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401862694",
+    "game_key": "f3ccb91db698d828",
+    "lines": [],
+    "meta": {
+      "name": "The Citadel Bulldogs at Charlotte 49ers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Memphis Tigers",
+    "away_team": "Arkansas State Red Wolves",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401862695",
+    "game_key": "1168b5c1fd043771",
+    "lines": [],
+    "meta": {
+      "name": "Arkansas State Red Wolves at Memphis Tigers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Navy Midshipmen",
+    "away_team": "Towson Tigers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401862696",
+    "game_key": "c25513a4e5363677",
+    "lines": [],
+    "meta": {
+      "name": "Towson Tigers at Navy Midshipmen"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Rice Owls",
+    "away_team": "Houston Christian Huskies",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401862697",
+    "game_key": "1f2ccd1b37c808aa",
+    "lines": [],
+    "meta": {
+      "name": "Houston Christian Huskies at Rice Owls"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Temple Owls",
+    "away_team": "Rhode Island Rams",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401862698",
+    "game_key": "fefff94019b2e87a",
+    "lines": [],
+    "meta": {
+      "name": "Rhode Island Rams at Temple Owls"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "South Florida Bulls",
+    "away_team": "Florida International Panthers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401862699",
+    "game_key": "f28dd6e49f08a725",
+    "lines": [],
+    "meta": {
+      "name": "Florida International Panthers at South Florida Bulls"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "UTSA Roadrunners",
+    "away_team": "UT Rio Grande Valley Vaqueros",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401862700",
+    "game_key": "2e10ae3f3f983966",
+    "lines": [],
+    "meta": {
+      "name": "UT Rio Grande Valley Vaqueros at UTSA Roadrunners"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Army Black Knights",
+    "away_team": "Bryant Bulldogs",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401862701",
+    "game_key": "26695ba66c4b640f",
+    "lines": [],
+    "meta": {
+      "name": "Bryant Bulldogs at Army Black Knights"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Nevada Wolf Pack",
+    "away_team": "Western Kentucky Hilltoppers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864432",
+    "game_key": "c95b7eb4a1c06e5c",
+    "lines": [],
+    "meta": {
+      "name": "Western Kentucky Hilltoppers at Nevada Wolf Pack"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Air Force Falcons",
+    "away_team": "Duquesne Dukes",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864496",
+    "game_key": "1515475264802d15",
+    "lines": [],
+    "meta": {
+      "name": "Duquesne Dukes at Air Force Falcons"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Hawai'i Rainbow Warriors",
+    "away_team": "UNLV Rebels",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864497",
+    "game_key": "cb53b3f20fe0dffd",
+    "lines": [],
+    "meta": {
+      "name": "UNLV Rebels at Hawai'i Rainbow Warriors"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "New Mexico Lobos",
+    "away_team": "Central Michigan Chippewas",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864498",
+    "game_key": "0b37511abc572c2f",
+    "lines": [],
+    "meta": {
+      "name": "Central Michigan Chippewas at New Mexico Lobos"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "North Dakota State Bison",
+    "away_team": "Fordham Rams",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401864499",
+    "game_key": "0a6611bcf314ec88",
+    "lines": [],
+    "meta": {
+      "name": "Fordham Rams at North Dakota State Bison"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Bowling Green Falcons",
+    "away_team": "Tarleton State Texans",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401866410",
+    "game_key": "2a7ef9e6090ae28a",
+    "lines": [],
+    "meta": {
+      "name": "Tarleton State Texans at Bowling Green Falcons"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Sacramento State Hornets",
+    "away_team": "Mississippi Valley State Delta Devils",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401866411",
+    "game_key": "73f9fa604abcd53f",
+    "lines": [],
+    "meta": {
+      "name": "Mississippi Valley State Delta Devils at Sacramento State Hornets"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "App State Mountaineers",
+    "away_team": "Maine Black Bears",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401866627",
+    "game_key": "a8c433365314dc36",
+    "lines": [],
+    "meta": {
+      "name": "Maine Black Bears at App State Mountaineers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Middle Tennessee Blue Raiders",
+    "away_team": "Murray State Racers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401867866",
+    "game_key": "e6386f61fd2c43b5",
+    "lines": [],
+    "meta": {
+      "name": "Murray State Racers at Middle Tennessee Blue Raiders"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Old Dominion Monarchs",
+    "away_team": "Norfolk State Spartans",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401867973",
+    "game_key": "98f8387c920f7604",
+    "lines": [],
+    "meta": {
+      "name": "Norfolk State Spartans at Old Dominion Monarchs"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Jacksonville State Gamecocks",
+    "away_team": "Eastern Kentucky Colonels",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401868140",
+    "game_key": "e2af03815e4b6768",
+    "lines": [],
+    "meta": {
+      "name": "Eastern Kentucky Colonels at Jacksonville State Gamecocks"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Georgia Southern Eagles",
+    "away_team": "Charleston Southern Buccaneers",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401868170",
+    "game_key": "02e618e1a848a59c",
+    "lines": [],
+    "meta": {
+      "name": "Charleston Southern Buccaneers at Georgia Southern Eagles"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "South Alabama Jaguars",
+    "away_team": "SE Louisiana Lions",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401868316",
+    "game_key": "159686e0c1b27d48",
+    "lines": [],
+    "meta": {
+      "name": "SE Louisiana Lions at South Alabama Jaguars"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Southern Miss Golden Eagles",
+    "away_team": "Alcorn State Braves",
+    "commence_time": "2026-09-05T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401868356",
+    "game_key": "314963f8e90c96d1",
+    "lines": [],
+    "meta": {
+      "name": "Alcorn State Braves at Southern Miss Golden Eagles"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Wisconsin Badgers",
+    "away_team": "Notre Dame Fighting Irish",
+    "commence_time": "2026-09-06T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858438",
+    "game_key": "6cc2261ad3f3f841",
+    "lines": [],
+    "meta": {
+      "name": "Notre Dame Fighting Irish at Wisconsin Badgers"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Ole Miss Rebels",
+    "away_team": "Louisville Cardinals",
+    "commence_time": "2026-09-06T23:30:00+00:00",
+    "source": "espn",
+    "event_id": "401856661",
+    "game_key": "315b8d245de62e11",
+    "lines": [],
+    "meta": {
+      "name": "Louisville Cardinals at Ole Miss Rebels"
+    }
+  },
+  {
+    "sport": "football_ncaaf",
+    "league": "college-football",
+    "home_team": "Florida State Seminoles",
+    "away_team": "SMU Mustangs",
+    "commence_time": "2026-09-07T04:00:00+00:00",
+    "source": "espn",
+    "event_id": "401858212",
+    "game_key": "ed39344a9800e915",
+    "lines": [],
+    "meta": {
+      "name": "SMU Mustangs at Florida State Seminoles"
+    }
+  }
+]

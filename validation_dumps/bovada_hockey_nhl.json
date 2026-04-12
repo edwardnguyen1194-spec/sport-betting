@@ -1,0 +1,1232 @@
+[
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Boston Bruins",
+    "away_team": "Tampa Bay Lightning",
+    "commence_time": "2026-04-11T16:38:00+00:00",
+    "source": "bovada",
+    "event_id": "22078921",
+    "game_key": "01c021c3d0726564",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Tampa Bay Lightning",
+        "american": 210.0,
+        "decimal": 3.1,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Boston Bruins",
+        "american": -250.0,
+        "decimal": 1.4,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Tampa Bay Lightning",
+        "american": -122.0,
+        "decimal": 1.819672,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Boston Bruins",
+        "american": 102.0,
+        "decimal": 2.02,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Tampa Bay Lightning @ Boston Bruins",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "New York Islanders",
+    "away_team": "Ottawa Senators",
+    "commence_time": "2026-04-11T17:08:00+00:00",
+    "source": "bovada",
+    "event_id": "23173976",
+    "game_key": "115eef786e674129",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Ottawa Senators",
+        "american": 210.0,
+        "decimal": 3.1,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "New York Islanders",
+        "american": -250.0,
+        "decimal": 1.4,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Ottawa Senators",
+        "american": -120.0,
+        "decimal": 1.833333,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "New York Islanders",
+        "american": 100.0,
+        "decimal": 2.0,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.892857,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.9259,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Ottawa Senators @ New York Islanders",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Pittsburgh Penguins",
+    "away_team": "Washington Capitals",
+    "commence_time": "2026-04-11T19:08:00+00:00",
+    "source": "bovada",
+    "event_id": "21792316",
+    "game_key": "05fd8b8f392b0d4b",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Washington Capitals",
+        "american": -240.0,
+        "decimal": 1.416667,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Pittsburgh Penguins",
+        "american": 200.0,
+        "decimal": 3.0,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Washington Capitals",
+        "american": 105.0,
+        "decimal": 2.05,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Pittsburgh Penguins",
+        "american": -125.0,
+        "decimal": 1.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -112.0,
+        "decimal": 1.892857,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -108.0,
+        "decimal": 1.9259,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Washington Capitals @ Pittsburgh Penguins",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Los Angeles Kings",
+    "away_team": "Edmonton Oilers",
+    "commence_time": "2026-04-11T20:08:00+00:00",
+    "source": "bovada",
+    "event_id": "22265121",
+    "game_key": "b90ccdad0c7fe35f",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Edmonton Oilers",
+        "american": 215.0,
+        "decimal": 3.15,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Los Angeles Kings",
+        "american": -260.0,
+        "decimal": 1.384615,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Edmonton Oilers",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Los Angeles Kings",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Edmonton Oilers @ Los Angeles Kings",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Utah Mammoth",
+    "away_team": "Carolina Hurricanes",
+    "commence_time": "2026-04-11T21:08:00+00:00",
+    "source": "bovada",
+    "event_id": "23173975",
+    "game_key": "6be43c3a50452015",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Carolina Hurricanes",
+        "american": -250.0,
+        "decimal": 1.4,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Utah Mammoth",
+        "american": 210.0,
+        "decimal": 3.1,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Carolina Hurricanes",
+        "american": 105.0,
+        "decimal": 2.05,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Utah Mammoth",
+        "american": -125.0,
+        "decimal": 1.8,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -105.0,
+        "decimal": 1.952381,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -115.0,
+        "decimal": 1.87,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Carolina Hurricanes @ Utah Mammoth",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Nashville Predators",
+    "away_team": "Minnesota Wild",
+    "commence_time": "2026-04-11T21:08:00+00:00",
+    "source": "bovada",
+    "event_id": "22078522",
+    "game_key": "56f71ce0ca214731",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Minnesota Wild",
+        "american": 195.0,
+        "decimal": 2.95,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Nashville Predators",
+        "american": -235.0,
+        "decimal": 1.425532,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Minnesota Wild",
+        "american": -128.0,
+        "decimal": 1.78125,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Nashville Predators",
+        "american": 107.0,
+        "decimal": 2.07,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": 100.0,
+        "decimal": 2.0,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -120.0,
+        "decimal": 1.833333,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Minnesota Wild @ Nashville Predators",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Detroit Red Wings",
+    "away_team": "New Jersey Devils",
+    "commence_time": "2026-04-11T21:08:00+00:00",
+    "source": "bovada",
+    "event_id": "23174733",
+    "game_key": "d43e4e512f349237",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "New Jersey Devils",
+        "american": -198.0,
+        "decimal": 1.505051,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Detroit Red Wings",
+        "american": 168.0,
+        "decimal": 2.68,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "New Jersey Devils",
+        "american": 130.0,
+        "decimal": 2.3,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Detroit Red Wings",
+        "american": -150.0,
+        "decimal": 1.666667,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": 100.0,
+        "decimal": 2.0,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -120.0,
+        "decimal": 1.833333,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "New Jersey Devils @ Detroit Red Wings",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Dallas Stars",
+    "away_team": "New York Rangers",
+    "commence_time": "2026-04-11T21:08:00+00:00",
+    "source": "bovada",
+    "event_id": "23173977",
+    "game_key": "b47ed7155ce3ea31",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "New York Rangers",
+        "american": -155.0,
+        "decimal": 1.645161,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Dallas Stars",
+        "american": 133.0,
+        "decimal": 2.33,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "New York Rangers",
+        "american": 163.0,
+        "decimal": 2.63,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Dallas Stars",
+        "american": -190.0,
+        "decimal": 1.526316,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": 102.0,
+        "decimal": 2.02,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -122.0,
+        "decimal": 1.819672,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "New York Rangers @ Dallas Stars",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Chicago Blackhawks",
+    "away_team": "St. Louis Blues",
+    "commence_time": "2026-04-11T21:08:00+00:00",
+    "source": "bovada",
+    "event_id": "23173812",
+    "game_key": "011a9389430eec05",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "St. Louis Blues",
+        "american": 190.0,
+        "decimal": 2.9,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Chicago Blackhawks",
+        "american": -230.0,
+        "decimal": 1.434783,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "St. Louis Blues",
+        "american": -133.0,
+        "decimal": 1.75188,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Chicago Blackhawks",
+        "american": 112.0,
+        "decimal": 2.12,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.9259,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.892857,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "St. Louis Blues @ Chicago Blackhawks",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Seattle Kraken",
+    "away_team": "Calgary Flames",
+    "commence_time": "2026-04-11T23:08:00+00:00",
+    "source": "bovada",
+    "event_id": "23206550",
+    "game_key": "10a97856da478462",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Calgary Flames",
+        "american": -220.0,
+        "decimal": 1.454545,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Seattle Kraken",
+        "american": 180.0,
+        "decimal": 2.8,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Calgary Flames",
+        "american": 117.0,
+        "decimal": 2.17,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Seattle Kraken",
+        "american": -138.0,
+        "decimal": 1.724638,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -108.0,
+        "decimal": 1.9259,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -112.0,
+        "decimal": 1.892857,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Calgary Flames @ Seattle Kraken",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Montreal Canadiens",
+    "away_team": "Columbus Blue Jackets",
+    "commence_time": "2026-04-11T23:08:00+00:00",
+    "source": "bovada",
+    "event_id": "21703104",
+    "game_key": "70953fc4fb0bd169",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Columbus Blue Jackets",
+        "american": -200.0,
+        "decimal": 1.5,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Montreal Canadiens",
+        "american": 170.0,
+        "decimal": 2.7,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Columbus Blue Jackets",
+        "american": 130.0,
+        "decimal": 2.3,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Montreal Canadiens",
+        "american": -150.0,
+        "decimal": 1.666667,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -117.0,
+        "decimal": 1.854701,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -103.0,
+        "decimal": 1.970874,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Columbus Blue Jackets @ Montreal Canadiens",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Toronto Maple Leafs",
+    "away_team": "Florida Panthers",
+    "commence_time": "2026-04-11T23:08:00+00:00",
+    "source": "bovada",
+    "event_id": "21703105",
+    "game_key": "75f9008f51589691",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Florida Panthers",
+        "american": -220.0,
+        "decimal": 1.454545,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Toronto Maple Leafs",
+        "american": 180.0,
+        "decimal": 2.8,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Florida Panthers",
+        "american": 112.0,
+        "decimal": 2.12,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Toronto Maple Leafs",
+        "american": -133.0,
+        "decimal": 1.75188,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -117.0,
+        "decimal": 1.854701,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -103.0,
+        "decimal": 1.970874,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Florida Panthers @ Toronto Maple Leafs",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Winnipeg Jets",
+    "away_team": "Philadelphia Flyers",
+    "commence_time": "2026-04-11T23:08:00+00:00",
+    "source": "bovada",
+    "event_id": "23206552",
+    "game_key": "0e012091fb40d35f",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Philadelphia Flyers",
+        "american": -240.0,
+        "decimal": 1.416667,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Winnipeg Jets",
+        "american": 200.0,
+        "decimal": 3.0,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Philadelphia Flyers",
+        "american": 110.0,
+        "decimal": 2.1,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Winnipeg Jets",
+        "american": -130.0,
+        "decimal": 1.76923,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -117.0,
+        "decimal": 1.854701,
+        "line": 5.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -103.0,
+        "decimal": 1.970874,
+        "line": 5.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Philadelphia Flyers @ Winnipeg Jets",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "Colorado Avalanche",
+    "away_team": "Vegas Golden Knights",
+    "commence_time": "2026-04-12T00:08:00+00:00",
+    "source": "bovada",
+    "event_id": "22265125",
+    "game_key": "5c2d0dec85408247",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Vegas Golden Knights",
+        "american": -225.0,
+        "decimal": 1.444444,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Colorado Avalanche",
+        "american": 185.0,
+        "decimal": 2.85,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Vegas Golden Knights",
+        "american": 112.0,
+        "decimal": 2.12,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Colorado Avalanche",
+        "american": -133.0,
+        "decimal": 1.75188,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -117.0,
+        "decimal": 1.854701,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": -103.0,
+        "decimal": 1.970874,
+        "line": 6.0,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Vegas Golden Knights @ Colorado Avalanche",
+      "live": false
+    }
+  },
+  {
+    "sport": "hockey_nhl",
+    "league": "nhl",
+    "home_team": "San Jose Sharks",
+    "away_team": "Vancouver Canucks",
+    "commence_time": "2026-04-12T02:08:00+00:00",
+    "source": "bovada",
+    "event_id": "23207518",
+    "game_key": "f724623567a0be45",
+    "lines": [
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "Vancouver Canucks",
+        "american": -128.0,
+        "decimal": 1.78125,
+        "line": 1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "puck_line",
+        "selection": "San Jose Sharks",
+        "american": 107.0,
+        "decimal": 2.07,
+        "line": -1.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "Vancouver Canucks",
+        "american": 190.0,
+        "decimal": 2.9,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "moneyline",
+        "selection": "San Jose Sharks",
+        "american": -230.0,
+        "decimal": 1.434783,
+        "line": null,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Over",
+        "american": -120.0,
+        "decimal": 1.833333,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      },
+      {
+        "book": "bovada",
+        "market": "total",
+        "selection": "Under",
+        "american": 100.0,
+        "decimal": 2.0,
+        "line": 6.5,
+        "player": null,
+        "prop": null,
+        "last_update": null
+      }
+    ],
+    "meta": {
+      "description": "Vancouver Canucks @ San Jose Sharks",
+      "live": false
+    }
+  }
+]
