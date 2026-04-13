@@ -152,7 +152,6 @@ def create_app(
         SpreadValueStrategy(settings),
         TotalValueStrategy(settings),
         ContrarianStrategy(settings),
-        MiddleDetectorStrategy(settings),
         SituationalStrategy(settings),
         EloEdgeStrategy(settings, elo=elo),
         PythagoreanStrategy(settings),
