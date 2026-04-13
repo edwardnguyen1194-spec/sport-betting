@@ -179,6 +179,35 @@ class SituationalStrategy(Strategy):
         if n_books >= 5:
             score += 0.005
 
+        # 7. College underdog edge (academic research: underdogs profitable)
+        # Road underdogs in college sports are undervalued
+        if "ncaa" in game.sport and side == "away":
+            away_lines = [l for l in game.lines if l.market == "moneyline"
+                          and l.selection.lower() == team.lower() and l.american is not None]
+            if away_lines:
+                best_american = max(l.american for l in away_lines)
+                if best_american > 100:  # Underdog (+odds)
+                    score += 0.02  # Road underdogs in college are undervalued
+                    # Low total games: road dogs cover 55% (research backed)
+                    total_lines = [l for l in game.lines if l.market == "total" and l.line is not None]
+                    if total_lines and min(l.line for l in total_lines) <= 7:
+                        score += 0.015  # Low-scoring game boosts underdog value
+
+        # 8. Moderate college favorites cover well (ranked 4-25, fav by 8.5 or less)
+        if "ncaa" in game.sport:
+            spread_lines = [l for l in game.lines if l.market == "spread"
+                            and l.selection.lower() == team.lower() and l.line is not None]
+            if spread_lines:
+                best_spread = min(abs(l.line) for l in spread_lines)
+                if 1.5 <= best_spread <= 8.5:
+                    score += 0.015  # Moderate favorites cover 60%+ (BetMGM research)
+
+        # 9. Sunday/midweek bullpen day in college baseball
+        if game.sport == "baseball_ncaa" and game.commence_time:
+            dow = game.commence_time.weekday()
+            if dow == 6:  # Sunday = game 3, often bullpen day
+                score += 0.01  # Higher variance, more upsets
+
         return score
 
     def _build_reasons(self, game: GameOdds, side: str,
