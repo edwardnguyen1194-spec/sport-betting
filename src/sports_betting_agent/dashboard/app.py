@@ -19,6 +19,7 @@ from ..auto_settler import AutoSettler
 from ..brain import AgentBrain
 from ..config import Settings, get_settings
 from ..claude_chat import ChatContext, ClaudeChat
+from ..daily_learner import DailyLearner
 from ..fetchers.aggregator import OddsAggregator
 from ..learning_log import LearningLog
 from ..line_movement import LineMovementStore
@@ -149,6 +150,9 @@ def create_app(
     # Line-movement store feeds the steam-move detector — a core world-class
     # sharp signal (3+ sharp books moving the same direction = smart money).
     line_store = LineMovementStore(settings.data_dir)
+    # Daily self-improvement — auto-reviews CLV + win-rate, nudges edge
+    # thresholds, and pulls one fresh sharp-betting article per day.
+    daily_learner = DailyLearner(settings, paper.clv, line_store)
 
     # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets
     strategies = [
@@ -357,7 +361,21 @@ def create_app(
             list(paper.open_bets.values()),
             paper.closed_bets,
         )
-        # 7. Generate recommendations
+        # 7. Nightly self-improvement. Uncle runs on US Pacific/Eastern
+        # time, so we schedule the learner for 07:00-11:00 UTC (roughly
+        # midnight-4am Pacific / 3-7am Eastern). The learner is
+        # idempotent, so if the loop runs twice in that window nothing
+        # happens on the second call.
+        from datetime import datetime, timezone as _tz
+        utc_hour = datetime.now(_tz.utc).hour
+        if 7 <= utc_hour < 11:
+            try:
+                entry = daily_learner.run(paper.closed_bets)
+                if entry is not None:
+                    logger.info("daily_learner: ran for %s (skill=%s)", entry.date, entry.skill_title)
+            except Exception as exc:
+                logger.warning("daily_learner failed: %s", exc)
+        # 8. Generate recommendations
         return _current_recs()
 
     @app.route("/api/elo")
@@ -373,6 +391,35 @@ def create_app(
         """Closing Line Value scoreboard — the #1 world-class metric.
         Positive average CLV over 100+ bets = genuinely +EV picks."""
         return jsonify(paper.clv.stats())
+
+    @app.route("/api/learner/today")
+    def learner_today():
+        """Today's self-improvement entry (null if it hasn't run yet)."""
+        entry = daily_learner.today()
+        if entry is None:
+            return jsonify({"status": "not_run_yet", "scheduled": "07:00-11:00 UTC nightly"})
+        from dataclasses import asdict
+        return jsonify(asdict(entry))
+
+    @app.route("/api/learner/history")
+    def learner_history():
+        """Recent self-improvement history (last 30 days by default)."""
+        from dataclasses import asdict
+        n = int(request.args.get("n", 30))
+        return jsonify({
+            "count": len(daily_learner.entries),
+            "recent": [asdict(e) for e in daily_learner.recent(n)],
+        })
+
+    @app.route("/api/learner/run", methods=["POST"])
+    def learner_run():
+        """Manual trigger — forces one learner cycle now (for testing)."""
+        force = bool(request.json and request.json.get("force"))
+        entry = daily_learner.run(paper.closed_bets, force=force)
+        if entry is None:
+            return jsonify({"ok": False, "reason": "already_ran_today"})
+        from dataclasses import asdict
+        return jsonify({"ok": True, "entry": asdict(entry)})
 
     @app.route("/api/steam")
     def steam_status():
