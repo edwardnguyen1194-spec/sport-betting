@@ -36,6 +36,14 @@ class SpreadValueStrategy(Strategy):
             groups = game.spread_lines_grouped()
 
             for (selection, handicap), lines in groups.items():
+                # Require genuine multi-book data so we can compute a real
+                # cross-book edge. Surfacing single-sharp-book picks is a
+                # trap: fair-vig prob derived from one book is always <=
+                # that book's implied probability, so edge is always <= 0
+                # and every such pick is -EV by construction.
+                if len(lines) < 2:
+                    continue
+
                 # Find sharp lines for this side
                 sharp_lines = [l for l in lines if l.book.lower() in SHARP_BOOKS]
                 if not sharp_lines:
@@ -68,17 +76,9 @@ class SpreadValueStrategy(Strategy):
                 implied_best = american_to_implied(best.american)
                 edge = fair_this - implied_best
 
-                # Multi-book comparison edge (classic value bet)
-                multi_book = len(lines) >= 2
-                if multi_book:
-                    if edge < self.min_edge:
-                        continue
-                else:
-                    # Single sharp-book case (e.g., only Bovada quotes this spread).
-                    # Cannot compute cross-book edge, so surface only confident favorites:
-                    # fair-vig win prob must clear 55% for us to recommend the side.
-                    if fair_this < 0.55:
-                        continue
+                # Only emit genuine positive-edge picks.
+                if edge < self.min_edge:
+                    continue
 
                 # Resolve team name from normalized selection
                 team_name = _resolve_team(game, selection)

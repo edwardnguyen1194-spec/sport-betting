@@ -36,6 +36,12 @@ class TotalValueStrategy(Strategy):
             groups = game.total_lines_grouped()
 
             for (selection, total_num), lines in groups.items():
+                # Multi-book requirement — single-sharp-book picks are -EV
+                # by construction (fair-vig prob <= that book's implied
+                # prob), so we only emit when a real cross-book edge exists.
+                if len(lines) < 2:
+                    continue
+
                 sharp_lines = [l for l in lines if l.book.lower() in SHARP_BOOKS]
                 if not sharp_lines:
                     continue
@@ -63,16 +69,9 @@ class TotalValueStrategy(Strategy):
                 implied_best = american_to_implied(best.american)
                 edge = fair_this - implied_best
 
-                # Multi-book edge (classic value) vs single sharp-book confidence pick
-                multi_book = len(lines) >= 2
-                if multi_book:
-                    if edge < self.min_edge:
-                        continue
-                else:
-                    # Only Bovada (or other sharp) quotes — surface confident picks
-                    # (fair-vig prob above 55%) since we can't compute cross-book edge.
-                    if fair_this < 0.55:
-                        continue
+                # Only emit genuine positive-edge picks.
+                if edge < self.min_edge:
+                    continue
 
                 display_sel = "Over" if selection == "over" else "Under"
                 stake_frac = min(
