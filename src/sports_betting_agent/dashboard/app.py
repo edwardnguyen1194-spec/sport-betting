@@ -21,6 +21,7 @@ from ..config import Settings, get_settings
 from ..claude_chat import ChatContext, ClaudeChat
 from ..fetchers.aggregator import OddsAggregator
 from ..learning_log import LearningLog
+from ..line_movement import LineMovementStore
 from ..news_reader import NewsReader
 from ..paper_trader import PaperTrader
 from ..power_ratings import EloRatings
@@ -145,6 +146,9 @@ def create_app(
     news = NewsReader(settings.data_dir)
     brain = AgentBrain(settings.data_dir)
     elo = EloRatings(settings.data_dir)
+    # Line-movement store feeds the steam-move detector — a core world-class
+    # sharp signal (3+ sharp books moving the same direction = smart money).
+    line_store = LineMovementStore(settings.data_dir)
 
     # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets
     strategies = [
@@ -164,6 +168,17 @@ def create_app(
     def _current_recs(sports: Optional[List[str]] = None) -> List[BetRecommendation]:
         sports = sports or DEFAULT_SPORTS
         games = aggregator.fetch_sports(sports)
+        # Feed every fetch into the line-movement store so steam/RLM can
+        # be detected across cycles. Also refresh closing-line values for
+        # every open bet — that's what powers the CLV scoreboard.
+        try:
+            line_store.ingest(games)
+        except Exception as exc:
+            logger.warning("line_store ingest failed: %s", exc)
+        try:
+            paper.record_closing_lines(games)
+        except Exception as exc:
+            logger.warning("record_closing_lines failed: %s", exc)
         return ensemble.generate(games)
 
     # ------------------------------------------------------------------
@@ -352,6 +367,36 @@ def create_app(
     @app.route("/api/brain")
     def brain_status():
         return jsonify(brain.daily_summary())
+
+    @app.route("/api/clv")
+    def clv_status():
+        """Closing Line Value scoreboard — the #1 world-class metric.
+        Positive average CLV over 100+ bets = genuinely +EV picks."""
+        return jsonify(paper.clv.stats())
+
+    @app.route("/api/steam")
+    def steam_status():
+        """Current steam moves — 3+ sharp books moving the same direction.
+        A strong indicator of professional (sharp) money."""
+        moves = line_store.detect_steam()
+        return jsonify({
+            "count": len(moves),
+            "store": line_store.stats(),
+            "moves": [
+                {
+                    "game_key": m.game_key,
+                    "market": m.market,
+                    "selection": m.selection,
+                    "direction": m.direction,
+                    "sharp_books": m.sharp_books_moving,
+                    "juice_delta": m.juice_delta,
+                    "line_delta": m.line_delta,
+                    "from": m.from_ts,
+                    "to": m.to_ts,
+                }
+                for m in moves
+            ],
+        })
 
     should_start = settings.auto_trade_enabled if start_background is None else start_background
     if should_start:

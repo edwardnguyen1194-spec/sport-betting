@@ -30,6 +30,7 @@ from datetime import datetime, timezone
 from typing import Callable, Dict, Iterable, List, Optional
 
 from .config import Settings, get_settings
+from .clv_tracker import CLVTracker
 from .strategies.base import BetRecommendation
 
 
@@ -110,6 +111,11 @@ class PaperTrader:
         self.closed_bets: List[Bet] = []
         self._next_id: int = 1
 
+        # Closing Line Value tracker — the #1 predictor of long-run profit
+        # for any spread/total bettor. Records every placement and lets us
+        # compute whether we are genuinely beating the closing market.
+        self.clv = CLVTracker(self.settings.data_dir)
+
         self._load_state()
 
     # ------------------------------------------------------------------
@@ -174,6 +180,18 @@ class PaperTrader:
             bet = Bet.from_recommendation(rec, stake, bet_id)
             self.open_bets[bet_id] = bet
             self.bankroll -= stake
+            # Record for CLV tracking — we'll capture the closing line later
+            # (record_closing_lines) and compute CLV = bet_decimal/close_decimal - 1.
+            try:
+                self.clv.record_bet(
+                    bet_id=bet_id,
+                    game_key=bet.game_key,
+                    selection=bet.selection,
+                    market=bet.market,
+                    american=bet.american,
+                )
+            except Exception as exc:
+                logger.warning("CLV record_bet failed for %s: %s", bet_id, exc)
             self._save_state()
             logger.info(
                 "[PAPER] placed %s on %s at %+.0f stake=$%.2f (conf=%.2f edge=%+.3f)",
@@ -224,8 +242,47 @@ class PaperTrader:
             bet.status = outcome
             bet.settled_at = datetime.now(timezone.utc).isoformat()
             self.closed_bets.append(bet)
+            try:
+                self.clv.record_result(bet_id, outcome)
+            except Exception as exc:
+                logger.warning("CLV record_result failed for %s: %s", bet_id, exc)
             self._save_state()
             return bet
+
+    def record_closing_lines(self, games) -> int:
+        """Call this as games are about to start (or just kicked off) so
+        each open bet gets its market-close reference line recorded. The
+        resulting CLV is the sharpest measurement of whether the picks
+        are genuinely beating the market, independent of short-run luck.
+        Returns the number of bets that received a closing line update.
+        """
+        updated = 0
+        with self._lock:
+            open_bet_keys = {
+                (b.game_key, b.market, b.selection.lower().strip()): b
+                for b in self.open_bets.values()
+            }
+            if not open_bet_keys:
+                return 0
+            for game in games:
+                for line in game.lines:
+                    if line.american is None:
+                        continue
+                    key = (game.game_key, line.market, line.selection.lower().strip())
+                    bet = open_bet_keys.get(key)
+                    if bet is None:
+                        continue
+                    try:
+                        self.clv.record_closing_line(
+                            game_key=game.game_key,
+                            selection=line.selection,
+                            market=line.market,
+                            closing_american=float(line.american),
+                        )
+                        updated += 1
+                    except Exception as exc:
+                        logger.warning("CLV record_closing_line failed: %s", exc)
+        return updated
 
     # ------------------------------------------------------------------
     # Sizing
