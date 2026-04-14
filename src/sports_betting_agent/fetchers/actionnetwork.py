@@ -232,38 +232,40 @@ class ActionNetworkFetcher(BaseFetcher):
             entry,
             ("spread_away_line", "away_spread_line", "spread_away_price"),
         )
-        if spread_home is not None:
+        if spread_home is not None and spread_home_juice is not None:
             game.lines.append(
                 OddsLine(
                     book=book,
                     market="spread",
                     selection=home_team,
-                    american=spread_home_juice if spread_home_juice is not None else -110.0,
+                    american=spread_home_juice,
                     line=spread_home,
                 )
             )
-        if spread_away is not None:
+        if spread_away is not None and spread_away_juice is not None:
             game.lines.append(
                 OddsLine(
                     book=book,
                     market="spread",
                     selection=away_team,
-                    american=spread_away_juice if spread_away_juice is not None else -110.0,
+                    american=spread_away_juice,
                     line=spread_away,
                 )
             )
 
-        # Total
+        # Total — only add if real juice is available
         total = _first_float(entry, ("total", "over_under", "ou"))
         if total is not None:
-            over_juice = _first_float(entry, ("over", "over_line", "over_price")) or -110.0
-            under_juice = _first_float(entry, ("under", "under_line", "under_price")) or -110.0
-            game.lines.append(
-                OddsLine(book=book, market="total", selection="Over", american=over_juice, line=total)
-            )
-            game.lines.append(
-                OddsLine(book=book, market="total", selection="Under", american=under_juice, line=total)
-            )
+            over_juice = _first_float(entry, ("over", "over_line", "over_price"))
+            under_juice = _first_float(entry, ("under", "under_line", "under_price"))
+            if over_juice is not None:
+                game.lines.append(
+                    OddsLine(book=book, market="total", selection="Over", american=over_juice, line=total)
+                )
+            if under_juice is not None:
+                game.lines.append(
+                    OddsLine(book=book, market="total", selection="Under", american=under_juice, line=total)
+                )
 
 
 def _n(value) -> Optional[float]:

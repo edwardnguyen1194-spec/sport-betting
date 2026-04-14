@@ -94,23 +94,31 @@ class SBRFetcher(BaseFetcher):
             if ml is not None:
                 g.lines.append(OddsLine(book=str(book).lower(), market="moneyline", selection=away, american=float(ml)))
 
-        # Spreads
+        # Spreads — only include if real juice is available (not default -110)
         for book, spread in (game.get("home_spread") or {}).items():
             if spread is not None:
-                juice = (game.get("home_spread_juice") or {}).get(book, -110)
-                g.lines.append(OddsLine(book=str(book).lower(), market="spread", selection=home, american=float(juice or -110), line=float(spread)))
+                juice_dict = game.get("home_spread_juice") or {}
+                juice = juice_dict.get(book)
+                if juice is not None and juice != -110:  # Only real juice, not defaults
+                    g.lines.append(OddsLine(book=str(book).lower(), market="spread", selection=home, american=float(juice), line=float(spread)))
         for book, spread in (game.get("away_spread") or {}).items():
             if spread is not None:
-                juice = (game.get("away_spread_juice") or {}).get(book, -110)
-                g.lines.append(OddsLine(book=str(book).lower(), market="spread", selection=away, american=float(juice or -110), line=float(spread)))
+                juice_dict = game.get("away_spread_juice") or {}
+                juice = juice_dict.get(book)
+                if juice is not None and juice != -110:  # Only real juice, not defaults
+                    g.lines.append(OddsLine(book=str(book).lower(), market="spread", selection=away, american=float(juice), line=float(spread)))
 
-        # Totals
+        # Totals — only include if real juice is available
         for book, total in (game.get("total") or {}).items():
             if total is not None:
-                over_juice = (game.get("over_juice") or {}).get(book, -110)
-                under_juice = (game.get("under_juice") or {}).get(book, -110)
-                g.lines.append(OddsLine(book=str(book).lower(), market="total", selection="Over", american=float(over_juice or -110), line=float(total)))
-                g.lines.append(OddsLine(book=str(book).lower(), market="total", selection="Under", american=float(under_juice or -110), line=float(total)))
+                over_dict = game.get("over_juice") or {}
+                under_dict = game.get("under_juice") or {}
+                over_juice = over_dict.get(book)
+                under_juice = under_dict.get(book)
+                if over_juice is not None and over_juice != -110:
+                    g.lines.append(OddsLine(book=str(book).lower(), market="total", selection="Over", american=float(over_juice), line=float(total)))
+                if under_juice is not None and under_juice != -110:
+                    g.lines.append(OddsLine(book=str(book).lower(), market="total", selection="Under", american=float(under_juice), line=float(total)))
 
         return g
 

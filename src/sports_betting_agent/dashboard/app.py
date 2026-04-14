@@ -146,15 +146,10 @@ def create_app(
     brain = AgentBrain(settings.data_dir)
     elo = EloRatings(settings.data_dir)
 
+    # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets
     strategies = [
-        HeavyFavoriteStrategy(settings),
-        ValueBetStrategy(settings),
         SpreadValueStrategy(settings),
         TotalValueStrategy(settings),
-        ContrarianStrategy(settings),
-        SituationalStrategy(settings),
-        EloEdgeStrategy(settings, elo=elo),
-        PythagoreanStrategy(settings),
     ]
     ensemble = EnsembleStrategy(strategies, settings)
 
