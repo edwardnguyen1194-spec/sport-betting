@@ -48,13 +48,16 @@ SPORT_CONFIG = {
 class EloRatings:
     """Elo rating system for all sports."""
 
-    def __init__(self, data_dir: str = "/data/sba"):
+    def __init__(self, data_dir: str = "/data/sba", scoring_tracker=None):
         self.data_dir = data_dir
         self.ratings: Dict[str, Dict[str, float]] = {}
         self.games_processed: int = 0
         self._processed_ids: set = set()  # Track processed game IDs to avoid duplicates
         self._session = requests.Session()
         self._session.headers["User-Agent"] = "Mozilla/5.0"
+        # Optional: a TeamScoringTracker that gets fed each completed game
+        # alongside the Elo update. Kept optional so unit tests can skip it.
+        self.scoring_tracker = scoring_tracker
         self._load()
 
     def _path(self) -> str:
@@ -138,12 +141,32 @@ class EloRatings:
                         sport, home["name"], away["name"],
                         home["score"], away["score"], cfg
                     )
+                    # Feed the rolling scoring tracker in lockstep — same
+                    # events, same dedup, so the total-projection model has
+                    # data the moment Elo does.
+                    if self.scoring_tracker is not None:
+                        try:
+                            self.scoring_tracker.record_game(
+                                sport=sport,
+                                event_id=event_id,
+                                home=home["name"],
+                                away=away["name"],
+                                home_score=home["score"],
+                                away_score=away["score"],
+                            )
+                        except Exception as exc:
+                            logger.warning("scoring_tracker record_game failed: %s", exc)
                     self._processed_ids.add(event_id)
                     new_games += 1
 
         if new_games > 0:
             self.games_processed += new_games
             self._save()
+            if self.scoring_tracker is not None:
+                try:
+                    self.scoring_tracker.save()
+                except Exception as exc:
+                    logger.warning("scoring_tracker save failed: %s", exc)
             logger.info("elo: updated %d games, total %d processed", new_games, self.games_processed)
 
     def _update_game(self, sport: str, home: str, away: str,

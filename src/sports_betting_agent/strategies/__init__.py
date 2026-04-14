@@ -10,6 +10,7 @@ from .heavy_favorite import HeavyFavoriteStrategy
 from .value_bets import ValueBetStrategy
 from .spread_value import SpreadValueStrategy
 from .total_value import TotalValueStrategy
+from .total_projection import TotalProjectionStrategy
 from .contrarian import ContrarianStrategy
 from .middle_detector import MiddleDetectorStrategy
 from .situational import SituationalStrategy
@@ -25,6 +26,7 @@ __all__ = [
     "ValueBetStrategy",
     "SpreadValueStrategy",
     "TotalValueStrategy",
+    "TotalProjectionStrategy",
     "ContrarianStrategy",
     "MiddleDetectorStrategy",
     "SituationalStrategy",

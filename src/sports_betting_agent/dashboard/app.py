@@ -33,12 +33,14 @@ from ..strategies import (
     ValueBetStrategy,
     SpreadValueStrategy,
     TotalValueStrategy,
+    TotalProjectionStrategy,
     ContrarianStrategy,
     MiddleDetectorStrategy,
     SituationalStrategy,
     EloEdgeStrategy,
     PythagoreanStrategy,
 )
+from ..team_scoring import TeamScoringTracker
 
 
 logger = logging.getLogger(__name__)
@@ -146,7 +148,10 @@ def create_app(
     learn_log = LearningLog(settings.data_dir)
     news = NewsReader(settings.data_dir)
     brain = AgentBrain(settings.data_dir)
-    elo = EloRatings(settings.data_dir)
+    # Team scoring tracker — fuels the model-based total projection strategy.
+    # Wired into EloRatings so both update from the same ESPN feed in lockstep.
+    scoring = TeamScoringTracker(settings.data_dir)
+    elo = EloRatings(settings.data_dir, scoring_tracker=scoring)
     # Line-movement store feeds the steam-move detector — a core world-class
     # sharp signal (3+ sharp books moving the same direction = smart money).
     line_store = LineMovementStore(settings.data_dir)
@@ -154,10 +159,14 @@ def create_app(
     # thresholds, and pulls one fresh sharp-betting article per day.
     daily_learner = DailyLearner(settings, paper.clv, line_store)
 
-    # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets
+    # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets.
+    # TotalProjectionStrategy is the model-based counterpart to the
+    # market-based TotalValueStrategy and is the reason totals work
+    # even when only one book quotes them.
     strategies = [
         SpreadValueStrategy(settings),
         TotalValueStrategy(settings),
+        TotalProjectionStrategy(settings, scoring=scoring),
     ]
     ensemble = EnsembleStrategy(strategies, settings)
 
@@ -250,9 +259,15 @@ def create_app(
         sports = [s.strip() for s in sports_param.split(",")] if sports_param else DEFAULT_SPORTS
         games = aggregator.fetch_sports(sports)
 
-        # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets
+        # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets.
+        # Include the model-based total projection alongside the market
+        # strategies so totals surface even when a single book quotes.
         all_recs = []
-        for strat in [SpreadValueStrategy(settings), TotalValueStrategy(settings)]:
+        for strat in [
+            SpreadValueStrategy(settings),
+            TotalValueStrategy(settings),
+            TotalProjectionStrategy(settings, scoring=scoring),
+        ]:
             all_recs.extend(strat.generate(games))
 
         all_recs.sort(key=lambda r: r.confidence, reverse=True)
@@ -381,6 +396,12 @@ def create_app(
     @app.route("/api/elo")
     def elo_status():
         return jsonify(elo.summary())
+
+    @app.route("/api/scoring")
+    def scoring_status():
+        """Rolling team scoring tracker — drives TotalProjectionStrategy.
+        Shows how much history we have per sport."""
+        return jsonify(scoring.summary())
 
     @app.route("/api/brain")
     def brain_status():
