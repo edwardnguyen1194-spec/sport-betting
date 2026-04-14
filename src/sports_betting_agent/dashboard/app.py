@@ -231,36 +231,10 @@ def create_app(
         sports = [s.strip() for s in sports_param.split(",")] if sports_param else DEFAULT_SPORTS
         games = aggregator.fetch_sports(sports)
 
-        # First try strategies
+        # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets
         all_recs = []
-        for strat in [HeavyFavoriteStrategy(settings), ValueBetStrategy(settings),
-                       SpreadValueStrategy(settings), TotalValueStrategy(settings),
-                       ContrarianStrategy(settings), MiddleDetectorStrategy(settings),
-                       SituationalStrategy(settings)]:
+        for strat in [SpreadValueStrategy(settings), TotalValueStrategy(settings)]:
             all_recs.extend(strat.generate(games))
-
-        # If strategies found nothing, build picks from raw odds (favorites)
-        if not all_recs:
-            for game in games:
-                for side in ("home", "away"):
-                    team = game.home_team if side == "home" else game.away_team
-                    ml = [l for l in game.lines if l.market == "moneyline"
-                          and l.selection.lower() == team.lower() and l.american is not None]
-                    if not ml:
-                        continue
-                    best = max(ml, key=lambda l: l.decimal or 0)
-                    if best.american is None or best.american > -120:
-                        continue  # Only show favorites
-                    implied = american_to_implied(best.american)
-                    all_recs.append(BetRecommendation(
-                        game_key=game.game_key, sport=game.sport, league=game.league,
-                        home_team=game.home_team, away_team=game.away_team,
-                        market="moneyline", selection=team,
-                        american=best.american, decimal=best.decimal or 1.0,
-                        book=best.book, strategy="ai_analysis",
-                        confidence=round(implied, 4), edge=round(implied - 0.5, 4),
-                        reasoning=f"AI phân tích: {team} là đội mạnh hơn ({implied:.0%} thắng) tại {best.book}",
-                    ))
 
         all_recs.sort(key=lambda r: r.confidence, reverse=True)
         recs = all_recs[:15]
