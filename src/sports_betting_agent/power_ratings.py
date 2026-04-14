@@ -111,8 +111,7 @@ class EloRatings:
 
                 for event in data.get("events", []):
                     event_id = str(event.get("id", ""))
-                    if event_id in self._processed_ids:
-                        continue
+                    elo_already_seen = event_id in self._processed_ids
 
                     comp = (event.get("competitions") or [{}])[0]
                     status = comp.get("status", {}).get("type", {})
@@ -136,14 +135,10 @@ class EloRatings:
                     if not home or not away or not home["name"] or not away["name"]:
                         continue
 
-                    # Update Elo
-                    self._update_game(
-                        sport, home["name"], away["name"],
-                        home["score"], away["score"], cfg
-                    )
-                    # Feed the rolling scoring tracker in lockstep — same
-                    # events, same dedup, so the total-projection model has
-                    # data the moment Elo does.
+                    # Scoring tracker has its own dedup (processed_ids on its
+                    # side). We always offer the game to it — that's how the
+                    # tracker backfills history on first run, without re-Eloing
+                    # games the rating system already processed.
                     if self.scoring_tracker is not None:
                         try:
                             self.scoring_tracker.record_game(
@@ -156,18 +151,30 @@ class EloRatings:
                             )
                         except Exception as exc:
                             logger.warning("scoring_tracker record_game failed: %s", exc)
+
+                    if elo_already_seen:
+                        continue
+
+                    # Update Elo
+                    self._update_game(
+                        sport, home["name"], away["name"],
+                        home["score"], away["score"], cfg
+                    )
                     self._processed_ids.add(event_id)
                     new_games += 1
 
         if new_games > 0:
             self.games_processed += new_games
             self._save()
-            if self.scoring_tracker is not None:
-                try:
-                    self.scoring_tracker.save()
-                except Exception as exc:
-                    logger.warning("scoring_tracker save failed: %s", exc)
             logger.info("elo: updated %d games, total %d processed", new_games, self.games_processed)
+        # Always save the scoring tracker — on first runs after deploy the
+        # tracker is backfilling games Elo already processed, so there
+        # are no "new" games for Elo but plenty for the tracker.
+        if self.scoring_tracker is not None:
+            try:
+                self.scoring_tracker.save()
+            except Exception as exc:
+                logger.warning("scoring_tracker save failed: %s", exc)
 
     def _update_game(self, sport: str, home: str, away: str,
                      home_score: int, away_score: int, cfg: Dict):
