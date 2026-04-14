@@ -115,10 +115,14 @@ class TotalProjectionStrategy(Strategy):
                     chosen = under
                     display_sel = "Under"
 
-                # Convert diff into a probability-space edge using a
-                # simple logistic shape — bigger gaps => bigger model
-                # confidence, saturating around 65-70%.
-                confidence = 0.5 + 0.5 * math.tanh(abs(diff) / (2.0 * min_edge))
+                # Convert the run/goal/point gap into a bounded confidence.
+                # We deliberately cap at 0.62 — rolling 20-game averages
+                # are noisy enough that claiming 99% confidence on a single
+                # variable is silly, and Kelly sizing punishes overclaimed
+                # confidence by betting aggressively into variance.
+                CONFIDENCE_CAP = 0.62
+                span = CONFIDENCE_CAP - 0.5
+                confidence = 0.5 + span * math.tanh(abs(diff) / (4.0 * min_edge))
                 implied = american_to_implied(chosen.american)
                 edge = confidence - implied
 
