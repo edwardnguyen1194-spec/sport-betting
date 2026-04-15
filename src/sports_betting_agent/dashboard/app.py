@@ -34,6 +34,7 @@ from ..strategies import (
     SpreadValueStrategy,
     TotalValueStrategy,
     TotalProjectionStrategy,
+    SteamFollowStrategy,
     ContrarianStrategy,
     MiddleDetectorStrategy,
     SituationalStrategy,
@@ -167,6 +168,9 @@ def create_app(
         SpreadValueStrategy(settings),
         TotalValueStrategy(settings),
         TotalProjectionStrategy(settings, scoring=scoring),
+        # Follows Pinnacle + Bovada steam moves on spreads/totals — the
+        # single biggest edge we can extract from the line-movement store.
+        SteamFollowStrategy(settings, line_store=line_store),
     ]
     ensemble = EnsembleStrategy(strategies, settings)
 
@@ -280,6 +284,7 @@ def create_app(
             SpreadValueStrategy(settings),
             TotalValueStrategy(settings),
             TotalProjectionStrategy(settings, scoring=scoring),
+            SteamFollowStrategy(settings, line_store=line_store),
         ]:
             all_recs.extend(strat.generate(games))
 
