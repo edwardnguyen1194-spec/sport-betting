@@ -196,7 +196,19 @@ def create_app(
             paper.record_closing_lines(games)
         except Exception as exc:
             logger.warning("record_closing_lines failed: %s", exc)
-        return ensemble.generate(games)
+        # Filter to games that haven't started yet (plus a 10 min grace
+        # window). Uncle flagged that we were placing bets on games that
+        # were already in progress — a recipe for variance-free losses.
+        from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+        cutoff = _dt.now(_tz.utc) + _td(minutes=10)
+        upcoming = [
+            g for g in games
+            if g.commence_time is None or g.commence_time >= cutoff
+        ]
+        dropped = len(games) - len(upcoming)
+        if dropped:
+            logger.info("Dropped %d in-progress/finished games from rec pool", dropped)
+        return ensemble.generate(upcoming)
 
     # ------------------------------------------------------------------
     # Routes
