@@ -236,6 +236,19 @@ def create_app(
             paper._save_state()
         return jsonify({"ok": True, "bankroll": paper.bankroll})
 
+    @app.route("/api/purge-voids", methods=["POST"])
+    def purge_voids():
+        """Remove every status='void' entry from closed history.
+        Leaves real win/loss results untouched so the agent's actual
+        performance record stays intact. Uncle finds HÒA rows visually
+        noisy on the dashboard."""
+        with paper._lock:
+            before = len(paper.closed_bets)
+            paper.closed_bets = [b for b in paper.closed_bets if b.status != "void"]
+            removed = before - len(paper.closed_bets)
+            paper._save_state()
+        return jsonify({"ok": True, "removed": removed, "remaining": len(paper.closed_bets)})
+
     _odds_cache: Dict = {}
 
     @app.route("/api/odds")
