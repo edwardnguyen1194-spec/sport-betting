@@ -62,7 +62,8 @@ class SteamFollowStrategy(Strategy):
         self.line_store = line_store or LineMovementStore(self.settings.data_dir)
 
     def generate(self, games: Iterable[GameOdds]) -> List[BetRecommendation]:
-        games_by_key = {g.game_key: g for g in games}
+        games_list = list(games)
+        games_by_key = {g.game_key: g for g in games_list}
         try:
             moves = self.line_store.detect_steam()
         except Exception as exc:
@@ -80,7 +81,18 @@ class SteamFollowStrategy(Strategy):
             # not selling it off.
             if move.direction != "shorten":
                 continue
+
+            # Game-matching strategy. First try exact game_key (same
+            # matchup + same day). If the steam move was stored for a
+            # different day's game, fall back to matching by the teams
+            # named in the move — this lets a real sharp signal carry
+            # across days, e.g. a Royals spread that saw steam last
+            # night still applies to Royals' next spread tonight only
+            # if we still trust the read; we take that risk for spreads
+            # (team-level), not for totals (game-level only).
             game = games_by_key.get(move.game_key)
+            if game is None and move.market == "spread":
+                game = self._find_game_by_team(games_list, move.selection)
             if game is None:
                 continue
 
@@ -134,6 +146,19 @@ class SteamFollowStrategy(Strategy):
         return recs
 
     # -- helpers -----------------------------------------------------
+
+    def _find_game_by_team(self, games, team_norm: str):
+        """Locate today's game whose home or away team matches ``team_norm``.
+
+        The steam store lowercases selections, so we compare normalized.
+        This is the fallback when the steam record's game_key belongs to
+        a past matchup of the same team.
+        """
+        needle = team_norm.strip().lower()
+        for g in games:
+            if g.home_team.lower() == needle or g.away_team.lower() == needle:
+                return g
+        return None
 
     def _best_current_line(self, game: GameOdds, move: SteamMove):
         """Return the cheapest-to-buy sharp line on ``move.selection``."""
