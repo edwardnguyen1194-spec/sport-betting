@@ -54,12 +54,38 @@ class ActionNetworkFetcher(BaseFetcher):
 
         slug, sport_label, league_label = SPORT_PATHS[sport_key]
         url = f"{AN_BASE}/{slug}"
-        payload = self._get(
-            url,
-            params={"bookIds": ",".join(str(b) for b in BOOK_LABELS), "periods": "event"},
-            headers={"Origin": "https://www.actionnetwork.com", "Referer": "https://www.actionnetwork.com/"},
-        )
-        return self._parse(payload, sport_label, league_label)
+        from datetime import datetime, timezone, timedelta
+        # Fetch today + next 2 days so the aggregator has upcoming games
+        # to show when today's slate is already in progress. Without this,
+        # late-evening Pacific cycles would only see AN's current-day
+        # (running/finished) games and drop them all via the commence
+        # filter — we'd lose every non-Bovada spread/total line.
+        now = datetime.now(timezone.utc)
+        games: List[GameOdds] = []
+        seen_keys: set = set()
+        for day_offset in (0, 1, 2):
+            date_str = (now + timedelta(days=day_offset)).strftime("%Y%m%d")
+            try:
+                payload = self._get(
+                    url,
+                    params={
+                        "bookIds": ",".join(str(b) for b in BOOK_LABELS),
+                        "periods": "event",
+                        "date": date_str,
+                    },
+                    headers={
+                        "Origin": "https://www.actionnetwork.com",
+                        "Referer": "https://www.actionnetwork.com/",
+                    },
+                )
+            except Exception:
+                continue
+            for g in self._parse(payload, sport_label, league_label):
+                if g.game_key in seen_keys:
+                    continue
+                seen_keys.add(g.game_key)
+                games.append(g)
+        return games
 
     # ------------------------------------------------------------------
 
