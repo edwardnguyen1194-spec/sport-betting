@@ -206,10 +206,34 @@ class PaperTrader:
 
     def place_many(self, recs: Iterable[BetRecommendation], max_bets: int = 5) -> List[Bet]:
         """Place bets from recommendations, capped at max_bets per cycle.
-        Takes the top picks sorted by confidence * edge."""
+
+        Picks are scored by confidence * edge, but we also GUARANTEE
+        market diversity: at least one total gets placed per cycle
+        whenever a total pick exists. Previously spreads (edges
+        11-13%) always out-sorted totals (edges ~5%) and Uncle's
+        dashboard had zero over/under action.
+        """
+        recs = list(recs)
         sorted_recs = sorted(recs, key=lambda r: r.confidence * max(r.edge, 0), reverse=True)
-        placed = []
-        for r in sorted_recs:
+
+        placed: List[Bet] = []
+        remaining = list(sorted_recs)
+
+        # Reserve up to 2 slots for totals when they exist so the
+        # dashboard always shows at least some over/under action.
+        total_quota = min(2, sum(1 for r in sorted_recs if r.market == "total"))
+        if total_quota > 0:
+            totals_sorted = [r for r in sorted_recs if r.market == "total"]
+            for r in totals_sorted[:total_quota]:
+                if len(placed) >= max_bets:
+                    break
+                bet = self.place(r)
+                if bet is not None:
+                    placed.append(bet)
+                remaining = [x for x in remaining if x is not r]
+
+        # Fill the rest by raw score.
+        for r in remaining:
             if len(placed) >= max_bets:
                 break
             bet = self.place(r)
