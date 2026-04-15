@@ -10,6 +10,11 @@ primary_region = "sjc"
   SBA_LANG = "vi"
   SBA_DATA_DIR = "/data/sba"
   SBA_ENABLED_SOURCES = "bovada,draftkings,espn,scoresandodds,vegasinsider,actionnetwork,sbr"
+  # ActionNetwork returns a 500KB+ payload; 12s was cutting it off on
+  # Fly's network and we lost every non-Bovada spread/total line. 25s
+  # is comfortably long but still under the aggregator's 20s-per-sport
+  # wait window so slow sources stay bounded without hanging the loop.
+  SBA_HTTP_TIMEOUT = "25"
 
 [[mounts]]
   source = "sba_data"
