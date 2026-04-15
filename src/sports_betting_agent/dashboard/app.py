@@ -218,6 +218,19 @@ def create_app(
     # Routes
     # ------------------------------------------------------------------
 
+    @app.after_request
+    def _no_cache(response):
+        """Prevent browser/proxy caching of the dashboard — Uncle kept
+        seeing yesterday's ledger until a second hard reload."""
+        # Only disable cache for HTML + JSON API responses; keep static
+        # assets (CSS/JS/images) cacheable so the page still loads fast.
+        ct = response.headers.get("Content-Type", "")
+        if ct.startswith("text/html") or ct.startswith("application/json"):
+            response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
+        return response
+
     @app.route("/")
     def index():
         stats = paper.stats()
