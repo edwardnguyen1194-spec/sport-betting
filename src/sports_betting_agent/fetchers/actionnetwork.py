@@ -34,7 +34,10 @@ SPORT_PATHS: Dict[str, tuple[str, str, str]] = {
     "soccer_ucl": ("ucl", "soccer_ucl", "ucl"),
 }
 
-# Action Network internal book-id -> human-readable label (partial map).
+# Action Network internal book-id -> human-readable label.
+# Only IDs listed here are accepted — anything else is skipped so the
+# dashboard never shows "book_21" style placeholders and outlier filters
+# don't get confused by lines tagged to unmapped sources.
 BOOK_LABELS = {
     15: "pinnacle",
     75: "fanduel",
@@ -47,6 +50,9 @@ BOOK_LABELS = {
     972: "bovada",
     1005: "hardrock",
     59: "espn_bet",
+    21: "circa",          # Sharp book, reputable
+    71: "betrivers",      # Formerly SugarHouse
+    76: "foxbet",
 }
 
 
@@ -239,7 +245,12 @@ class ActionNetworkFetcher(BaseFetcher):
             book_id_int = int(book_id) if book_id is not None else None
         except (TypeError, ValueError):
             book_id_int = None
-        book = BOOK_LABELS.get(book_id_int, f"book_{book_id}")
+        book = BOOK_LABELS.get(book_id_int)
+        if book is None:
+            # Unknown book id — skip rather than leak "book_21" style
+            # placeholders into the dashboard. If a real book shows up
+            # we extend BOOK_LABELS above; everything else is noise.
+            return
 
         # Moneyline -- accept multiple historical key spellings.
         ml_home = _first_float(entry, ("ml_home", "home_ml", "moneyline_home", "ml"))
