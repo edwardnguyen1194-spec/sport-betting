@@ -35,6 +35,7 @@ from ..strategies import (
     TotalValueStrategy,
     TotalProjectionStrategy,
     SteamFollowStrategy,
+    PublicFadeStrategy,
     ContrarianStrategy,
     MiddleDetectorStrategy,
     SituationalStrategy,
@@ -175,6 +176,9 @@ def create_app(
         # Follows Pinnacle + Bovada steam moves on spreads/totals — the
         # single biggest edge we can extract from the line-movement store.
         SteamFollowStrategy(settings, line_store=line_store),
+        # Fade the public: research shows dogs covering ~63.8% when
+        # public has <40% tickets. Uses ActionNetwork public-betting %.
+        PublicFadeStrategy(settings),
     ]
     ensemble = EnsembleStrategy(strategies, settings)
 
@@ -314,6 +318,7 @@ def create_app(
             TotalValueStrategy(settings),
             TotalProjectionStrategy(settings, scoring=scoring),
             SteamFollowStrategy(settings, line_store=line_store),
+            PublicFadeStrategy(settings),
         ]:
             all_recs.extend(strat.generate(games))
 

@@ -12,6 +12,7 @@ from .spread_value import SpreadValueStrategy
 from .total_value import TotalValueStrategy
 from .total_projection import TotalProjectionStrategy
 from .steam_follow import SteamFollowStrategy
+from .public_fade import PublicFadeStrategy
 from .contrarian import ContrarianStrategy
 from .middle_detector import MiddleDetectorStrategy
 from .situational import SituationalStrategy
@@ -29,6 +30,7 @@ __all__ = [
     "TotalValueStrategy",
     "TotalProjectionStrategy",
     "SteamFollowStrategy",
+    "PublicFadeStrategy",
     "ContrarianStrategy",
     "MiddleDetectorStrategy",
     "SituationalStrategy",

@@ -63,6 +63,8 @@ class TotalProjectionStrategy(Strategy):
         recs: List[BetRecommendation] = []
         cfg = self.settings
 
+        from ..park_factors import park_factor as _park_factor
+
         for game in games:
             proj = self.scoring.projected_total(
                 sport=game.sport, home=game.home_team, away=game.away_team
@@ -70,6 +72,13 @@ class TotalProjectionStrategy(Strategy):
             if proj is None:
                 continue
             projected = proj["projected_total"]
+            # Apply ballpark factor for MLB — the market under-weights
+            # park extremes like Coors (+15% runs) and Dodger Stadium
+            # (-8%), per multi-season BallparkPal / FanGraphs data.
+            pf = 1.0
+            if game.sport in ("baseball_mlb", "baseball_ncaa"):
+                pf = _park_factor(game.home_team)
+                projected = projected * pf
 
             # Collect total lines with real juice (no fake -110 defaults).
             totals = [
