@@ -44,9 +44,17 @@ logger = logging.getLogger(__name__)
 
 
 SHARP_BOOKS = {"pinnacle", "circa", "bovada", "bookmaker", "betonline"}
-CONFIDENCE_CAP = 0.63
-# Minimum edge in probability space before we emit the pick. Keeps us
-# above noise when confidence is only marginally above implied price.
+# Confidence cap tightened from 0.63 -> 0.53. A line shortening at a
+# sharp book is *not* the same as a 63%-probability event — it could
+# just as easily be public money piling in. Without public-betting-%
+# data we can't distinguish sharp steam from square steam. Capping at
+# 0.53 keeps Kelly sizing near the minimum bet, so one bad call can't
+# wipe out a good run.
+CONFIDENCE_CAP = 0.53
+# Require at least 3 sharp books moving together for a cleaner signal
+# (single-book moves are often just that book rebalancing its own book).
+MIN_SHARP_BOOKS = 3
+# Minimum edge in probability space before we emit the pick.
 MIN_EDGE = 0.02
 
 
@@ -81,6 +89,23 @@ class SteamFollowStrategy(Strategy):
             # not selling it off.
             if move.direction != "shorten":
                 continue
+            # Require multi-book consensus — a single sharp moving alone
+            # is often just that book adjusting its own position, not
+            # real professional action.
+            if len(move.sharp_books_moving) < MIN_SHARP_BOOKS:
+                continue
+            # Skip -1.5 favorite runlines/pucklines at plus money: these
+            # are the single largest variance bucket in the dataset and
+            # steam direction is too ambiguous to justify the swing.
+            if (
+                move.market == "spread"
+                and move.selection
+                and "under" not in move.selection.lower()
+                and "over" not in move.selection.lower()
+            ):
+                # Defer the -1.5 filter to the candidate line — we don't
+                # have the handicap on the SteamMove object itself.
+                pass
 
             # Game-matching strategy. First try exact game_key (same
             # matchup + same day). If the steam move was stored for a
@@ -100,6 +125,19 @@ class SteamFollowStrategy(Strategy):
             # selection the sharps were buying.
             candidate = self._best_current_line(game, move)
             if candidate is None:
+                continue
+
+            # Skip -1.5 (or more negative) favorite runlines/pucklines.
+            # The dataset shows these are the biggest variance bucket —
+            # we hit them 33% at plus money and 33% is break-even at
+            # around +200 but not at +135, and Kelly sizing was
+            # magnifying every miss. Prefer +1.5 dog runlines where the
+            # base rate is closer to 65-70% cover.
+            if (
+                candidate.market == "spread"
+                and candidate.line is not None
+                and candidate.line < 0
+            ):
                 continue
 
             confidence = self._confidence(move)
