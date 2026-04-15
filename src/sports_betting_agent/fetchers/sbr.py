@@ -67,6 +67,24 @@ class SBRFetcher(BaseFetcher):
 
     # ------------------------------------------------------------------
 
+    @staticmethod
+    def _normalize_book(name: str) -> str:
+        """Collapse underscore variants into canonical names so
+        ``draft_kings`` merges with ``draftkings`` etc. SBRscrape
+        uses underscores; ActionNetwork doesn't — mismatches inflated
+        multi-book counts and caused -110 fake-default lines from SBR
+        to appear as a *second* book for the same sportsbook."""
+        n = str(name).lower().replace("_", "").strip()
+        # Map common aliases
+        return {
+            "draftkings": "draftkings",
+            "fanduel": "fanduel",
+            "betmgm": "betmgm",
+            "caesars": "caesars",
+            "pointsbet": "pointsbet",
+            "betonline": "betonline",
+        }.get(n, str(name).lower().strip())
+
     def _from_sbrscrape(self, game: dict, sport_label: str, league_label: str) -> GameOdds:
         home = game.get("home_team") or ""
         away = game.get("away_team") or ""
@@ -89,10 +107,10 @@ class SBRFetcher(BaseFetcher):
         # Moneylines
         for book, ml in (game.get("home_ml") or {}).items():
             if ml is not None:
-                g.lines.append(OddsLine(book=str(book).lower(), market="moneyline", selection=home, american=float(ml)))
+                g.lines.append(OddsLine(book=self._normalize_book(book), market="moneyline", selection=home, american=float(ml)))
         for book, ml in (game.get("away_ml") or {}).items():
             if ml is not None:
-                g.lines.append(OddsLine(book=str(book).lower(), market="moneyline", selection=away, american=float(ml)))
+                g.lines.append(OddsLine(book=self._normalize_book(book), market="moneyline", selection=away, american=float(ml)))
 
         # Spreads — keep only lines where juice was actually reported for
         # that book. Earlier versions dropped every -110 value to avoid
@@ -105,13 +123,13 @@ class SBRFetcher(BaseFetcher):
                 juice_dict = game.get("home_spread_juice") or {}
                 juice = juice_dict.get(book)
                 if juice is not None:
-                    g.lines.append(OddsLine(book=str(book).lower(), market="spread", selection=home, american=float(juice), line=float(spread)))
+                    g.lines.append(OddsLine(book=self._normalize_book(book), market="spread", selection=home, american=float(juice), line=float(spread)))
         for book, spread in (game.get("away_spread") or {}).items():
             if spread is not None:
                 juice_dict = game.get("away_spread_juice") or {}
                 juice = juice_dict.get(book)
                 if juice is not None:
-                    g.lines.append(OddsLine(book=str(book).lower(), market="spread", selection=away, american=float(juice), line=float(spread)))
+                    g.lines.append(OddsLine(book=self._normalize_book(book), market="spread", selection=away, american=float(juice), line=float(spread)))
 
         # Totals — same rule: accept any juice value the source actually
         # reported for that book, including real -110s.
@@ -122,9 +140,9 @@ class SBRFetcher(BaseFetcher):
                 over_juice = over_dict.get(book)
                 under_juice = under_dict.get(book)
                 if over_juice is not None:
-                    g.lines.append(OddsLine(book=str(book).lower(), market="total", selection="Over", american=float(over_juice), line=float(total)))
+                    g.lines.append(OddsLine(book=self._normalize_book(book), market="total", selection="Over", american=float(over_juice), line=float(total)))
                 if under_juice is not None:
-                    g.lines.append(OddsLine(book=str(book).lower(), market="total", selection="Under", american=float(under_juice), line=float(total)))
+                    g.lines.append(OddsLine(book=self._normalize_book(book), market="total", selection="Under", american=float(under_juice), line=float(total)))
 
         return g
 
