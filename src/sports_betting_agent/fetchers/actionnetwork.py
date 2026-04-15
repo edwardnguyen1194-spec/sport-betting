@@ -19,13 +19,19 @@ from .base import BaseFetcher, FetcherError
 AN_BASE = "https://api.actionnetwork.com/web/v1/scoreboard"
 
 SPORT_PATHS: Dict[str, tuple[str, str, str]] = {
-    "baseball_ncaa": ("ncaab", "baseball_ncaa", "college-baseball"),
+    # AN's NCAA baseball endpoint was mistakenly mapped to "ncaab"
+    # (college basketball); AN itself has no college-baseball scoreboard
+    # feed, so we leave it out rather than pollute the aggregator.
     "baseball_mlb": ("mlb", "baseball_mlb", "mlb"),
     "basketball_nba": ("nba", "basketball_nba", "nba"),
     "basketball_ncaab": ("ncaab", "basketball_ncaab", "college-basketball"),
+    "basketball_wnba": ("wnba", "basketball_wnba", "wnba"),
     "football_nfl": ("nfl", "football_nfl", "nfl"),
     "football_ncaaf": ("ncaaf", "football_ncaaf", "college-football"),
     "hockey_nhl": ("nhl", "hockey_nhl", "nhl"),
+    "soccer_mls": ("mls", "soccer_mls", "mls"),
+    "soccer_epl": ("epl", "soccer_epl", "epl"),
+    "soccer_ucl": ("ucl", "soccer_ucl", "ucl"),
 }
 
 # Action Network internal book-id -> human-readable label (partial map).

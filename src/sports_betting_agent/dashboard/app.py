@@ -52,9 +52,13 @@ DEFAULT_SPORTS = [
     "baseball_mlb",
     "basketball_nba",
     "basketball_ncaab",
+    "basketball_wnba",
     "football_nfl",
     "football_ncaaf",
     "hockey_nhl",
+    "soccer_mls",
+    "soccer_epl",
+    "soccer_ucl",
 ]
 
 
