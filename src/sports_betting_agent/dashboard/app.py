@@ -13,7 +13,8 @@ import logging
 import os
 from typing import List, Optional
 
-from flask import Flask, jsonify, render_template, request
+from functools import wraps
+from flask import Flask, jsonify, render_template, request, Response
 
 from ..auto_settler import AutoSettler
 from ..brain import AgentBrain
@@ -221,6 +222,39 @@ def create_app(
     # ------------------------------------------------------------------
     # Routes
     # ------------------------------------------------------------------
+
+    # Simple password gate — Uncle's request. Password is checked via
+    # HTTP Basic Auth on every page load. API endpoints (/api/*) are
+    # left open so the auto-trader and monitoring scripts still work.
+    DASHBOARD_PASSWORD = os.environ.get("SBA_PASSWORD", "phungga2026")
+
+    def _check_auth(username, password):
+        return password == DASHBOARD_PASSWORD
+
+    def _auth_required(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            auth = request.authorization
+            if not auth or not _check_auth(auth.username, auth.password):
+                return Response(
+                    "Đăng nhập để xem dashboard",
+                    401,
+                    {"WWW-Authenticate": 'Basic realm="AI Sports Betting"'},
+                )
+            return f(*args, **kwargs)
+        return decorated
+
+    @app.before_request
+    def _protect_dashboard():
+        # Only gate HTML pages, not /api/* endpoints
+        if not request.path.startswith("/api/") and request.path != "/favicon.ico":
+            auth = request.authorization
+            if not auth or not _check_auth(auth.username, auth.password):
+                return Response(
+                    "Đăng nhập để xem dashboard",
+                    401,
+                    {"WWW-Authenticate": 'Basic realm="AI Sports Betting"'},
+                )
 
     @app.after_request
     def _no_cache(response):

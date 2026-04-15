@@ -26,22 +26,30 @@ ESPN_BASE = "https://site.api.espn.com/apis/site/v2/sports"
 SPORT_ESPN = {
     "baseball_mlb": "baseball/mlb",
     "basketball_nba": "basketball/nba",
+    "basketball_wnba": "basketball/wnba",
     "hockey_nhl": "hockey/nhl",
     "football_nfl": "football/nfl",
     "baseball_ncaa": "baseball/college-baseball",
     "basketball_ncaab": "basketball/college-basketball",
     "football_ncaaf": "football/college-football",
+    "soccer_mls": "soccer/usa.1",
+    "soccer_epl": "soccer/eng.1",
+    "soccer_ucl": "soccer/uefa.champions",
 }
 
 # Calibrated per sport
 SPORT_CONFIG = {
     "baseball_mlb": {"k": 4, "hfa": 24, "default": 1500, "regression": 0.33},
     "basketball_nba": {"k": 20, "hfa": 100, "default": 1500, "regression": 0.25},
+    "basketball_wnba": {"k": 20, "hfa": 80, "default": 1500, "regression": 0.30},
     "hockey_nhl": {"k": 6, "hfa": 33, "default": 1500, "regression": 0.33},
     "football_nfl": {"k": 20, "hfa": 48, "default": 1505, "regression": 0.33},
     "baseball_ncaa": {"k": 8, "hfa": 30, "default": 1500, "regression": 0.40},
     "basketball_ncaab": {"k": 25, "hfa": 65, "default": 1500, "regression": 0.40},
     "football_ncaaf": {"k": 25, "hfa": 55, "default": 1500, "regression": 0.40},
+    "soccer_mls": {"k": 30, "hfa": 65, "default": 1500, "regression": 0.25},
+    "soccer_epl": {"k": 25, "hfa": 55, "default": 1500, "regression": 0.20},
+    "soccer_ucl": {"k": 20, "hfa": 45, "default": 1500, "regression": 0.15},
 }
 
 
