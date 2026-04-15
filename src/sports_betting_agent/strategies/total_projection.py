@@ -64,6 +64,7 @@ class TotalProjectionStrategy(Strategy):
         cfg = self.settings
 
         from ..park_factors import park_factor as _park_factor
+        from ..weather import total_adjustment as _weather_adj
 
         for game in games:
             proj = self.scoring.projected_total(
@@ -76,9 +77,20 @@ class TotalProjectionStrategy(Strategy):
             # park extremes like Coors (+15% runs) and Dodger Stadium
             # (-8%), per multi-season BallparkPal / FanGraphs data.
             pf = 1.0
+            weather_delta = 0.0
+            weather_reason = ""
             if game.sport in ("baseball_mlb", "baseball_ncaa"):
                 pf = _park_factor(game.home_team)
                 projected = projected * pf
+                # Add weather adjustment (wind ≥15 mph, temp extremes).
+                # Skipped for indoor stadiums and when forecast fails.
+                try:
+                    weather_delta, weather_reason = _weather_adj(
+                        game.home_team, game.commence_time
+                    )
+                    projected = projected + weather_delta
+                except Exception as exc:
+                    logger.debug("weather adj failed: %s", exc)
 
             # Collect total lines with real juice (no fake -110 defaults).
             totals = [
