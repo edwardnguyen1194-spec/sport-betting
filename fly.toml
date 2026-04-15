@@ -9,7 +9,7 @@ primary_region = "sjc"
   SBA_AUTO_TRADE_INTERVAL = "300"
   SBA_LANG = "vi"
   SBA_DATA_DIR = "/data/sba"
-  SBA_ENABLED_SOURCES = "bovada,espn,scoresandodds,vegasinsider,actionnetwork,sbr"
+  SBA_ENABLED_SOURCES = "bovada,draftkings,espn,scoresandodds,vegasinsider,actionnetwork,sbr"
 
 [[mounts]]
   source = "sba_data"
