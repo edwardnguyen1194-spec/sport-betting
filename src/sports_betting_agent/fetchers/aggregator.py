@@ -70,13 +70,20 @@ class OddsAggregator:
         if not self.fetchers:
             return results
 
+        # Previously 5s which was too aggressive: ActionNetwork returns a
+        # 500KB+ JSON payload that can't be fully received from Fly.io in
+        # that window, so we silently lost its multi-book spreads and
+        # totals on every cycle. 20s is generous enough for the slow
+        # sources without hanging the auto-trade loop (it runs every
+        # 300s so 20s is <7% of a cycle).
+        AGG_TIMEOUT = 20
         with ThreadPoolExecutor(max_workers=max(4, len(self.fetchers))) as pool:
             future_map = {
                 pool.submit(self._safe_fetch, fetcher, sport_key): name
                 for name, fetcher in self.fetchers.items()
             }
             try:
-                for fut in as_completed(future_map, timeout=5):
+                for fut in as_completed(future_map, timeout=AGG_TIMEOUT):
                     name = future_map[fut]
                     try:
                         results.extend(fut.result())
