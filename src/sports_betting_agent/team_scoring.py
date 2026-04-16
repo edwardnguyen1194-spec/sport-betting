@@ -114,7 +114,20 @@ class TeamScoringTracker:
     # -- queries -----------------------------------------------------
 
     def team(self, sport: str, team: str) -> Optional[Dict[str, List[float]]]:
-        return self.data.get(sport, {}).get(team)
+        sport_data = self.data.get(sport, {})
+        # Exact match first.
+        exact = sport_data.get(team)
+        if exact is not None:
+            return exact
+        # Fuzzy fallback: Bovada uses "Stanford" but ESPN stores
+        # "Stanford Cardinal". Match when the query is a prefix of a
+        # stored name, or the stored name starts with the query.
+        needle = team.lower().strip()
+        for stored_name, rec in sport_data.items():
+            sn = stored_name.lower()
+            if sn.startswith(needle) or needle.startswith(sn):
+                return rec
+        return None
 
     @staticmethod
     def _avg(values: List[float]) -> Optional[float]:
