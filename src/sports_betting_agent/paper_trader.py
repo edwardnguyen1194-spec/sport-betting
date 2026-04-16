@@ -212,38 +212,49 @@ class PaperTrader:
     def place_many(self, recs: Iterable[BetRecommendation], max_bets: int = 5) -> List[Bet]:
         """Place bets from recommendations, capped at max_bets per cycle.
 
-        Picks are scored by confidence * edge, but we also GUARANTEE
-        market diversity: at least one total gets placed per cycle
-        whenever a total pick exists. Previously spreads (edges
-        11-13%) always out-sorted totals (edges ~5%) and Uncle's
-        dashboard had zero over/under action.
+        Enforces a balanced market mix so the dashboard never shows
+        all-spreads or all-totals. Quotas per cycle of 5 bets:
+
+          * Up to 2 spread picks (top-scored)
+          * Up to 2 total picks (top-scored)
+          * 1 wildcard slot filled by the next best across any market
+
+        Each quota is skipped when no eligible recs exist. Scoring is
+        still confidence * max(edge, 0) so we always prefer the agent's
+        highest-conviction plays within each market.
         """
         recs = list(recs)
         sorted_recs = sorted(recs, key=lambda r: r.confidence * max(r.edge, 0), reverse=True)
 
         placed: List[Bet] = []
-        remaining = list(sorted_recs)
+        picked_ids: set = set()
 
-        # Reserve up to 2 slots for totals when they exist so the
-        # dashboard always shows at least some over/under action.
-        total_quota = min(2, sum(1 for r in sorted_recs if r.market == "total"))
-        if total_quota > 0:
-            totals_sorted = [r for r in sorted_recs if r.market == "total"]
-            for r in totals_sorted[:total_quota]:
-                if len(placed) >= max_bets:
+        def _place_first_n(candidates, n_target):
+            placed_here = 0
+            for r in candidates:
+                if len(placed) >= max_bets or placed_here >= n_target:
                     break
+                if id(r) in picked_ids:
+                    continue
                 bet = self.place(r)
                 if bet is not None:
                     placed.append(bet)
-                remaining = [x for x in remaining if x is not r]
+                    picked_ids.add(id(r))
+                    placed_here += 1
 
-        # Fill the rest by raw score.
-        for r in remaining:
-            if len(placed) >= max_bets:
-                break
-            bet = self.place(r)
-            if bet is not None:
-                placed.append(bet)
+        spreads = [r for r in sorted_recs if r.market == "spread"]
+        totals = [r for r in sorted_recs if r.market == "total"]
+
+        # Up to 2 spreads AND up to 2 totals before anything else —
+        # guarantees Uncle's dashboard shows both markets as long as
+        # recs exist for each.
+        _place_first_n(spreads, 2)
+        _place_first_n(totals, 2)
+
+        # Remaining slot(s): best-scored across any market we haven't
+        # already placed.
+        _place_first_n(sorted_recs, max_bets - len(placed))
+
         return placed
 
     def settle_bet(self, bet_id: str, outcome: str) -> Optional[Bet]:
