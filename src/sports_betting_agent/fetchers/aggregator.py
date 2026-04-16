@@ -210,6 +210,10 @@ class OddsAggregator:
             "hockey_nhl":       0.5,
             "baseball_mlb":     0.5,
             "baseball_ncaa":    1.0,
+            # Soccer Asian-handicaps span -1.5 to +0 on same favorite.
+            "soccer_mls":       2.0,
+            "soccer_epl":       2.0,
+            "soccer_ucl":       2.0,
         }
         spread_tol = SPREAD_TOL.get(game.sport, 1.0)
         handicaps_by_team: Dict[str, List] = {}
