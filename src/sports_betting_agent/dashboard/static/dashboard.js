@@ -236,8 +236,15 @@
   $("#btn-refresh").addEventListener("click", loadOdds);
   $("#btn-recs").addEventListener("click", loadRecs);
   if ($("#btn-best-picks")) $("#btn-best-picks").addEventListener("click", loadBestPicks);
-  sportSelect.addEventListener("change", loadOdds);
+  sportSelect.addEventListener("change", () => { loadOdds(); loadRecs(); });
 
-  // Show ready message instead of auto-loading (which is slow)
-  oddsList.innerHTML = "<div class='card'>Nhấn \"Làm mới\" để tải kèo.</div>";
+  // Auto-load on page open so Uncle doesn't have to click Làm mới /
+  // Đề xuất từ AI every time. Both fire in parallel — odds from
+  // the 60s cache is instant, recs take a couple seconds.
+  loadOdds();
+  loadRecs();
+
+  // Also auto-refresh both every 90s so the dashboard stays live
+  // without manual clicking.
+  setInterval(() => { loadOdds(); loadRecs(); }, 90000);
 })();
