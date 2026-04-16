@@ -92,9 +92,15 @@
         const sportLabel = sportLabels[game.sport] || game.sport;
         const div = document.createElement("div");
         div.className = "card";
+        const gameDate = game.commence_time ? new Date(game.commence_time) : null;
+        const dateStr = gameDate ? gameDate.toLocaleString("en-US", {
+          weekday: "short", month: "short", day: "numeric",
+          hour: "numeric", minute: "2-digit", timeZoneName: "short"
+        }) : "";
         div.innerHTML = `
           <div class="best-pick-sport">${sportLabel}</div>
           <div class="teams">${game.away_team} @ ${game.home_team}</div>
+          ${dateStr ? `<div class="meta" style="color: #7ecbff; font-weight: 500;">🗓 ${dateStr}</div>` : ""}
           <div class="meta">
             ${bestAway ? `${game.away_team} ${fmtAmerican(bestAway.american)}` : ""}
             ${bestHome ? ` • ${game.home_team} ${fmtAmerican(bestHome.american)}` : ""}

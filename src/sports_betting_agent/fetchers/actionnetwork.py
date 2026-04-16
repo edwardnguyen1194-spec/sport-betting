@@ -180,15 +180,29 @@ class ActionNetworkFetcher(BaseFetcher):
                                 flat.append(v)
                 odds_block = flat
 
-        # Only keep the FIRST odds entry per book (main market)
-        # Action Network returns alternate lines, half-time, quarters etc.
+        # Keep ONLY the main-line entry per book. Previous "first entry"
+        # approach leaked alternate lines (puck line +2.5, 1st period,
+        # half spreads) into the main market — some books list alts
+        # first, causing the dashboard to show a book with Utah -1.5
+        # when the true main line is Utah +1.5. Filter strictly to
+        # ``type == "game"`` (or missing type, which AN uses as default
+        # for the game-level line) before deduping.
         seen_books: set = set()
         for entry in odds_block:
             if not isinstance(entry, dict):
                 continue
+            # Skip non-game markets: 1H, 2H, 1Q, 2Q, 3Q, 4Q, 1P, 2P, 3P, etc.
+            entry_type = str(entry.get("type", "game")).lower()
+            if entry_type not in ("game", "", "full_game", "fulltime", "fullgame"):
+                continue
+            # Skip alt spreads / alt totals — AN tags these in meta.
+            meta = entry.get("meta") or {}
+            if isinstance(meta, dict):
+                if meta.get("is_alternate") or meta.get("alt"):
+                    continue
             book_id = entry.get("book_id")
             if book_id in seen_books:
-                continue  # Skip duplicate entries for same book
+                continue
             seen_books.add(book_id)
             try:
                 self._apply_entry(entry, game, home_team, away_team)

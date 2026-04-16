@@ -167,6 +167,75 @@ class OddsAggregator:
         if bad_lines:
             game.lines = [l for l in game.lines if id(l) not in bad_lines]
 
+        # Spread-sign sanity check: if most books have team X as the
+        # favorite (negative handicap), drop any book that shows X as
+        # the dog. Alt-line leaks from ActionNetwork caused this —
+        # e.g. FanDuel listing Utah +1.5 while everyone else had Utah
+        # -1.5. The odds are real, but the labeled side is wrong.
+        signs_by_team: Dict[str, List[tuple]] = {}
+        for line in game.lines:
+            if line.market != "spread" or line.line is None:
+                continue
+            key = line.selection.lower()
+            signs_by_team.setdefault(key, []).append(line)
+
+        drop_ids = set()
+        for team, lines in signs_by_team.items():
+            if len(lines) < 3:
+                continue
+            # Count favorite vs dog votes.
+            fav_votes = sum(1 for l in lines if l.line < 0)
+            dog_votes = sum(1 for l in lines if l.line > 0)
+            if fav_votes == 0 or dog_votes == 0:
+                continue   # All books agree — nothing to prune.
+            # Minority side is suspect.
+            if fav_votes > dog_votes:
+                drop_ids.update(id(l) for l in lines if l.line > 0)
+            elif dog_votes > fav_votes:
+                drop_ids.update(id(l) for l in lines if l.line < 0)
+        if drop_ids:
+            game.lines = [l for l in game.lines if id(l) not in drop_ids]
+
+        # Spread-magnitude sanity check: drop any spread whose handicap
+        # is far from the consensus. Prevents alt-line leaks like
+        # FanDuel +2.5 mixing in with consensus +1.5 on NHL puck lines.
+        handicaps_by_team: Dict[str, List] = {}
+        for line in game.lines:
+            if line.market != "spread" or line.line is None:
+                continue
+            handicaps_by_team.setdefault(line.selection.lower(), []).append(line)
+        mag_drops = set()
+        for team, lines in handicaps_by_team.items():
+            if len(lines) < 3:
+                continue
+            sorted_h = sorted(abs(l.line) for l in lines)
+            median_abs = sorted_h[len(sorted_h) // 2]
+            for l in lines:
+                # More than 0.5 off the |median| is a different market.
+                if abs(abs(l.line) - median_abs) > 0.5:
+                    mag_drops.add(id(l))
+        if mag_drops:
+            game.lines = [l for l in game.lines if id(l) not in mag_drops]
+
+        # Total-number sanity check: same idea for over/under totals.
+        totals_by_side: Dict[str, List] = {}
+        for line in game.lines:
+            if line.market != "total" or line.line is None:
+                continue
+            totals_by_side.setdefault(line.selection.lower(), []).append(line)
+        tot_drops = set()
+        for side, lines in totals_by_side.items():
+            if len(lines) < 3:
+                continue
+            sorted_t = sorted(l.line for l in lines)
+            median_t = sorted_t[len(sorted_t) // 2]
+            for l in lines:
+                # Totals in the same game rarely vary by more than 1 run/goal/point.
+                if abs(l.line - median_t) > 1.0:
+                    tot_drops.add(id(l))
+        if tot_drops:
+            game.lines = [l for l in game.lines if id(l) not in tot_drops]
+
     @staticmethod
     def _safe_fetch(fetcher: BaseFetcher, sport_key: str) -> List[GameOdds]:
         try:
