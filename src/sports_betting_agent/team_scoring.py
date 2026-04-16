@@ -155,16 +155,22 @@ class TeamScoringTracker:
         if not h or not a:
             return None
 
-        h_scored = h["home_scored"]
-        h_allowed = h["home_allowed"]
-        a_scored = a["away_scored"]
-        a_allowed = a["away_allowed"]
-        if (
-            len(h_scored) < MIN_SAMPLES
-            or len(h_allowed) < MIN_SAMPLES
-            or len(a_scored) < MIN_SAMPLES
-            or len(a_allowed) < MIN_SAMPLES
-        ):
+        # Prefer venue-specific data. Fall back to combined home+away
+        # when venue-split is too thin — NCAA and MLS teams often have
+        # zero away records in a 14-day ESPN window because most away
+        # games were played earlier in the season.
+        def _pick(rec, primary_key, fallback_key):
+            vals = rec.get(primary_key, [])
+            if len(vals) >= MIN_SAMPLES:
+                return vals
+            combined = rec.get(primary_key, []) + rec.get(fallback_key, [])
+            return combined if len(combined) >= MIN_SAMPLES else []
+
+        h_scored = _pick(h, "home_scored", "away_scored")
+        h_allowed = _pick(h, "home_allowed", "away_allowed")
+        a_scored = _pick(a, "away_scored", "home_scored")
+        a_allowed = _pick(a, "away_allowed", "home_allowed")
+        if not h_scored or not h_allowed or not a_scored or not a_allowed:
             return None
 
         # Viewpoint 1: home offense vs away defense, away offense vs home defense.
