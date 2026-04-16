@@ -178,6 +178,36 @@ class TeamScoringTracker:
         proj_away = (self._avg(a_scored) + self._avg(h_allowed)) / 2.0
         projected = proj_home + proj_away
 
+        # League regression to handle sample-bias (e.g. NBA playoff
+        # pace slowdown or early-season small samples pulling an NBA
+        # projection to 238 when the actual mean is ~224). Shrink the
+        # raw projection 30% toward the league mean for basketball,
+        # 20% for hockey, 15% for baseball.
+        LEAGUE_MEAN = {
+            "baseball_mlb":     8.5,
+            "baseball_ncaa":   11.5,
+            "basketball_nba":  225.0,
+            "basketball_ncaab":145.0,
+            "basketball_wnba": 165.0,
+            "hockey_nhl":       6.2,
+            "football_nfl":    45.0,
+            "football_ncaaf":  55.0,
+        }
+        REGRESSION = {
+            "baseball_mlb":    0.15,
+            "baseball_ncaa":   0.20,
+            "basketball_nba":  0.30,
+            "basketball_ncaab":0.30,
+            "basketball_wnba": 0.30,
+            "hockey_nhl":      0.20,
+            "football_nfl":    0.20,
+            "football_ncaaf":  0.20,
+        }
+        mean = LEAGUE_MEAN.get(sport)
+        reg = REGRESSION.get(sport, 0.0)
+        if mean is not None and reg > 0:
+            projected = (1 - reg) * projected + reg * mean
+
         # Samples used and per-team averages returned for transparency.
         return {
             "projected_total": round(projected, 2),
