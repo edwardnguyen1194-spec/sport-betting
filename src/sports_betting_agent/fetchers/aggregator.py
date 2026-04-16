@@ -196,9 +196,22 @@ class OddsAggregator:
         if drop_ids:
             game.lines = [l for l in game.lines if id(l) not in drop_ids]
 
-        # Spread-magnitude sanity check: drop any spread whose handicap
-        # is far from the consensus. Prevents alt-line leaks like
-        # FanDuel +2.5 mixing in with consensus +1.5 on NHL puck lines.
+        # Spread-magnitude alt-line filter — sport-aware tolerance.
+        # NBA spreads legitimately vary by 1+ point across books on
+        # the same main line (Caesars -7.5, Pinnacle -8.5 is normal).
+        # NFL key numbers cluster around 3 and 7. NHL/MLB run lines
+        # are tight (always +/-1.5). Per-sport thresholds:
+        SPREAD_TOL = {
+            "basketball_nba":   2.5,
+            "basketball_ncaab": 3.5,
+            "basketball_wnba":  2.5,
+            "football_nfl":     3.5,
+            "football_ncaaf":   4.0,
+            "hockey_nhl":       0.5,
+            "baseball_mlb":     0.5,
+            "baseball_ncaa":    1.0,
+        }
+        spread_tol = SPREAD_TOL.get(game.sport, 1.0)
         handicaps_by_team: Dict[str, List] = {}
         for line in game.lines:
             if line.market != "spread" or line.line is None:
@@ -211,13 +224,26 @@ class OddsAggregator:
             sorted_h = sorted(abs(l.line) for l in lines)
             median_abs = sorted_h[len(sorted_h) // 2]
             for l in lines:
-                # More than 0.5 off the |median| is a different market.
-                if abs(abs(l.line) - median_abs) > 0.5:
+                if abs(abs(l.line) - median_abs) > spread_tol:
                     mag_drops.add(id(l))
         if mag_drops:
             game.lines = [l for l in game.lines if id(l) not in mag_drops]
 
-        # Total-number sanity check: same idea for over/under totals.
+        # Total-number alt-line filter — same per-sport tolerance.
+        TOTAL_TOL = {
+            "basketball_nba":   8.0,
+            "basketball_ncaab": 8.0,
+            "basketball_wnba":  6.0,
+            "football_nfl":     3.0,
+            "football_ncaaf":   4.0,
+            "hockey_nhl":       0.5,
+            "baseball_mlb":     1.0,
+            "baseball_ncaa":    1.5,
+            "soccer_mls":       1.0,
+            "soccer_epl":       1.0,
+            "soccer_ucl":       1.0,
+        }
+        total_tol = TOTAL_TOL.get(game.sport, 2.0)
         totals_by_side: Dict[str, List] = {}
         for line in game.lines:
             if line.market != "total" or line.line is None:
@@ -230,11 +256,55 @@ class OddsAggregator:
             sorted_t = sorted(l.line for l in lines)
             median_t = sorted_t[len(sorted_t) // 2]
             for l in lines:
-                # Totals in the same game rarely vary by more than 1 run/goal/point.
-                if abs(l.line - median_t) > 1.0:
+                if abs(l.line - median_t) > total_tol:
                     tot_drops.add(id(l))
         if tot_drops:
             game.lines = [l for l in game.lines if id(l) not in tot_drops]
+
+        # Cross-fetcher dedup: if both Bovada (direct fetcher) and
+        # ActionNetwork mapped a Bovada line for the same selection
+        # at the same handicap, keep the one with the more recent
+        # last_update or just the first encountered. Same book name
+        # appearing twice with different numbers means an alt leak —
+        # keep the entry whose handicap matches the consensus median.
+        from collections import defaultdict as _dd
+        dup_keys = _dd(list)
+        for l in game.lines:
+            key = (l.book.lower(), l.market, l.selection.lower(), l.line)
+            dup_keys[key].append(l)
+        # Drop later duplicates with the same key.
+        keep = set()
+        for key, lines in dup_keys.items():
+            keep.add(id(lines[0]))
+            for extra in lines[1:]:
+                pass   # not added to keep set => removed below
+        # Also collapse (book, market, selection) across handicaps to
+        # one entry per book — pick the line whose |handicap| matches
+        # the per-team median.
+        bms = _dd(list)
+        for l in game.lines:
+            if l.market != "spread" or l.line is None:
+                continue
+            bms[(l.book.lower(), l.selection.lower())].append(l)
+        cross_drops = set()
+        for (book, sel), lines in bms.items():
+            if len(lines) < 2:
+                continue
+            # Same book reported multiple handicaps — pick closest to
+            # team median, drop the rest.
+            team_lines = handicaps_by_team.get(sel, [])
+            if not team_lines:
+                continue
+            sorted_h = sorted(abs(t.line) for t in team_lines if id(t) not in mag_drops)
+            if not sorted_h:
+                continue
+            median_abs = sorted_h[len(sorted_h) // 2]
+            best = min(lines, key=lambda x: abs(abs(x.line) - median_abs))
+            for l in lines:
+                if l is not best:
+                    cross_drops.add(id(l))
+        if cross_drops:
+            game.lines = [l for l in game.lines if id(l) not in cross_drops]
 
     @staticmethod
     def _safe_fetch(fetcher: BaseFetcher, sport_key: str) -> List[GameOdds]:
