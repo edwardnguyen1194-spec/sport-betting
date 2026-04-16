@@ -27,7 +27,10 @@ logger = logging.getLogger(__name__)
 
 
 WINDOW = 20            # games retained per team/venue
-MIN_SAMPLES = 5        # below this we refuse to project a total
+MIN_SAMPLES = 3        # below this we refuse to project a total
+# Was 5 — too high for NCAA/MLS teams with sparse ESPN history.
+# The confidence cap (62%) in TotalProjectionStrategy already
+# guards against overconfidence on thin data.
 
 
 class TeamScoringTracker:
