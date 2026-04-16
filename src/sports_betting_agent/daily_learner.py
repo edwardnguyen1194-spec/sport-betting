@@ -46,13 +46,26 @@ from .line_movement import LineMovementStore
 logger = logging.getLogger(__name__)
 
 
-# A small rotating pool of high-quality free sources the agent can read
-# to pick up new technique. The learner tries each in turn until one
-# succeeds (network on Fly.io can be flaky to specific CDNs).
+# Expanded rotating pool of high-quality free sources the agent reads
+# every morning to pick up new technique. Organized by topic so each
+# morning's skill-of-the-day spans sharp strategy, math, weather,
+# situational trends, and market microstructure.
 LEARNING_FEEDS: List[str] = [
+    # Core sharp-betting research (Pinnacle, Boyd, SBR)
     "https://www.pinnacle.com/en/betting-resources/rss",
     "https://www.boydsbets.com/feed/",
     "https://www.sportsbookreview.com/picks/feed/",
+    # Advanced analytics + line-shopping
+    "https://www.covers.com/rss/nfl",
+    "https://www.covers.com/rss/nba",
+    "https://www.covers.com/rss/mlb",
+    "https://www.actionnetwork.com/rss",
+    # Weather + park factors (direct relevance to our totals model)
+    "https://www.ballparkpal.com/feed/",
+    # DFS / statistical angle (public-side overlay)
+    "https://www.fangraphs.com/blogs/feed/",
+    # Power ratings + model-based betting
+    "https://www.teamrankings.com/blog/feed/",
 ]
 
 # Minimum recent samples before auto-tuning edge thresholds. Below
@@ -241,13 +254,13 @@ class DailyLearner:
     # -- skill fetch -------------------------------------------------
 
     def _fetch_daily_skill(self) -> tuple[str, str, str]:
-        """Pull a fresh sharp-betting piece to add to the skill log.
-
-        We keep this dependency-free: a plain urllib GET, 5-second
-        timeout, and a very rough title/summary extractor. If every
-        source fails we still return a non-empty entry so the daily
-        record is always complete.
+        """Pull fresh sharp-betting pieces across ALL sources and
+        combine them into a single morning skill summary. Each
+        morning the agent now learns from up to 4 articles instead
+        of 1 — covering sharp strategy, weather/park factors,
+        situational trends, and advanced analytics.
         """
+        articles: list[tuple[str, str, str]] = []
         for url in LEARNING_FEEDS:
             try:
                 req = Request(url, headers={"User-Agent": "sba-daily-learner/1.0"})
@@ -258,21 +271,35 @@ class DailyLearner:
                 continue
 
             title = self._extract_first(body, "<title>", "</title>")
-            # Skip the feed title ("Pinnacle Betting Resources" etc.) — we
-            # want the first article title, which is the second <title>.
             article_title = self._extract_first(body, "<title>", "</title>", start_after=len(title) + 10 if title else 0)
             summary = self._extract_first(body, "<description>", "</description>", start_after=len(title) + 10 if title else 0)
-            headline = article_title or title or "Sharp-betting article"
+            headline = (article_title or title or "").strip()
+            if headline:
+                articles.append((
+                    headline[:200],
+                    self._strip_tags(summary or "")[:400],
+                    url,
+                ))
+            if len(articles) >= 4:
+                break
+
+        if not articles:
             return (
-                headline.strip()[:200],
-                self._strip_tags(summary or "")[:500],
-                url,
+                "Self-review only",
+                "No external sources reachable — learning from our own CLV and win-rate patterns today.",
+                "",
             )
 
+        # Combine multiple articles into one morning briefing.
+        lead = articles[0]
+        combined_summary = "\n".join(
+            f"• {a[0]}: {a[1]}" for a in articles
+        )
+        sources = "; ".join(a[2] for a in articles)
         return (
-            "Self-review only",
-            "No external source reachable today — learning from our own CLV and win-rate patterns.",
-            "",
+            f"Morning briefing: {len(articles)} sharp-betting articles",
+            combined_summary[:1500],
+            sources[:500],
         )
 
     @staticmethod

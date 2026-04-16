@@ -462,14 +462,14 @@ def create_app(
             list(paper.open_bets.values()),
             paper.closed_bets,
         )
-        # 7. Nightly self-improvement. Uncle runs on US Pacific/Eastern
-        # time, so we schedule the learner for 07:00-11:00 UTC (roughly
-        # midnight-4am Pacific / 3-7am Eastern). The learner is
-        # idempotent, so if the loop runs twice in that window nothing
-        # happens on the second call.
+        # 7. Every-morning self-improvement. Uncle asked for the agent
+        # to learn new skills each morning while he sleeps. Window is
+        # 12:00-17:00 UTC (5am-10am Pacific / 8am-1pm Eastern) — wide
+        # enough that a single background cycle lands inside it every
+        # day and the learner is idempotent across duplicate triggers.
         from datetime import datetime, timezone as _tz
         utc_hour = datetime.now(_tz.utc).hour
-        if 7 <= utc_hour < 11:
+        if 12 <= utc_hour < 17:
             try:
                 entry = daily_learner.run(paper.closed_bets)
                 if entry is not None:
@@ -504,7 +504,7 @@ def create_app(
         """Today's self-improvement entry (null if it hasn't run yet)."""
         entry = daily_learner.today()
         if entry is None:
-            return jsonify({"status": "not_run_yet", "scheduled": "07:00-11:00 UTC nightly"})
+            return jsonify({"status": "not_run_yet", "scheduled": "12:00-17:00 UTC daily (morning US)"})
         from dataclasses import asdict
         return jsonify(asdict(entry))
 
