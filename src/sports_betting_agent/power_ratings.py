@@ -104,8 +104,10 @@ class EloRatings:
         for sport, espn_path in SPORT_ESPN.items():
             cfg = SPORT_CONFIG.get(sport, SPORT_CONFIG["baseball_mlb"])
 
-            # Check last 14 days for maximum data collection
-            for days_ago in range(14):
+            # Sweep 30 days so NCAA/MLS teams accumulate enough games
+            # for the scoring projection model (was 14 — too few for
+            # small-conference teams that only play 1-2 games/week).
+            for days_ago in range(30):
                 date = now - timedelta(days=days_ago)
                 date_str = date.strftime("%Y%m%d")
                 url = f"{ESPN_BASE}/{espn_path}/scoreboard?dates={date_str}"
