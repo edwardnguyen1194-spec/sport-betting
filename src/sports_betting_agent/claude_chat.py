@@ -66,7 +66,7 @@ class ClaudeChat:
     def __init__(self, settings: Optional[Settings] = None) -> None:
         self.settings = settings or get_settings()
         self._client = None
-        self._model = "claude-opus-4-6"
+        self._model = "claude-opus-4-7"
         self._system = SYSTEM_PROMPT_VI if self.settings.dashboard_language == "vi" else SYSTEM_PROMPT_EN
 
         api_key = self.settings.anthropic_api_key
