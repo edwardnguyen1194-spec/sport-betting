@@ -169,15 +169,27 @@ class EnsembleStrategy(Strategy):
                         reason,
                     )
 
-        # Gate on the configured minimum confidence.
-        min_conf = self.settings.min_confidence
-        filtered = [r for r in recs if r.confidence >= min_conf]
+        # Gate on minimum confidence — MARKET-AWARE.
+        # Spreads naturally fair at 51-54% (they're designed to be
+        # ~coin-flip); a uniform 55% floor kills the entire spread
+        # book. Use 0.50 for spreads so edge-based filtering (already
+        # applied inside each strategy) is the real gate. Totals still
+        # use the standard 0.55 floor since good total picks do reach
+        # 55-60%. Edge must still be positive regardless.
+        min_conf_total = self.settings.min_confidence    # 0.55 default
+        min_conf_spread = max(0.50, min_conf_total - 0.05)
+        def _passes(r):
+            floor = min_conf_spread if r.market == "spread" else min_conf_total
+            return r.confidence >= floor and (r.edge or 0) > 0
+        filtered = [r for r in recs if _passes(r)]
         filtered.sort(key=lambda r: (r.confidence, r.edge), reverse=True)
         logger.info(
-            "ensemble: %d recs from %d strategies (%d passed min_conf=%.2f)",
+            "ensemble: %d recs from %d strategies "
+            "(%d passed min_conf: spread>=%.2f, total>=%.2f)",
             len(recs),
             len(self.strategies),
             len(filtered),
-            min_conf,
+            min_conf_spread,
+            min_conf_total,
         )
         return filtered
