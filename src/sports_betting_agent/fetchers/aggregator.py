@@ -93,6 +93,18 @@ class OddsAggregator:
                 logger.warning("aggregator: some sources timed out for %s", sport_key)
 
         merged = merge_games(results)
+        # Stamp every line's last_update to the fetch time if the
+        # fetcher didn't set one. The paper trader rejects bets with
+        # stale-line timestamps (>10 min). Without this backfill, most
+        # lines would have last_update=None and the freshness guard
+        # would never bite. We use the current fetch moment as "now" —
+        # the actual upstream timestamp is often not exposed by the
+        # scraping source, so fetch-time is the best proxy.
+        _fetch_now = datetime.now(timezone.utc)
+        for game in merged:
+            for line in game.lines:
+                if line.last_update is None:
+                    line.last_update = _fetch_now
         # Remove outlier lines (bad data from alternate markets)
         for game in merged:
             self._remove_outlier_lines(game)

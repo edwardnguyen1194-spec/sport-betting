@@ -21,6 +21,7 @@ from ..brain import AgentBrain
 from ..config import Settings, get_settings
 from ..claude_chat import ChatContext, ClaudeChat
 from ..daily_learner import DailyLearner
+from ..hourly_monitor import HourlyMonitor
 from ..fetchers.aggregator import OddsAggregator
 from ..learning_log import LearningLog
 from ..line_movement import LineMovementStore
@@ -160,6 +161,10 @@ def create_app(
     # Daily self-improvement — auto-reviews CLV + win-rate, nudges edge
     # thresholds, and pulls one fresh sharp-betting article per day.
     daily_learner = DailyLearner(settings, paper.clv, line_store)
+    # Hourly health monitor — logs per-hour snapshots and flags
+    # anomalies (all-Over bias, stale open bets, drawdown approach,
+    # quiet strategies). Read-only; it never auto-tunes.
+    hourly_monitor = HourlyMonitor(paper, settings.data_dir)
 
     # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets.
     # TotalProjectionStrategy is the model-based counterpart to the
@@ -332,6 +337,30 @@ def create_app(
         result = paper.resume()
         return jsonify({"ok": True, **result})
 
+    @app.route("/api/hourly-log")
+    def api_hourly_log():
+        """Latest + recent hourly-monitor snapshots.
+
+        Returns the freshest entry plus the last 24 for sparkline +
+        trend visualization. Query param ``hours`` overrides the window
+        (max 168).
+        """
+        try:
+            hours = min(168, max(1, int(request.args.get("hours", 24))))
+        except (TypeError, ValueError):
+            hours = 24
+        return jsonify({
+            "latest": hourly_monitor.latest(),
+            "recent": hourly_monitor.recent(hours),
+        })
+
+    @app.route("/api/hourly-run", methods=["POST"])
+    def api_hourly_run():
+        """Force-run the hourly monitor right now (for debugging)."""
+        from dataclasses import asdict as _asdict
+        snap = hourly_monitor.run(force=True)
+        return jsonify({"ok": True, "snapshot": _asdict(snap) if snap else None})
+
     @app.route("/api/purge-voids", methods=["POST"])
     def purge_voids():
         """Remove every status='void' entry from closed history.
@@ -501,7 +530,20 @@ def create_app(
                     logger.info("daily_learner: ran for %s (skill=%s)", entry.date, entry.skill_title)
             except Exception as exc:
                 logger.warning("daily_learner failed: %s", exc)
-        # 8. Generate recommendations
+        # 8. Hourly self-monitor. Idempotent — fires once per UTC
+        # hour regardless of how many trade cycles hit it. Logs a
+        # snapshot + flags bias/stale/drawdown anomalies.
+        try:
+            snap = hourly_monitor.run()
+            if snap is not None:
+                logger.info(
+                    "hourly_monitor snapshot: health=%d open=%d dd=%.1f%% anomalies=%d",
+                    snap.health_score, snap.open_count,
+                    snap.drawdown_pct, len(snap.anomalies),
+                )
+        except Exception as exc:
+            logger.warning("hourly_monitor failed: %s", exc)
+        # 9. Generate recommendations
         return _current_recs()
 
     @app.route("/api/elo")

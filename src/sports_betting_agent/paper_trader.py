@@ -177,6 +177,36 @@ class PaperTrader:
                 return None
 
             # ------------------------------------------------------------
+            # Line integrity: never place a bet on a price that might
+            # be stale. Uncle's rule: "always has correct betting lines
+            # and odds". If the rec carries a ``line_observed_at``
+            # meta, require it to be within 10 min. No timestamp means
+            # the rec just came out of the aggregator fetch that
+            # triggered this cycle, so it's implicitly fresh.
+            # ------------------------------------------------------------
+            line_ts = (rec.meta or {}).get("line_observed_at")
+            if line_ts:
+                try:
+                    from datetime import datetime as _dt, timezone as _tz
+                    observed = _dt.fromisoformat(str(line_ts).replace("Z", "+00:00"))
+                    age_s = (_dt.now(_tz.utc) - observed).total_seconds()
+                    if age_s > 600:   # > 10 min = stale
+                        logger.warning(
+                            "paper_trader skip stale line: %s %s at %s age=%.0fs",
+                            rec.selection, rec.market, rec.book, age_s,
+                        )
+                        return None
+                except (ValueError, TypeError):
+                    pass
+            # Sanity: american must be an actual number, not None.
+            if rec.american is None or rec.decimal is None or rec.decimal <= 1.0:
+                logger.warning(
+                    "paper_trader skip: invalid price american=%r decimal=%r",
+                    rec.american, rec.decimal,
+                )
+                return None
+
+            # ------------------------------------------------------------
             # Risk management gates (world-class safeguards per Agent-3
             # audit). Order matters — cheapest checks first.
             # ------------------------------------------------------------
