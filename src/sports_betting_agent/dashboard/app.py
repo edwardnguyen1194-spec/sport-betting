@@ -460,29 +460,32 @@ def create_app(
 
     @app.route("/api/recommendations")
     def recommendations():
-        from ..models_schema import american_to_implied
+        """Same ensemble the paper trader uses. Previous implementation
+        was a stale 5-strategy mini-ensemble that missed RLM,
+        MLSTravel, EloSpread — so the displayed recs diverged from
+        what the paper trader actually placed and Uncle saw very few
+        spreads. Now the display and the trading path share one path.
+        """
         sports_param = request.args.get("sports")
         sports = [s.strip() for s in sports_param.split(",")] if sports_param else DEFAULT_SPORTS
+        try:
+            limit = min(50, max(1, int(request.args.get("limit", 25))))
+        except (TypeError, ValueError):
+            limit = 25
         games = aggregator.fetch_sports(sports)
-
-        # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets.
-        # Include the model-based total projection alongside the market
-        # strategies so totals surface even when a single book quotes.
-        all_recs = []
-        for strat in [
-            SpreadValueStrategy(settings),
-            TotalValueStrategy(settings),
-            TotalProjectionStrategy(settings, scoring=scoring),
-            SteamFollowStrategy(settings, line_store=line_store),
-            PublicFadeStrategy(settings),
-        ]:
-            all_recs.extend(strat.generate(games))
-
-        all_recs.sort(key=lambda r: r.confidence, reverse=True)
-        recs = all_recs[:15]
+        # Use the full ensemble (all 8 active strategies + news penalty
+        # + game analyst + line-freshness stamping).
+        recs = ensemble.generate(games)
+        # Rank by confidence*edge (product is the EV-proxy the paper
+        # trader ranks by internally). Show both markets mixed.
+        recs.sort(
+            key=lambda r: (r.confidence or 0) * max(r.edge or 0, 0),
+            reverse=True,
+        )
+        top = recs[:limit]
         return jsonify({
-            "count": len(recs),
-            "recommendations": [r.to_dict() for r in recs],
+            "count": len(top),
+            "recommendations": [r.to_dict() for r in top],
         })
 
     @app.route("/api/best-picks")
