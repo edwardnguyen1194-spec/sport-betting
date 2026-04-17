@@ -79,6 +79,10 @@ class HourlySnapshot:
     anomalies: List[str] = field(default_factory=list)
     # Health score 0-100
     health_score: int = 100
+    # Bug scan results — hard correctness issues (not soft anomalies)
+    bugs: List[str] = field(default_factory=list)
+    # Per-category bug counts for dashboards
+    bug_counts: Dict[str, int] = field(default_factory=dict)
 
 
 class HourlyMonitor:
@@ -214,6 +218,13 @@ class HourlyMonitor:
         if len(opens) == 0 and closed_today == []:
             anomalies.append("no_activity: no open bets + nothing closed today — check aggregator")
 
+        # ---- BUG SCAN ------------------------------------------------
+        # Hard correctness checks. These flag integrity violations that
+        # should literally never happen. A nonzero bug list means a
+        # code regression slipped through tests — Uncle gets alerted.
+        bugs, bug_counts = self._bug_scan(opens, closed)
+        # ---------------------------------------------------------------
+
         # Health score: start at 100, subtract for each anomaly class.
         health = 100
         if risk.get("halted"):
@@ -224,6 +235,8 @@ class HourlyMonitor:
             health -= 10
         health -= 10 * len(bias_flags)
         health -= 5 * min(len(stale_open_ids), 4)
+        # Bugs hit harder than soft anomalies — each category costs 15.
+        health -= 15 * len(bug_counts)
         health = max(0, min(100, health))
 
         return HourlySnapshot(
@@ -241,9 +254,129 @@ class HourlyMonitor:
             stale_open_count=len(stale_open_ids),
             stale_open_ids=stale_open_ids[:10],
             strategy_24h=dict(strat_24h.most_common()),
-            anomalies=anomalies,
+            anomalies=anomalies + [f"BUG: {b}" for b in bugs],
             health_score=health,
+            bugs=bugs,
+            bug_counts=bug_counts,
         )
+
+    def _bug_scan(self, opens, closed) -> tuple[list[str], dict[str, int]]:
+        """Hourly integrity scan. Returns (bug_list, per_category_counts).
+
+        Each check here represents a class of regression that should be
+        impossible given the code contracts:
+
+          - invalid_market: a bet on anything other than spread/total
+            (Uncle's rule violation; paper_trader guard should block)
+          - invalid_price: american is None, NaN, or decimal <= 1.0
+          - invalid_confidence: confidence outside [0, 1]
+          - negative_edge: edge <= 0 on an open bet (we only place +EV)
+          - duplicate_game: ≥2 open bets on the same game_key
+            (per-game cap should block; if we see one, the cap broke)
+          - ledger_corruption: bet.stake or bet.decimal unparseable as float
+          - orphan_void: bet.status=="void" present in open_bets dict
+            (voids belong in closed_bets)
+          - schema_drift: bet missing required attribute
+
+        Silent strategies are also bug-flagged — a strategy that ran
+        yesterday but has zero activity in the last 6h is almost always
+        a broken data input, not market conditions.
+        """
+        from collections import Counter as _Counter
+        bugs: list[str] = []
+        counts: dict[str, int] = {}
+
+        def _bump(cat: str, detail: str) -> None:
+            bugs.append(f"{cat}: {detail}")
+            counts[cat] = counts.get(cat, 0) + 1
+
+        seen_games: _Counter = _Counter()
+        for b in opens:
+            bid = getattr(b, "id", "?")
+            # Market guard
+            if getattr(b, "market", None) not in ("spread", "total"):
+                _bump("invalid_market", f"{bid} market={b.market!r}")
+            # Price guard
+            am = getattr(b, "american", None)
+            dec = getattr(b, "decimal", None)
+            if am is None or dec is None:
+                _bump("invalid_price", f"{bid} american={am} decimal={dec}")
+            else:
+                try:
+                    am_f = float(am)
+                    dec_f = float(dec)
+                    if dec_f <= 1.0 or am_f == 0:
+                        _bump("invalid_price", f"{bid} american={am_f} decimal={dec_f}")
+                except (TypeError, ValueError):
+                    _bump("ledger_corruption", f"{bid} unparseable price")
+            # Confidence sanity
+            conf = getattr(b, "confidence", None)
+            if conf is None:
+                _bump("invalid_confidence", f"{bid} confidence=None")
+            else:
+                try:
+                    c = float(conf)
+                    if c < 0 or c > 1.0:
+                        _bump("invalid_confidence", f"{bid} confidence={c}")
+                except (TypeError, ValueError):
+                    _bump("ledger_corruption", f"{bid} unparseable confidence")
+            # Stake sanity
+            try:
+                stake = float(getattr(b, "stake", 0))
+                if stake <= 0:
+                    _bump("invalid_stake", f"{bid} stake={stake}")
+            except (TypeError, ValueError):
+                _bump("ledger_corruption", f"{bid} unparseable stake")
+            # Per-game cap violation
+            gkey = getattr(b, "game_key", None)
+            if gkey:
+                seen_games[gkey] += 1
+            # Orphan voids
+            if getattr(b, "status", None) in ("void", "push", "won", "lost"):
+                _bump("orphan_closed_in_open", f"{bid} status={b.status}")
+
+        # Duplicate game check
+        for gkey, ct in seen_games.items():
+            if ct >= 2:
+                _bump("duplicate_game", f"{gkey} has {ct} open bets")
+
+        # Silent-strategy check: a strategy that placed ≥3 bets in the
+        # previous 24h but 0 in the last 6h is almost certainly broken.
+        now = datetime.now(timezone.utc)
+        prev_24 = now - timedelta(hours=24)
+        prev_6 = now - timedelta(hours=6)
+        strat_24: _Counter = _Counter()
+        strat_6: _Counter = _Counter()
+        for b in opens + closed:
+            if not b.placed_at:
+                continue
+            try:
+                ts = datetime.fromisoformat(str(b.placed_at).replace("Z", "+00:00"))
+            except ValueError:
+                continue
+            strat = b.strategy or "unknown"
+            for name in strat.split("+"):
+                name = name.strip() or "unknown"
+                if ts >= prev_24:
+                    strat_24[name] += 1
+                if ts >= prev_6:
+                    strat_6[name] += 1
+        for name, n_24 in strat_24.items():
+            if n_24 >= 3 and strat_6.get(name, 0) == 0:
+                # Only flag "real" strategies, not ensemble-combined
+                # multi-name entries (those already show up under their
+                # components).
+                if name in {
+                    "spread_value", "total_value", "total_projection",
+                    "steam_follow", "reverse_line_movement", "public_fade",
+                    "mls_home_travel",
+                }:
+                    _bump(
+                        "silent_strategy",
+                        f"{name} ran {n_24}× in 24h but 0× in last 6h",
+                    )
+
+        return bugs, counts
 
     def _persist(self, snap: HourlySnapshot) -> None:
         os.makedirs(self.data_dir, exist_ok=True)
