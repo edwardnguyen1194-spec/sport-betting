@@ -32,6 +32,8 @@ from typing import Callable, Dict, Iterable, List, Optional
 from .config import Settings, get_settings
 from .clv_tracker import CLVTracker
 from .strategies.base import BetRecommendation
+from .agents.pick_reviewer import PickReviewer, review_rec
+from .agents.post_mortem import PostMortem, analyze_loss
 
 
 logger = logging.getLogger(__name__)
@@ -100,11 +102,29 @@ class PaperTrader:
         self,
         settings: Optional[Settings] = None,
         state_path: Optional[str] = None,
+        pick_reviewer: Optional[PickReviewer] = None,
+        post_mortem: Optional[PostMortem] = None,
     ) -> None:
         self.settings = settings or get_settings()
         self.state_path = state_path or os.path.join(self.settings.data_dir, "ledger.json")
         self._lock = threading.RLock()
         self._stop = threading.Event()
+        # Optional Claude reviewer. Default None so tests never need
+        # to mock Anthropic; production wiring injects it lazily.
+        self.pick_reviewer = pick_reviewer
+        # Optional PostMortem agent — runs retrospectively on lost
+        # bets to write a systemic-failure note. Does not gate
+        # anything; purely diagnostic.
+        self.post_mortem: Optional[PostMortem] = post_mortem
+        # Optional hook the app can register so post-mortems get
+        # injury/weather headlines from that day. Signature:
+        # ``fn(bet: Bet) -> list[dict]``. Default: no headlines.
+        self._post_mortem_headlines_provider: Optional[
+            Callable[[Bet], List[Dict]]
+        ] = None
+        self.post_mortems_path = os.path.join(
+            self.settings.data_dir, "post_mortems.json"
+        )
 
         self.bankroll: float = self.settings.bankroll_start
         self.open_bets: Dict[str, Bet] = {}
@@ -120,6 +140,157 @@ class PaperTrader:
         self.clv = CLVTracker(self.settings.data_dir)
 
         self._load_state()
+
+    # ------------------------------------------------------------------
+    # PostMortem wiring
+    # ------------------------------------------------------------------
+
+    def attach_post_mortem(
+        self,
+        agent: PostMortem,
+        headlines_provider: Optional[Callable[[Bet], List[Dict]]] = None,
+    ) -> None:
+        """Register a :class:`PostMortem` agent for loss analysis.
+
+        ``headlines_provider`` is an optional callable that gets the
+        losing ``Bet`` and returns a list of headline dicts from that
+        day. If omitted, the post-mortem runs without news context.
+        """
+        self.post_mortem = agent
+        self._post_mortem_headlines_provider = headlines_provider
+
+    def _recent_loss_notes(
+        self, strategy: str, limit: int = 10
+    ) -> List[Dict]:
+        """Read the last ``limit`` post-mortems for ``strategy`` off disk.
+
+        The on-disk file is the full history (bounded to MAX_ENTRIES
+        in the writer); we scan it newest-first and keep entries
+        matching the strategy. Returns at most ``limit`` dicts of
+        shape ``{"systemic_flag": str, "reasoning": str}``.
+        """
+        try:
+            if not os.path.exists(self.post_mortems_path):
+                return []
+            with open(self.post_mortems_path, "r", encoding="utf-8") as fh:
+                data = json.load(fh)
+            entries = data.get("entries", []) if isinstance(data, dict) else []
+        except Exception as exc:
+            logger.warning("post_mortem read failed: %s", exc)
+            return []
+        out: List[Dict] = []
+        for e in reversed(entries):
+            if e.get("strategy") != strategy:
+                continue
+            out.append({
+                "systemic_flag": (e.get("metadata") or {}).get("systemic_flag", ""),
+                "reasoning": e.get("reasoning", ""),
+            })
+            if len(out) >= limit:
+                break
+        return out
+
+    def _append_post_mortem(self, entry: Dict) -> None:
+        """Append one post-mortem entry to ``/data/sba/post_mortems.json``."""
+        os.makedirs(os.path.dirname(self.post_mortems_path) or ".", exist_ok=True)
+        existing: List[Dict] = []
+        try:
+            if os.path.exists(self.post_mortems_path):
+                with open(self.post_mortems_path, "r", encoding="utf-8") as fh:
+                    data = json.load(fh)
+                    if isinstance(data, dict):
+                        existing = list(data.get("entries", []))
+        except Exception:
+            existing = []
+        existing.append(entry)
+        # Bound to 5k entries — matches AgentLog.MAX_ENTRIES.
+        existing = existing[-5000:]
+        tmp = self.post_mortems_path + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump({"entries": existing}, fh, indent=2)
+        os.replace(tmp, self.post_mortems_path)
+
+    def _run_post_mortem(self, bet: Bet) -> None:
+        """Background worker: run the agent, persist the note.
+
+        Fails SAFE — any exception is logged and swallowed so a bad
+        post-mortem can never corrupt settlement. Writes the note
+        onto the bet's ``meta`` if available (via closed_bets lookup),
+        and appends to ``post_mortems.json``.
+        """
+        if self.post_mortem is None:
+            return
+        try:
+            headlines: List[Dict] = []
+            if self._post_mortem_headlines_provider is not None:
+                try:
+                    headlines = list(
+                        self._post_mortem_headlines_provider(bet) or []
+                    )
+                except Exception as exc:
+                    logger.warning(
+                        "post_mortem headlines_provider failed: %s", exc,
+                    )
+            prior = self._recent_loss_notes(bet.strategy, limit=10)
+            # ESPN final score isn't wired through the trader yet —
+            # the scraper that calls settle_bet("lost") is the only
+            # place that actually knows the score. If the caller has
+            # tucked it onto ``bet.meta`` we use it; otherwise 0-0
+            # so Claude still writes a note (just without a score).
+            meta = {}
+            try:
+                from dataclasses import asdict as _asdict
+                meta = (_asdict(bet) or {}).get("meta", {}) or {}
+            except Exception:
+                meta = {}
+            final_score = meta.get("final_score") or {"home": None, "away": None}
+            bet_ctx = {
+                "selection": bet.selection,
+                "market": bet.market,
+                "line": bet.line,
+                "american": bet.american,
+                "strategy": bet.strategy,
+                "reasoning": bet.reasoning,
+            }
+            decision = analyze_loss(
+                self.post_mortem,
+                bet=bet_ctx,
+                final_score=final_score,
+                headlines_that_day=headlines,
+                prior_loss_notes=prior,
+            )
+            entry = {
+                "ts": datetime.now(timezone.utc).isoformat(),
+                "bet_id": bet.id,
+                "game_key": bet.game_key,
+                "strategy": bet.strategy,
+                "selection": bet.selection,
+                "market": bet.market,
+                "line": bet.line,
+                "american": bet.american,
+                "reasoning": decision.reasoning,
+                "metadata": decision.metadata,
+                "error": decision.error,
+            }
+            self._append_post_mortem(entry)
+            # Tuck the flag onto the bet's reasoning for downstream
+            # visibility. We intentionally avoid mutating the bet
+            # object's schema (Bet is a dataclass with fixed fields);
+            # instead we append a compact suffix to ``reasoning``.
+            flag = (decision.metadata or {}).get("systemic_flag", "")
+            if flag and flag != "variance" and not decision.error:
+                with self._lock:
+                    for b in self.closed_bets:
+                        if b.id == bet.id:
+                            suffix = f" [post_mortem: {flag}]"
+                            if suffix not in (b.reasoning or ""):
+                                b.reasoning = (b.reasoning or "") + suffix
+                            break
+                    self._save_state()
+        except Exception as exc:  # pragma: no cover — fail-safe net
+            logger.warning(
+                "post_mortem run failed for %s: %s", bet.id, exc,
+            )
 
     # ------------------------------------------------------------------
     # Persistence
@@ -337,6 +508,50 @@ class PaperTrader:
                             rec.selection, rec.market, rec.market, existing.selection,
                         )
                         return None
+
+            # ------------------------------------------------------------
+            # Final gate: Claude PickReviewer sub-agent. Runs only when
+            # one is injected (production wiring); tests leave it None
+            # so no Anthropic call ever fires. The agent may veto, trim
+            # the stake, or nudge confidence. BaseAgent fails SAFE —
+            # any HTTP / parse / budget error returns a neutral approve
+            # so the trading loop never blocks on the LLM.
+            # ------------------------------------------------------------
+            if self.pick_reviewer is not None:
+                decision = review_rec(
+                    self.pick_reviewer,
+                    rec,
+                    game_context={
+                        "commence_time": (rec.meta or {}).get("commence_time"),
+                        "recent_headlines": (rec.meta or {}).get("recent_headlines", []),
+                        "weather": (rec.meta or {}).get("weather"),
+                        "elo_diff": (rec.meta or {}).get("elo_diff"),
+                    },
+                )
+                if not decision.approved or decision.stake_multiplier <= 0.0:
+                    logger.info(
+                        "pick_reviewer vetoed %s %s: %s",
+                        rec.selection, rec.market, decision.reasoning or decision.error,
+                    )
+                    return None
+                # Apply stake trim. Multiplier is already clamped to [0, 1].
+                stake = round(stake * decision.stake_multiplier, 2)
+                if stake < self.settings.min_bet:
+                    logger.debug(
+                        "pick_reviewer trimmed stake below min (%.2f) — skipping",
+                        stake,
+                    )
+                    return None
+                # Nudge confidence and fold reviewer's note into reasoning
+                # so it surfaces on the dashboard. confidence_delta is
+                # already clamped to [-0.10, 0.10] by BaseAgent; clamp
+                # the final value to [0, 1] to keep downstream math sane.
+                new_conf = max(0.0, min(1.0, rec.confidence + decision.confidence_delta))
+                rec.confidence = new_conf
+                if decision.reasoning:
+                    suffix = f" | reviewer: {decision.reasoning}"
+                    rec.reasoning = (rec.reasoning or "") + suffix
+
             bet_id = f"pt-{self._next_id:06d}"
             self._next_id += 1
             bet = Bet.from_recommendation(rec, stake, bet_id)
@@ -452,7 +667,14 @@ class PaperTrader:
         }
 
     def settle_bet(self, bet_id: str, outcome: str) -> Optional[Bet]:
-        """Mark a bet won/lost/push/void and update bankroll."""
+        """Mark a bet won/lost/push/void and update bankroll.
+
+        On a lost bet, kicks off the PostMortem agent asynchronously
+        (if configured) so settlement is never blocked by an
+        Anthropic call. The post-mortem note lands in
+        ``/data/sba/post_mortems.json`` and (when non-trivial) gets
+        appended to the bet's ``reasoning`` string.
+        """
 
         with self._lock:
             bet = self.open_bets.pop(bet_id, None)
@@ -481,7 +703,20 @@ class PaperTrader:
             except Exception as exc:
                 logger.warning("CLV record_result failed for %s: %s", bet_id, exc)
             self._save_state()
-            return bet
+
+        # Post-mortem fires OUTSIDE the lock — it does its own disk
+        # I/O + network call and we don't want to block concurrent
+        # settlement. Spawn-and-forget; ``_run_post_mortem`` swallows
+        # all exceptions internally.
+        if outcome == "lost" and self.post_mortem is not None:
+            t = threading.Thread(
+                target=self._run_post_mortem,
+                args=(bet,),
+                name=f"post-mortem-{bet.id}",
+                daemon=True,
+            )
+            t.start()
+        return bet
 
     def record_closing_lines(self, games) -> int:
         """Call this as games are about to start (or just kicked off) so

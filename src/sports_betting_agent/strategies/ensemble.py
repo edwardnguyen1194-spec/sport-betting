@@ -26,6 +26,9 @@ class EnsembleStrategy(Strategy):
         strategies: List[Strategy],
         settings: Optional[Settings] = None,
         news_reader: Optional[Any] = None,
+        game_analyst: Optional[Any] = None,
+        scoring: Optional[Any] = None,
+        elo: Optional[Any] = None,
     ) -> None:
         self.strategies = strategies
         self.settings = settings or get_settings()
@@ -34,6 +37,12 @@ class EnsembleStrategy(Strategy):
         # involved teams. Kept as a duck-typed attribute to avoid
         # circular imports and so tests can inject a fake.
         self.news_reader = news_reader
+        # Optional GameAnalyst — if wired, we run it over the top-N
+        # surviving recs after ensemble merge / news penalty to apply
+        # a small context-based confidence polish.
+        self.game_analyst = game_analyst
+        self.scoring = scoring
+        self.elo = elo
 
     def generate(self, games: Iterable[GameOdds]) -> List[BetRecommendation]:
         games = list(games)

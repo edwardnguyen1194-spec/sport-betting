@@ -147,7 +147,14 @@ def create_app(
         return result
 
     aggregator = OddsAggregator(settings)
-    paper = PaperTrader(settings)
+    # Build the agent log + PickReviewer BEFORE the PaperTrader so we
+    # can inject the reviewer into its constructor. If ANTHROPIC_API_KEY
+    # is absent or SBA_AGENT_PICK_REVIEWER_ENABLED=0, BaseAgent silently
+    # returns no-op decisions — the trader keeps running.
+    from ..agents import AgentLog, PickReviewer
+    agent_log = AgentLog(settings.data_dir)
+    pick_reviewer = PickReviewer(agent_log=agent_log)
+    paper = PaperTrader(settings, pick_reviewer=pick_reviewer)
     chat = ClaudeChat(settings)
     learn_log = LearningLog(settings.data_dir)
     news = NewsReader(settings.data_dir)
@@ -166,6 +173,12 @@ def create_app(
     # anomalies (all-Over bias, stale open bets, drawdown approach,
     # quiet strategies). Read-only; it never auto-tunes.
     hourly_monitor = HourlyMonitor(paper, settings.data_dir)
+
+    # OpportunityScout is an on-demand "top 3 plays right now" concierge
+    # Uncle fires via a dashboard button. Read-only; does not affect the
+    # paper trader. Reuses the shared ``agent_log`` created up above.
+    from ..agents import OpportunityScout
+    scout = OpportunityScout(agent_log=agent_log)
 
     # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets.
     # TotalProjectionStrategy is the model-based counterpart to the
@@ -367,6 +380,25 @@ def create_app(
         snap = hourly_monitor.run(force=True)
         return jsonify({"ok": True, "snapshot": _asdict(snap) if snap else None})
 
+    @app.route("/api/agent-log")
+    def api_agent_log():
+        """Recent Claude sub-agent decisions.
+
+        Query params:
+          - n: number of entries (default 50, max 500)
+          - agent: filter by agent name (pick_reviewer, news_triage, etc.)
+        Also returns today's token usage so Uncle can see budget burn.
+        """
+        try:
+            n = min(500, max(1, int(request.args.get("n", 50))))
+        except (TypeError, ValueError):
+            n = 50
+        name = request.args.get("agent")
+        return jsonify({
+            "entries": agent_log.recent(n=n, agent=name),
+            "today_tokens": agent_log.today_token_usage(),
+        })
+
     @app.route("/api/purge-voids", methods=["POST"])
     def purge_voids():
         """Remove every status='void' entry from closed history.
@@ -492,6 +524,17 @@ def create_app(
         )
         reply = chat.reply(user_msg, ctx)
         return jsonify(reply)
+
+    @app.route("/api/scout", methods=["POST"])
+    def api_scout():
+        """On-demand OpportunityScout — Uncle's "top 3 plays right now"
+        button. Pulls fresh recs + headlines, asks the scout agent for
+        a markdown writeup, and returns the structured AgentDecision."""
+        from dataclasses import asdict
+        recs = _current_recs()
+        headlines = news.recent_headlines(n=15)
+        decision = scout.analyze({"recs": recs[:20], "headlines": headlines})
+        return jsonify({"ok": True, "decision": asdict(decision)})
 
     # ------------------------------------------------------------------
     # Background auto-trading
