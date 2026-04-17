@@ -38,6 +38,11 @@ from datetime import datetime, timezone, timedelta
 from typing import Dict, Iterable, List, Optional
 from urllib.request import Request, urlopen
 
+from .agents.strategy_auditor import (
+    StrategyAuditor,
+    run_weekly_audit,
+    save_weekly_audit_markdown,
+)
 from .clv_tracker import CLVTracker
 from .config import Settings
 from .line_movement import LineMovementStore
@@ -101,12 +106,21 @@ class DailyLearner:
         settings: Settings,
         clv: CLVTracker,
         line_store: LineMovementStore,
+        strategy_auditor: Optional[StrategyAuditor] = None,
     ) -> None:
         self.settings = settings
         self.clv = clv
         self.line_store = line_store
+        # Optional weekly-audit agent. Defaults to None so existing
+        # call sites / tests don't need to inject it; the Monday run
+        # is a no-op when it is absent.
+        self.strategy_auditor = strategy_auditor
         self.data_dir = settings.data_dir
         self.entries: List[DailyEntry] = []
+        # Weekly-audit idempotency: record the YYYY-MM-DD of the most
+        # recent successful weekly audit so repeated Monday triggers
+        # don't spam the filesystem or the agent log.
+        self._last_weekly_audit_date: Optional[str] = None
         self._load()
 
     # -- persistence -------------------------------------------------
@@ -140,13 +154,33 @@ class DailyLearner:
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         return any(e.date == today for e in self.entries)
 
-    def run(self, closed_bets: Iterable, force: bool = False) -> Optional[DailyEntry]:
-        """Execute one daily cycle. Idempotent unless ``force`` is set."""
+    def run(
+        self,
+        closed_bets: Iterable,
+        force: bool = False,
+        paper: Optional[object] = None,
+    ) -> Optional[DailyEntry]:
+        """Execute one daily cycle. Idempotent unless ``force`` is set.
+
+        On Monday (UTC), ALSO runs the weekly strategy audit when a
+        :class:`StrategyAuditor` and the ``paper`` trader are wired up.
+        The audit is idempotent per calendar date independently of the
+        daily cycle.
+        """
+        # Snapshot once so the daily + weekly paths see the same
+        # ledger slice without re-iterating a generator twice.
+        closed_list = list(closed_bets)
+
+        # Monday weekly audit (runs BEFORE the daily-idempotent guard so
+        # ``force=False`` still kicks off Monday's review on the first
+        # hit of the new week).
+        self._maybe_run_weekly_audit(paper=paper, closed_bets=closed_list)
+
         if not force and self.already_ran_today():
             return None
 
         now = datetime.now(timezone.utc)
-        review = self._performance_review(list(closed_bets))
+        review = self._performance_review(closed_list)
         clv_stats = self.clv.stats()
         tuned = self._auto_tune(review, clv_stats)
         skill_title, skill_summary, skill_source = self._fetch_daily_skill()
@@ -171,6 +205,56 @@ class DailyLearner:
             self.entries = self.entries[-365:]
         self._save()
         return entry
+
+    # -- weekly audit (Monday) --------------------------------------
+
+    def _maybe_run_weekly_audit(
+        self,
+        paper: Optional[object],
+        closed_bets: List,
+    ) -> None:
+        """Once-per-Monday narrative audit by :class:`StrategyAuditor`.
+
+        Always safe to call — no-ops unless
+        (a) today is Monday (UTC),
+        (b) a StrategyAuditor was injected,
+        (c) today's audit has not already run.
+
+        The AgentDecision is logged via BaseAgent's agent_log
+        contract; in addition we persist the full markdown review to
+        ``<data_dir>/weekly_audits/YYYY-MM-DD.md`` so the dashboard
+        can surface it without parsing JSON.
+        """
+        if self.strategy_auditor is None:
+            return
+        now = datetime.now(timezone.utc)
+        if now.weekday() != 0:  # Monday == 0
+            return
+        today = now.strftime("%Y-%m-%d")
+        if self._last_weekly_audit_date == today:
+            return
+        # A real auditor needs the paper trader for closed bets; if the
+        # caller didn't pass one, synthesize a shim so the helper still
+        # works — `closed_bets` is already a list in this code path.
+        shim_paper = paper if paper is not None else type("_Shim", (), {"closed_bets": closed_bets})()
+        try:
+            decision = run_weekly_audit(
+                self.strategy_auditor,
+                shim_paper,
+                self.clv,
+                self.settings,
+            )
+        except Exception as exc:
+            logger.warning("weekly audit failed: %s", exc)
+            return
+        if decision is None:
+            return
+        markdown = (decision.reasoning or "").strip()
+        if markdown:
+            path = save_weekly_audit_markdown(self.data_dir, today, markdown)
+            if path:
+                logger.info("weekly audit saved to %s", path)
+        self._last_weekly_audit_date = today
 
     # -- review ------------------------------------------------------
 

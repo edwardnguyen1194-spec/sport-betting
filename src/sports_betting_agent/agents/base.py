@@ -52,7 +52,7 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-DEFAULT_MODEL = "claude-3-5-haiku-latest"
+DEFAULT_MODEL = "claude-haiku-4-5"
 DEFAULT_MAX_TOKENS = 1024
 DEFAULT_DAILY_TOKEN_BUDGET = 500_000
 

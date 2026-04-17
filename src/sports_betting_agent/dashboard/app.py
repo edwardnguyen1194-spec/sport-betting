@@ -151,9 +151,13 @@ def create_app(
     # can inject the reviewer into its constructor. If ANTHROPIC_API_KEY
     # is absent or SBA_AGENT_PICK_REVIEWER_ENABLED=0, BaseAgent silently
     # returns no-op decisions — the trader keeps running.
-    from ..agents import AgentLog, PickReviewer
+    from ..agents import AgentLog, PickReviewer, StrategyAuditor
     agent_log = AgentLog(settings.data_dir)
     pick_reviewer = PickReviewer(agent_log=agent_log)
+    # Weekly deep-review agent. Fires Monday mornings from
+    # daily_learner.run(); no-ops otherwise. Reuses the shared
+    # ``agent_log`` so its decisions show up in /api/agent-log too.
+    strategy_auditor = StrategyAuditor(agent_log=agent_log)
     paper = PaperTrader(settings, pick_reviewer=pick_reviewer)
     chat = ClaudeChat(settings)
     learn_log = LearningLog(settings.data_dir)
@@ -168,7 +172,10 @@ def create_app(
     line_store = LineMovementStore(settings.data_dir)
     # Daily self-improvement — auto-reviews CLV + win-rate, nudges edge
     # thresholds, and pulls one fresh sharp-betting article per day.
-    daily_learner = DailyLearner(settings, paper.clv, line_store)
+    daily_learner = DailyLearner(
+        settings, paper.clv, line_store,
+        strategy_auditor=strategy_auditor,
+    )
     # Hourly health monitor — logs per-hour snapshots and flags
     # anomalies (all-Over bias, stale open bets, drawdown approach,
     # quiet strategies). Read-only; it never auto-tunes.
@@ -179,6 +186,12 @@ def create_app(
     # paper trader. Reuses the shared ``agent_log`` created up above.
     from ..agents import OpportunityScout
     scout = OpportunityScout(agent_log=agent_log)
+
+    # NewsTriage runs every trade cycle over OPEN bets. Read-only — it
+    # only flags (red/yellow/green). A red alert emits a warning log
+    # and the decision is persisted next to the CLV records for audit.
+    from ..agents import NewsTriage, triage_open_bets, persist_triage_audit
+    news_triage = NewsTriage(agent_log=agent_log)
 
     # Uncle wants SPREADS and OVER/UNDER only — no moneyline bets.
     # TotalProjectionStrategy is the model-based counterpart to the
@@ -551,6 +564,25 @@ def create_app(
     def _trade_and_settle() -> list:
         # 1. Settle completed bets
         settler.settle_completed_bets()
+        # 1b. NewsTriage pass over the still-open bets. Runs AFTER the
+        # settler so we only spend tokens on bets that survived this
+        # cycle. Flags red/yellow/green per bet; a red alert logs a
+        # warning but never vetoes — this agent only flags. Every
+        # decision is persisted next to the CLV records for audit.
+        try:
+            triage_decisions = triage_open_bets(
+                news_triage, paper.open_bets, news,
+            )
+            for bet_id, decision in triage_decisions.items():
+                alert = (decision.metadata or {}).get("alert_level")
+                if alert == "red":
+                    logger.warning(
+                        "news_triage RED alert on bet %s: %s",
+                        bet_id, decision.reasoning,
+                    )
+            persist_triage_audit(paper.clv, triage_decisions)
+        except Exception as exc:
+            logger.warning("news_triage cycle failed: %s", exc)
         # 2. Read sports news
         news.fetch_all()
         # 3. Update Elo power ratings from ESPN results
@@ -574,7 +606,7 @@ def create_app(
         utc_hour = datetime.now(_tz.utc).hour
         if 12 <= utc_hour < 17:
             try:
-                entry = daily_learner.run(paper.closed_bets)
+                entry = daily_learner.run(paper.closed_bets, paper=paper)
                 if entry is not None:
                     logger.info("daily_learner: ran for %s (skill=%s)", entry.date, entry.skill_title)
             except Exception as exc:
@@ -676,11 +708,33 @@ def create_app(
     def learner_run():
         """Manual trigger — forces one learner cycle now (for testing)."""
         force = bool(request.json and request.json.get("force"))
-        entry = daily_learner.run(paper.closed_bets, force=force)
+        entry = daily_learner.run(paper.closed_bets, force=force, paper=paper)
         if entry is None:
             return jsonify({"ok": False, "reason": "already_ran_today"})
         from dataclasses import asdict
         return jsonify({"ok": True, "entry": asdict(entry)})
+
+    @app.route("/api/weekly-audit")
+    def weekly_audit():
+        """StrategyAuditor output — the Monday-morning deep review.
+
+        Returns the most recent audit plus up to N prior audits. Each
+        audit is the markdown body saved to
+        ``<data_dir>/weekly_audits/YYYY-MM-DD.md``. On cold systems
+        (no audit has fired yet) ``latest`` is ``null`` and ``recent``
+        is an empty list.
+        """
+        from ..agents import list_recent_weekly_audits
+        try:
+            n = max(1, min(52, int(request.args.get("n", 12))))
+        except (TypeError, ValueError):
+            n = 12
+        audits = list_recent_weekly_audits(settings.data_dir, limit=n)
+        return jsonify({
+            "count": len(audits),
+            "latest": audits[0] if audits else None,
+            "recent": audits,
+        })
 
     @app.route("/api/steam")
     def steam_status():

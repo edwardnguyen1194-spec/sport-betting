@@ -8,6 +8,7 @@ is a single ranked list the paper trader or dashboard can consume.
 from __future__ import annotations
 
 import logging
+import os
 from typing import Any, Dict, Iterable, List, Optional
 
 from ..config import Settings, get_settings
@@ -177,6 +178,96 @@ class EnsembleStrategy(Strategy):
                         rec.confidence,
                         reason,
                     )
+
+        # Optional GameAnalyst polish on the top-N recs.
+        # Runs AFTER ensemble merge + news penalty so the agent sees
+        # the final pre-filter confidence and can nudge up/down based
+        # on per-game context (weather, park, umpire, form, Elo,
+        # headlines). Capped at ±0.05 by the agent itself; we clamp
+        # again here belt-and-suspenders style.
+        if self.game_analyst is not None and recs:
+            try:
+                top_n_env = os.environ.get("SBA_GAME_ANALYST_TOP_N")
+                top_n = int(top_n_env) if top_n_env else 5
+            except (TypeError, ValueError):
+                top_n = 5
+            if top_n > 0:
+                # Sort by current confidence * edge to pick the most
+                # likely-to-be-placed picks; dedup per game so we
+                # don't burn tokens on both sides of the same game.
+                ranked = sorted(
+                    recs,
+                    key=lambda r: (r.confidence, r.edge or 0),
+                    reverse=True,
+                )
+                game_index = {g.game_key: g for g in games}
+                seen_games: set = set()
+                targets = []
+                for r in ranked:
+                    if r.game_key in seen_games:
+                        continue
+                    seen_games.add(r.game_key)
+                    targets.append(r)
+                    if len(targets) >= top_n:
+                        break
+
+                try:
+                    from ..agents.game_analyst import analyze_game as _analyze_game
+                except Exception as exc:  # pragma: no cover
+                    logger.debug(
+                        "ensemble: game_analyst import failed: %s", exc
+                    )
+                    _analyze_game = None
+
+                if _analyze_game is not None:
+                    for rec in targets:
+                        game = game_index.get(rec.game_key)
+                        if game is None:
+                            continue
+                        try:
+                            decision = _analyze_game(
+                                self.game_analyst,
+                                game,
+                                settings=self.settings,
+                                news_reader=self.news_reader,
+                                scoring=self.scoring,
+                                elo=self.elo,
+                            )
+                        except Exception as exc:  # pragma: no cover
+                            logger.debug(
+                                "ensemble: game_analyst failed on %s: %s",
+                                rec.game_key,
+                                exc,
+                            )
+                            continue
+                        if decision is None or decision.error:
+                            continue
+                        delta = max(-0.05, min(0.05, decision.confidence_delta or 0.0))
+                        if delta == 0.0 and not decision.metadata:
+                            continue
+                        before = rec.confidence
+                        rec.confidence = round(
+                            max(0.0, min(0.99, rec.confidence + delta)), 4
+                        )
+                        if rec.decimal:
+                            implied = 1.0 / rec.decimal
+                            rec.edge = round(rec.confidence - implied, 4)
+                        if decision.reasoning:
+                            rec.reasoning = (
+                                rec.reasoning + "\n[game_analyst] " + decision.reasoning
+                            ).strip()
+                        rec.meta["game_analyst"] = {
+                            "delta": delta,
+                            "angles": decision.metadata.get("angles", []),
+                            "best_bet_hint": decision.metadata.get("best_bet_hint", ""),
+                        }
+                        logger.info(
+                            "ensemble: game_analyst %+.3f on %s (%.3f -> %.3f)",
+                            delta,
+                            rec.game_key,
+                            before,
+                            rec.confidence,
+                        )
 
         # Gate on minimum confidence — MARKET-AWARE.
         # Spreads naturally fair at 51-54% (they're designed to be
