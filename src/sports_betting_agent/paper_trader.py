@@ -173,6 +173,7 @@ class PaperTrader:
                 logger.debug("skipping rec %s: total exposure %.2f would exceed 75%% cap", rec.selection, total_exposed + stake)
                 return None
             # Don't double-book the same market — check BOTH open AND closed bets.
+            # Exact-selection dup (e.g. two Over 9.0 picks for same game).
             dup_key = (rec.game_key, rec.market, rec.selection.lower())
             for existing in self.open_bets.values():
                 if (existing.game_key, existing.market, existing.selection.lower()) == dup_key:
@@ -180,6 +181,20 @@ class PaperTrader:
             for existing in self.closed_bets:
                 if (existing.game_key, existing.market, existing.selection.lower()) == dup_key:
                     return None
+            # Cross-side dup: per game, the spread market has ONLY TWO
+            # sides — one at -1.5 and one at +1.5. Having placed either
+            # side means we should NOT also place the other side.
+            # Previously the agent booked Anaheim +1.5 AND Nashville
+            # +1.5 on the same game because upstream alt-line filters
+            # let both sides appear with the same sign.
+            if rec.market in ("spread", "total"):
+                for existing in list(self.open_bets.values()) + self.closed_bets:
+                    if existing.game_key == rec.game_key and existing.market == rec.market:
+                        logger.info(
+                            "skipping %s %s: game already has a %s bet on %s",
+                            rec.selection, rec.market, rec.market, existing.selection,
+                        )
+                        return None
             bet_id = f"pt-{self._next_id:06d}"
             self._next_id += 1
             bet = Bet.from_recommendation(rec, stake, bet_id)
