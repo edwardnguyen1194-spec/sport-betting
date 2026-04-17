@@ -114,19 +114,22 @@ def project_soccer_totals(
 
     # Use venue-specific where possible; fall back to combined if a
     # team hasn't played enough games at that venue in our window.
-    def _avg(rec, primary, fallback):
+    # Returns (avg, n_games) so we can weight empirical-Bayes shrinkage
+    # by effective sample size — small samples get heavy shrinkage
+    # toward the league mean.
+    def _avg_n(rec, primary, fallback):
         vals = rec.get(primary, []) or []
         if len(vals) >= 3:
-            return sum(vals) / len(vals)
+            return sum(vals) / len(vals), len(vals)
         combined = (rec.get(primary, []) or []) + (rec.get(fallback, []) or [])
         if len(combined) >= 3:
-            return sum(combined) / len(combined)
-        return None
+            return sum(combined) / len(combined), len(combined)
+        return None, 0
 
-    h_scored = _avg(h, "home_scored", "away_scored")
-    h_allowed = _avg(h, "home_allowed", "away_allowed")
-    a_scored = _avg(a, "away_scored", "home_scored")
-    a_allowed = _avg(a, "away_allowed", "home_allowed")
+    h_scored, h_scored_n = _avg_n(h, "home_scored", "away_scored")
+    h_allowed, h_allowed_n = _avg_n(h, "home_allowed", "away_allowed")
+    a_scored, a_scored_n = _avg_n(a, "away_scored", "home_scored")
+    a_allowed, a_allowed_n = _avg_n(a, "away_allowed", "home_allowed")
     if None in (h_scored, h_allowed, a_scored, a_allowed):
         return None
 
@@ -134,23 +137,42 @@ def project_soccer_totals(
     home_adv = params["home_adv"]
     rho = params["rho"]
 
-    # Attack strength = team scoring rate / league average; defense
-    # strength = team goals-allowed rate / league average (lower =
-    # better). The product-with-league-mean reconstruction is the
-    # standard Dixon-Coles parameterization when you don't MLE-fit
-    # team-specific alphas.
-    attack_h = h_scored / mu
-    attack_a = a_scored / mu
-    defense_h = h_allowed / mu
-    defense_a = a_allowed / mu
+    # Empirical-Bayes shrinkage: a team's per-game rate is the weighted
+    # average of its observed rate and the league mean, with a prior
+    # strength of PRIOR_N games. With 5 real games + prior 8, we weight
+    # the sample 5/13 = 38% and the league mean 8/13 = 62%. Prevents
+    # the multiplicative attack × defense form from blowing up on
+    # early-season MLS data where one team scored a lot and the other
+    # allowed a lot across a tiny sample — the flaw that made every
+    # single soccer pick an Over at 3.5+ goal totals. With a full
+    # season (25+ games) the prior washes out and we trust the data.
+    PRIOR_N = 8
 
-    # Expected goals per side: attack × opposing defense × league mean,
-    # with home-field bonus applied only to the home team.
-    lam_h = (attack_h * defense_a * mu) + home_adv
-    lam_a = (attack_a * defense_h * mu)
-    # Guard against zero/negative from weird rolling data.
-    lam_h = max(0.05, lam_h)
-    lam_a = max(0.05, lam_a)
+    def _shrunk(sample_rate: float, n: int) -> float:
+        if n <= 0:
+            return mu
+        return (n * sample_rate + PRIOR_N * mu) / (n + PRIOR_N)
+
+    h_scored_sh = _shrunk(h_scored, h_scored_n)
+    h_allowed_sh = _shrunk(h_allowed, h_allowed_n)
+    a_scored_sh = _shrunk(a_scored, a_scored_n)
+    a_allowed_sh = _shrunk(a_allowed, a_allowed_n)
+
+    # Attack/defense strengths relative to league mean.
+    attack_h = h_scored_sh / mu
+    attack_a = a_scored_sh / mu
+    defense_h = h_allowed_sh / mu
+    defense_a = a_allowed_sh / mu
+
+    # Expected goals per side. Clamped to [0.2, 3.0] — a team averaging
+    # 3+ goals in a single match is a historical extreme, and raw data
+    # occasionally blows up above that on small samples despite
+    # shrinkage. Clamping prevents one outlier game from making every
+    # DC pick at that venue an Over.
+    lam_h = min(3.0, (attack_h * defense_a * mu) + home_adv)
+    lam_a = min(3.0, attack_a * defense_h * mu)
+    lam_h = max(0.2, lam_h)
+    lam_a = max(0.2, lam_a)
 
     # Build the full scoreline probability matrix with Dixon-Coles
     # correction on the low-score cells.
