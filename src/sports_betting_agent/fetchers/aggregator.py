@@ -8,6 +8,7 @@ tracked in each game's ``meta``.
 from __future__ import annotations
 
 import logging
+import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from typing import Dict, Iterable, List, Optional, Type
@@ -121,11 +122,15 @@ class OddsAggregator:
         # Strict filtering:
         # 1. Drop games with no commence_time (can't verify they're upcoming)
         # 2. Drop games that already started or start within 5 min (lines are stale)
-        # 3. Drop games more than 3 days away (odds not reliable yet)
+        # 3. Drop games more than 24 HOURS away (Uncle's rule: "only
+        #    today or 24 hours games only"). Previous 3-day window was
+        #    producing bets on tomorrow's and Sunday's games which
+        #    Uncle does NOT want. Overridable via SBA_MAX_HOURS_AHEAD.
         now = datetime.now(timezone.utc)
         from datetime import timedelta
         cutoff_soon = now + timedelta(minutes=5)
-        cutoff_far = now + timedelta(days=3)
+        max_hours = float(os.environ.get("SBA_MAX_HOURS_AHEAD", "24"))
+        cutoff_far = now + timedelta(hours=max_hours)
         upcoming = [
             g for g in merged
             if g.commence_time is not None

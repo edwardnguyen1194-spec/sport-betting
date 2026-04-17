@@ -350,6 +350,14 @@ class HourlyMonitor:
         for b in opens + closed:
             if not b.placed_at:
                 continue
+            # Don't count voided bets as "runs" — a strategy we
+            # manually voided (e.g. MIDDLE bet cleanup, halt reset)
+            # was false-positive flagged as silent. We care about
+            # strategies that STOP FINDING picks, not strategies
+            # whose picks we took back. Voids represent removal, not
+            # strategy activity.
+            if getattr(b, "status", None) == "void":
+                continue
             try:
                 ts = datetime.fromisoformat(str(b.placed_at).replace("Z", "+00:00"))
             except ValueError:

@@ -110,7 +110,18 @@ class ActionNetworkFetcher(BaseFetcher):
         # tickets-% / money-% so RLM and PublicFade actually have data.
         # Keyed on event_id so the per-game parse can look it up cheaply.
         self._public_cache: Dict[str, Dict[str, float]] = {}
-        for day_offset in (0, 1, 2):
+        # Today-only window per Uncle: "agent just bet today games, not
+        # tomorrow and 2 days later". The aggregator also enforces a
+        # 24h commence_time cutoff so any AN game beyond today gets
+        # dropped downstream, but limiting the HTTP fetch here saves
+        # 2/3 of the outbound request volume (~1MB per sport → ~350KB).
+        # Also fetch "today in local US time" (Eastern = UTC-5 typical)
+        # because AN schedules games by LOCAL date. At 23:30 UTC on
+        # Fri, 23:30-5 = 18:30 ET Fri — we want YYYY-MM-DD of Fri-ET.
+        # Easiest safe approach: fetch both today-UTC and tomorrow-UTC,
+        # then the aggregator's 24h cutoff filters by commence_time.
+        # That catches games starting tonight past UTC rollover.
+        for day_offset in (0, 1):
             date_str = (now + timedelta(days=day_offset)).strftime("%Y%m%d")
             try:
                 self._load_public_pcts(slug, date_str)
