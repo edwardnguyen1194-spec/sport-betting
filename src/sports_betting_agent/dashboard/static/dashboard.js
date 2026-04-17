@@ -233,6 +233,123 @@
     }
   }
 
+  // --------------------------------------------------------------
+  // Risk panel — bankroll, peak, drawdown, halt status.
+  // Yellow when drawdown >10%, red border + halt chip when halted.
+  // --------------------------------------------------------------
+  async function loadRisk() {
+    const panel = $("#risk-panel");
+    if (!panel) return;
+    try {
+      const res = await fetch("/api/risk");
+      const r = await res.json();
+      const dd = Number(r.drawdown_pct || 0);
+      const halted = !!r.halted;
+      const bankroll = Number(r.bankroll || 0);
+      const peak = Number(r.peak_bankroll || 0);
+
+      const bankrollEl = $("#risk-bankroll");
+      const peakEl = $("#risk-peak");
+      const ddEl = $("#risk-drawdown");
+      const stateEl = $("#risk-state");
+      const chip = $("#risk-status-chip");
+
+      if (bankrollEl) bankrollEl.textContent = `$${bankroll.toFixed(2)}`;
+      if (peakEl) peakEl.textContent = `$${peak.toFixed(2)}`;
+      if (ddEl) {
+        ddEl.textContent = `${dd.toFixed(2)}%`;
+        ddEl.classList.toggle("warn", !halted && dd > 10);
+        ddEl.classList.toggle("halt", halted);
+      }
+
+      let panelState = "ok";
+      let chipLabel = "An toàn";
+      let chipCls = "risk-chip-ok";
+      if (halted) {
+        panelState = "halted";
+        chipLabel = "Tạm dừng — Sụt giảm quá 20%";
+        chipCls = "risk-chip-halt";
+      } else if (dd > 10) {
+        panelState = "warn";
+        chipLabel = "Cảnh báo — Sụt giảm >10%";
+        chipCls = "risk-chip-warn";
+      }
+      panel.dataset.state = panelState;
+      if (chip) {
+        chip.className = `risk-chip ${chipCls}`;
+        chip.textContent = chipLabel;
+      }
+      if (stateEl) {
+        stateEl.textContent = halted ? "Tạm dừng" : (dd > 10 ? "Cảnh báo" : "An toàn");
+        stateEl.classList.toggle("warn", !halted && dd > 10);
+        stateEl.classList.toggle("halt", halted);
+      }
+    } catch (exc) {
+      const chip = $("#risk-status-chip");
+      if (chip) {
+        chip.className = "risk-chip";
+        chip.textContent = "Không tải được";
+      }
+    }
+  }
+
+  // --------------------------------------------------------------
+  // Per-strategy scoreboard — W-L, ROI, avg CLV.
+  // CLV + by_strategy come from /api/clv; ROI from roi_by_strategy
+  // which we added to the handler (derived from closed ledger).
+  // --------------------------------------------------------------
+  async function loadStrategyScoreboard() {
+    const body = $("#strategy-scoreboard-body");
+    if (!body) return;
+    try {
+      const res = await fetch("/api/clv");
+      const data = await res.json();
+      const byStrat = data.by_strategy || {};
+      const roiByStrat = data.roi_by_strategy || {};
+      const names = Array.from(new Set([
+        ...Object.keys(byStrat),
+        ...Object.keys(roiByStrat),
+      ])).filter(n => n && n !== "unknown");
+
+      if (names.length === 0) {
+        body.innerHTML = `<tr><td colspan="5" class="scoreboard-empty">Chưa có đủ dữ liệu. Cần ít nhất vài cược đã kết thúc.</td></tr>`;
+        return;
+      }
+
+      // Sort by bet count so the most-used strategies surface first.
+      names.sort((a, b) => {
+        const ba = (byStrat[a]?.bets || 0) + (roiByStrat[a]?.bets || 0);
+        const bb = (byStrat[b]?.bets || 0) + (roiByStrat[b]?.bets || 0);
+        return bb - ba;
+      });
+
+      body.innerHTML = "";
+      for (const name of names) {
+        const clv = byStrat[name] || {};
+        const roi = roiByStrat[name] || {};
+        const bets = Math.max(clv.bets || 0, roi.bets || 0);
+        const record = clv.record || "0-0";
+        const roiPct = roi.roi_pct;
+        const avgClv = clv.average_clv_pct;
+        const roiCls = roiPct === undefined ? "score-neutral" : (roiPct > 0 ? "score-pos" : (roiPct < 0 ? "score-neg" : "score-neutral"));
+        const clvCls = avgClv === undefined ? "score-neutral" : (avgClv > 0 ? "score-pos" : (avgClv < 0 ? "score-neg" : "score-neutral"));
+        const roiText = roiPct === undefined ? "—" : `${roiPct > 0 ? "+" : ""}${roiPct.toFixed(2)}%`;
+        const clvText = avgClv === undefined ? "—" : `${avgClv > 0 ? "+" : ""}${avgClv.toFixed(2)}%`;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${fmtStrategy(name)}</strong></td>
+          <td>${record}</td>
+          <td class="${roiCls}">${roiText}</td>
+          <td class="${clvCls}">${clvText}</td>
+          <td>${bets}</td>
+        `;
+        body.appendChild(tr);
+      }
+    } catch (exc) {
+      body.innerHTML = `<tr><td colspan="5" class="scoreboard-empty">Lỗi tải bảng điểm: ${exc}</td></tr>`;
+    }
+  }
+
   $("#btn-refresh").addEventListener("click", loadOdds);
   $("#btn-recs").addEventListener("click", loadRecs);
   if ($("#btn-best-picks")) $("#btn-best-picks").addEventListener("click", loadBestPicks);
@@ -243,8 +360,12 @@
   // the 60s cache is instant, recs take a couple seconds.
   loadOdds();
   loadRecs();
+  loadRisk();
+  loadStrategyScoreboard();
 
   // Also auto-refresh both every 90s so the dashboard stays live
-  // without manual clicking.
-  setInterval(() => { loadOdds(); loadRecs(); }, 90000);
+  // without manual clicking. Risk refresh is faster (30s) so halt
+  // events surface promptly without a full page reload.
+  setInterval(() => { loadOdds(); loadRecs(); loadStrategyScoreboard(); }, 90000);
+  setInterval(loadRisk, 30000);
 })();

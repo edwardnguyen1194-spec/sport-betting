@@ -29,6 +29,32 @@
   </div>
 </header>
 
+<section id="risk-panel" class="risk-panel" data-state="loading">
+  <div class="risk-header">
+    <h2>Quản Lý Rủi Ro</h2>
+    <span id="risk-status-chip" class="risk-chip risk-chip-ok">Đang tải...</span>
+    <span class="risk-chip market-guard-chip" title="Uncle's rule: no moneyline bets">Chỉ đặt: Chấp + Over/Under</span>
+  </div>
+  <div class="risk-grid">
+    <div class="risk-card">
+      <span class="risk-label">Vốn hiện tại</span>
+      <span id="risk-bankroll" class="risk-value">—</span>
+    </div>
+    <div class="risk-card">
+      <span class="risk-label">Đỉnh cao nhất</span>
+      <span id="risk-peak" class="risk-value">—</span>
+    </div>
+    <div class="risk-card">
+      <span class="risk-label">Mức sụt giảm</span>
+      <span id="risk-drawdown" class="risk-value">—</span>
+    </div>
+    <div class="risk-card">
+      <span class="risk-label">Trạng thái</span>
+      <span id="risk-state" class="risk-value">—</span>
+    </div>
+  </div>
+</section>
+
 <section class="stats-grid">
   <div class="stat-card">
     <span class="stat-label">Số dư</span>
@@ -93,6 +119,27 @@
       <input id="chat-input" type="text" placeholder="Hỏi về một trận hoặc chiến lược..." />
       <button type="submit">Gửi</button>
     </form>
+  </div>
+</section>
+
+<section class="strategy-scoreboard-section">
+  <h2>Bảng Điểm Chiến Lược</h2>
+  <p class="learning-subtitle">W-L, ROI, và CLV trung bình cho mỗi chiến lược. CLV dương trên 100+ cược = lợi thế thật.</p>
+  <div class="scoreboard-table-wrap">
+    <table id="strategy-scoreboard" class="scoreboard-table">
+      <thead>
+        <tr>
+          <th>Chiến lược</th>
+          <th>Thắng-Thua</th>
+          <th>ROI</th>
+          <th>CLV trung bình</th>
+          <th>Số cược</th>
+        </tr>
+      </thead>
+      <tbody id="strategy-scoreboard-body">
+        <tr><td colspan="5" class="scoreboard-empty">Đang tải...</td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 

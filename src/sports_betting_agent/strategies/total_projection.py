@@ -290,14 +290,20 @@ class TotalProjectionStrategy(Strategy):
     # Soccer: Dixon-Coles Poisson model (see ``soccer_model.py``).
     # ------------------------------------------------------------------
 
-    # Confidence ceiling specifically for the soccer model — tighter than
-    # the baseball/basketball market-anchored path because the Poisson
-    # framework is sharper (true probability, not tanh-mapped gap).
-    SOCCER_CONF_CAP = 0.60
-    # Minimum edge (probability - implied) before we take the bet. Same
-    # thinking as MIN_LINE_EDGE for other sports: stay above estimation
-    # noise at our rolling-20 sample sizes.
-    SOCCER_MIN_EDGE = 0.03
+    # Confidence ceiling for the soccer model. Tighter than pre-shrinkage
+    # because even a calibrated Dixon-Coles on 20+ games has ~3-5% prob
+    # error, and Kelly on an over-stated prob is catastrophic.
+    SOCCER_CONF_CAP = 0.58
+    # Minimum edge (probability - implied) before we take the bet.
+    SOCCER_MIN_EDGE = 0.04
+    # Market regression for soccer — shrink model prob toward the book's
+    # implied prob. Without this, a Poisson right-tail naturally favors
+    # Over on any game where λ_h + λ_a > line, producing the "all Overs"
+    # bias Uncle flagged. 55% market weight = the book is mostly right
+    # and we only fight when the model strongly disagrees. Matches the
+    # baseball_mlb weight (0.50) with a small premium because soccer
+    # samples are ~3-4× smaller in our window.
+    SOCCER_MARKET_REG = 0.55
 
     def _soccer_picks(self, game, cfg):
         """Emit Dixon-Coles-based totals recs for one soccer game."""
@@ -363,11 +369,23 @@ class TotalProjectionStrategy(Strategy):
                 chosen = under
                 display_sel = "Under"
                 model_prob = prob_under
-            # Cap before computing edge — a 68% model prob with Kelly
-            # on +120 juice would blow out stake. Confidence cap keeps
-            # it honest.
-            confidence = min(self.SOCCER_CONF_CAP, model_prob)
-            implied = american_to_implied(chosen.american)
+            # Market regression: blend the DC probability with the
+            # market's implied probability on the SAME side. Without
+            # this, Poisson right-tail pushed every MLS pick to Over
+            # on small-sample data. With 55% market weight, the model
+            # has to strongly disagree with the book to flip a pick.
+            implied_same_side = american_to_implied(chosen.american)
+            regressed_prob = (
+                (1.0 - self.SOCCER_MARKET_REG) * model_prob
+                + self.SOCCER_MARKET_REG * implied_same_side
+            )
+            # After regression, re-check which side actually wins.
+            # A small model edge can flip back to the market side
+            # after blending — skip rather than bet on the wrong side.
+            if regressed_prob <= implied_same_side:
+                continue
+            confidence = min(self.SOCCER_CONF_CAP, regressed_prob)
+            implied = implied_same_side
             edge = confidence - implied
             if edge < self.SOCCER_MIN_EDGE:
                 continue

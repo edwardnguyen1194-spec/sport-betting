@@ -26,6 +26,7 @@ from .fetchers import (
     SBRFetcher,
 )
 from .line_movement import LineMovementStore
+from .news_reader import NewsReader
 from .team_scoring import TeamScoringTracker
 from .strategies import (
     EnsembleStrategy,
@@ -35,9 +36,7 @@ from .strategies import (
     SteamFollowStrategy,
     PublicFadeStrategy,
     ReverseLineMovementStrategy,
-    NHLGoalieB2BStrategy,
     MLSHomeTravelStrategy,
-    MiddleDetectorStrategy,
 )
 
 
@@ -110,10 +109,8 @@ def _cmd_recommend(args) -> int:
             TotalValueStrategy(settings),
             TotalProjectionStrategy(settings, scoring=scoring),
             SteamFollowStrategy(settings, line_store=line_store),
-            PublicFadeStrategy(settings),
-            MiddleDetectorStrategy(settings),
             ReverseLineMovementStrategy(settings, line_store=line_store),
-            NHLGoalieB2BStrategy(settings),
+            PublicFadeStrategy(settings),
             MLSHomeTravelStrategy(settings),
         ],
         settings,

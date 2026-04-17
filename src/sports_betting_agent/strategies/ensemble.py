@@ -8,7 +8,7 @@ is a single ranked list the paper trader or dashboard can consume.
 from __future__ import annotations
 
 import logging
-from typing import Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, Optional
 
 from ..config import Settings, get_settings
 from ..models_schema import GameOdds
@@ -21,17 +21,34 @@ logger = logging.getLogger(__name__)
 class EnsembleStrategy(Strategy):
     name = "ensemble"
 
-    def __init__(self, strategies: List[Strategy], settings: Optional[Settings] = None) -> None:
+    def __init__(
+        self,
+        strategies: List[Strategy],
+        settings: Optional[Settings] = None,
+        news_reader: Optional[Any] = None,
+    ) -> None:
         self.strategies = strategies
         self.settings = settings or get_settings()
+        # Optional NewsReader — when present we downgrade confidence on
+        # bets where cached headlines flag an injury for one of the
+        # involved teams. Kept as a duck-typed attribute to avoid
+        # circular imports and so tests can inject a fake.
+        self.news_reader = news_reader
 
     def generate(self, games: Iterable[GameOdds]) -> List[BetRecommendation]:
         games = list(games)
         buckets: Dict[tuple, BetRecommendation] = {}
 
+        # Hard rule per Uncle: ONLY spread and over/under (total).
+        # Any strategy that sneaks in a moneyline / player-prop / middle
+        # market gets filtered here before reaching the paper trader.
+        ALLOWED_MARKETS = {"spread", "total"}
+
         for strat in self.strategies:
             try:
                 for rec in strat.generate(games):
+                    if rec.market not in ALLOWED_MARKETS:
+                        continue
                     key = (rec.game_key, rec.market, rec.selection.lower())
                     if key not in buckets:
                         buckets[key] = rec
@@ -39,11 +56,31 @@ class EnsembleStrategy(Strategy):
                         buckets[key].meta["contributing_strategies"].append(strat.name)
                     else:
                         existing = buckets[key]
-                        # Blend confidences and take the better price.
-                        existing.confidence = round(
-                            (existing.confidence + rec.confidence) / 2, 4
-                        )
-                        existing.edge = round(max(existing.edge, rec.edge), 4)
+                        # Bayesian log-odds combination — independent
+                        # strategies agreeing should raise confidence
+                        # ABOVE either input, not stay between them.
+                        # logit(post) = logit(prior) + logit(s1) + logit(s2) - 2*logit(prior)
+                        # For a neutral prior of 0.5, the prior terms
+                        # cancel and this reduces to log-odds addition.
+                        import math as _m
+                        def _logit(p):
+                            p = min(max(p, 0.01), 0.99)
+                            return _m.log(p / (1 - p))
+                        def _sigmoid(x):
+                            return 1.0 / (1.0 + _m.exp(-x))
+                        combined_logit = _logit(existing.confidence) + _logit(rec.confidence) - _logit(0.5)
+                        blended_conf = _sigmoid(combined_logit)
+                        # Cap hard — two strategies agreeing doesn't
+                        # grant certainty, only corroboration.
+                        existing.confidence = round(min(0.72, blended_conf), 4)
+                        # Edge is computed from blended confidence vs
+                        # the best price we'll actually take. Re-derive
+                        # instead of taking max which inflates by book
+                        # count (Agent-1 finding).
+                        best_decimal = max(existing.decimal or 0.0, rec.decimal or 0.0)
+                        if best_decimal > 0:
+                            implied_best = 1.0 / best_decimal
+                            existing.edge = round(existing.confidence - implied_best, 4)
                         if (rec.decimal or 0.0) > (existing.decimal or 0.0):
                             existing.american = rec.american
                             existing.decimal = rec.decimal
@@ -57,6 +94,46 @@ class EnsembleStrategy(Strategy):
                 logger.exception("ensemble: strategy %s failed: %s", strat.name, exc)
 
         recs = list(buckets.values())
+
+        # News-aware injury/scratch filter. After strategy confidences
+        # are combined we check cached ESPN headlines for injury terms
+        # co-mentioned with either team. A match shaves confidence
+        # (capped at 15% by NewsReader) and annotates the reasoning so
+        # the dashboard/Claude chat can see *why* a bet was downgraded.
+        if self.news_reader is not None and hasattr(self.news_reader, "penalty_for_game"):
+            penalty_cache: Dict[tuple, tuple] = {}
+            for rec in recs:
+                key = (rec.home_team, rec.away_team)
+                if key not in penalty_cache:
+                    try:
+                        penalty_cache[key] = self.news_reader.penalty_for_game(
+                            rec.home_team, rec.away_team
+                        )
+                    except Exception as exc:  # pragma: no cover
+                        logger.debug("ensemble: news penalty failed for %s: %s", key, exc)
+                        penalty_cache[key] = (0.0, "")
+                penalty_pct, reason = penalty_cache[key]
+                if penalty_pct > 0:
+                    before = rec.confidence
+                    rec.confidence = round(rec.confidence * (1 - penalty_pct), 4)
+                    # Re-derive edge from the penalized confidence so
+                    # downstream ranking + Kelly sizing reflect the
+                    # news-adjusted win probability.
+                    if rec.decimal:
+                        implied = 1.0 / rec.decimal
+                        rec.edge = round(rec.confidence - implied, 4)
+                    rec.reasoning = (rec.reasoning + "\n" + reason).strip()
+                    rec.meta["news_penalty_pct"] = penalty_pct
+                    rec.meta["news_penalty_reason"] = reason
+                    logger.info(
+                        "ensemble: news penalty %.0f%% on %s (%.3f -> %.3f): %s",
+                        penalty_pct * 100,
+                        rec.game_key,
+                        before,
+                        rec.confidence,
+                        reason,
+                    )
+
         # Gate on the configured minimum confidence.
         min_conf = self.settings.min_confidence
         filtered = [r for r in recs if r.confidence >= min_conf]

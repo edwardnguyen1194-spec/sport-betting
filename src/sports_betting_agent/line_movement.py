@@ -47,7 +47,10 @@ logger = logging.getLogger(__name__)
 
 
 SHARP_BOOKS = {"pinnacle", "circa", "bovada", "bookmaker", "betonline"}
-STEAM_MIN_BOOKS = 2                 # at least this many sharps moving together
+# Raised from 2 → 3 per Agent-4 finding: the docstring + research all
+# require 3+ sharp books moving together. At 2, normal Pinnacle+Circa
+# drift gets tagged as steam and produces false-positive bets.
+STEAM_MIN_BOOKS = 3                 # at least this many sharps moving together
 STEAM_MIN_CENTS = 15.0              # summed juice change threshold
 STEAM_MIN_SPREAD = 0.5              # half-point swing on spreads/totals
 SNAPSHOT_KEEP = 48                  # retain up to this many snapshots per key

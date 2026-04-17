@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from functools import wraps
 from flask import Flask, jsonify, render_template, request, Response
@@ -36,11 +36,7 @@ from ..strategies import (
     SteamFollowStrategy,
     PublicFadeStrategy,
     ReverseLineMovementStrategy,
-    NHLGoalieB2BStrategy,
     MLSHomeTravelStrategy,
-    MiddleDetectorStrategy,
-    SituationalStrategy,
-    EloEdgeStrategy,
 )
 from ..team_scoring import TeamScoringTracker
 
@@ -169,32 +165,35 @@ def create_app(
     # TotalProjectionStrategy is the model-based counterpart to the
     # market-based TotalValueStrategy and is the reason totals work
     # even when only one book quotes them.
+    # World-class ensemble after the multi-agent audit (2026-04-17).
+    # Disabled strategies:
+    #   - MiddleDetectorStrategy (middle-prob math was 3-5× too loose:
+    #     gap * 0.05 vs empirical 1.5%. Re-enable when we have a proper
+    #     margin-of-victory distribution per sport.)
+    #   - SituationalStrategy (hand-picked 9-factor additive scoring,
+    #     favorites-only filter, cap 0.92 = hidden bankroll drag.)
+    #   - NHLGoalieB2BStrategy (schedule-based B2B detection depended on
+    #     yesterday's games appearing in today's feed — almost never
+    #     fires, and when it does it's based on a data gap not a real
+    #     starter signal. Re-enable when we wire up a real roster feed.)
     strategies = [
+        # Core market-based: A-grade per audit, proper vig-removed arb.
         SpreadValueStrategy(settings),
         TotalValueStrategy(settings),
+        # Model-based totals with Dixon-Coles Poisson for soccer +
+        # market-regressed rolling scoring for other sports. B+ grade.
         TotalProjectionStrategy(settings, scoring=scoring),
-        # Follows Pinnacle + Bovada steam moves on spreads/totals — the
-        # single biggest edge we can extract from the line-movement store.
+        # A+ profit engine per audit — Pinnacle+sharp-book consensus.
         SteamFollowStrategy(settings, line_store=line_store),
-        # Fade the public: research shows dogs covering ~63.8% when
-        # public has <40% tickets. Uses ActionNetwork public-betting %.
-        PublicFadeStrategy(settings),
-        # Middle detector: when books disagree on spread by 1+ point
-        # (Book A -3 / Book B +4), bet both sides — both win if result
-        # lands in the middle (Stanford Wong, Sharp Sports Betting).
-        MiddleDetectorStrategy(settings),
-        # Reverse Line Movement: public ≥60% on side A but 2+ sharp
-        # books move the line toward side B = sharp money. 56-58%
-        # historical ATS win rate (Pinnacle research, SSRN).
+        # A-grade: public + sharp movement joint signal.
         ReverseLineMovementStrategy(settings, line_store=line_store),
-        # NHL puckline fade on back-to-back-scheduled teams — goalies
-        # on short rest give up ~0.25 more goals per Schuckers 2020.
-        NHLGoalieB2BStrategy(settings),
-        # MLS home favorite when visitor crossed 2+ timezones — ~3%
-        # historical ATS edge (largest soccer HFA effect in any league).
+        # PublicFade: C grade but now has public-% data wired up. Keep
+        # on with higher threshold; auto-tuner will adjust.
+        PublicFadeStrategy(settings),
+        # MLS travel fatigue — static TZ table, seasonal edge.
         MLSHomeTravelStrategy(settings),
     ]
-    ensemble = EnsembleStrategy(strategies, settings)
+    ensemble = EnsembleStrategy(strategies, settings, news_reader=news)
 
     app.extensions["sba"] = {
         "aggregator": aggregator,
@@ -317,8 +316,21 @@ def create_app(
             paper.open_bets.clear()
             paper.closed_bets.clear()
             paper._next_id = 1
+            paper._peak_bankroll = settings.bankroll_start
+            paper._halted = False
             paper._save_state()
         return jsonify({"ok": True, "bankroll": paper.bankroll})
+
+    @app.route("/api/risk")
+    def api_risk():
+        """Current risk snapshot: bankroll, drawdown %, halt status."""
+        return jsonify(paper.risk_snapshot())
+
+    @app.route("/api/reset-halt", methods=["POST"])
+    def api_reset_halt():
+        """Clear the drawdown halt so betting can resume."""
+        result = paper.resume()
+        return jsonify({"ok": True, **result})
 
     @app.route("/api/purge-voids", methods=["POST"])
     def purge_voids():
@@ -509,8 +521,46 @@ def create_app(
     @app.route("/api/clv")
     def clv_status():
         """Closing Line Value scoreboard — the #1 world-class metric.
-        Positive average CLV over 100+ bets = genuinely +EV picks."""
-        return jsonify(paper.clv.stats())
+        Positive average CLV over 100+ bets = genuinely +EV picks.
+
+        Also exposes per-strategy breakdown so the dashboard can render
+        a W-L + CLV scoreboard without a second API round trip."""
+        payload = dict(paper.clv.stats())
+        try:
+            payload["by_strategy"] = paper.clv.stats_by_strategy()
+        except Exception as exc:
+            logger.warning("stats_by_strategy failed: %s", exc)
+            payload["by_strategy"] = {}
+        # Per-strategy P&L from the closed ledger so Uncle sees ROI
+        # alongside CLV. CLV records alone can't compute ROI because
+        # they don't carry stake/payout.
+        try:
+            roi_by_strat: Dict[str, Dict[str, float]] = {}
+            for b in paper.closed_bets:
+                if not getattr(b, "strategy", None):
+                    continue
+                for name in b.strategy.split("+"):
+                    key = name.strip() or "unknown"
+                    bucket = roi_by_strat.setdefault(
+                        key, {"stake": 0.0, "pnl": 0.0, "bets": 0}
+                    )
+                    bucket["stake"] += float(b.stake)
+                    bucket["bets"] += 1
+                    if b.status == "won":
+                        bucket["pnl"] += float(b.stake) * (float(b.decimal) - 1.0)
+                    elif b.status == "lost":
+                        bucket["pnl"] -= float(b.stake)
+                    # push/void: no P&L change
+            for key, vals in roi_by_strat.items():
+                vals["roi_pct"] = (
+                    round(vals["pnl"] / vals["stake"] * 100, 2)
+                    if vals["stake"] > 0 else 0.0
+                )
+            payload["roi_by_strategy"] = roi_by_strat
+        except Exception as exc:
+            logger.warning("roi_by_strategy failed: %s", exc)
+            payload["roi_by_strategy"] = {}
+        return jsonify(payload)
 
     @app.route("/api/learner/today")
     def learner_today():

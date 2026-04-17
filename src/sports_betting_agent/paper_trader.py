@@ -110,6 +110,9 @@ class PaperTrader:
         self.open_bets: Dict[str, Bet] = {}
         self.closed_bets: List[Bet] = []
         self._next_id: int = 1
+        # Risk-management persistent state (Agent-3 safeguards).
+        self._peak_bankroll: float = self.settings.bankroll_start
+        self._halted: bool = False
 
         # Closing Line Value tracker — the #1 predictor of long-run profit
         # for any spread/total bettor. Records every placement and lets us
@@ -135,6 +138,9 @@ class PaperTrader:
         self._next_id = int(data.get("next_id", 1))
         self.open_bets = {b["id"]: Bet(**b) for b in data.get("open_bets", [])}
         self.closed_bets = [Bet(**b) for b in data.get("closed_bets", [])]
+        # Persistent risk state. Backfilled for pre-upgrade ledgers.
+        self._peak_bankroll = float(data.get("peak_bankroll", self.bankroll))
+        self._halted = bool(data.get("halted", False))
 
     def _save_state(self) -> None:
         os.makedirs(os.path.dirname(self.state_path) or ".", exist_ok=True)
@@ -143,6 +149,8 @@ class PaperTrader:
             "next_id": self._next_id,
             "open_bets": [asdict(b) for b in self.open_bets.values()],
             "closed_bets": [asdict(b) for b in self.closed_bets[-5_000:]],
+            "peak_bankroll": getattr(self, "_peak_bankroll", self.bankroll),
+            "halted": getattr(self, "_halted", False),
         }
         tmp = self.state_path + ".tmp"
         with open(tmp, "w", encoding="utf-8") as fh:
@@ -155,22 +163,109 @@ class PaperTrader:
 
     def place(self, rec: BetRecommendation) -> Optional[Bet]:
         with self._lock:
+            # ------------------------------------------------------------
+            # Hard market guard: spread + over/under ONLY. Uncle's rule.
+            # Any rec that reached us with a moneyline / prop / middle
+            # market is silently dropped. Belt-and-suspenders for the
+            # ensemble.py filter; if a future strategy emits an
+            # unexpected market type, this prevents a phantom bet.
+            # ------------------------------------------------------------
+            if rec.market not in ("spread", "total"):
+                logger.debug(
+                    "paper_trader skip: market %r not in {spread,total}", rec.market,
+                )
+                return None
+
+            # ------------------------------------------------------------
+            # Risk management gates (world-class safeguards per Agent-3
+            # audit). Order matters — cheapest checks first.
+            # ------------------------------------------------------------
+
+            # 1. Drawdown circuit-breaker. If bankroll is ≥20% below its
+            #    peak, halt all new bets until Uncle manually resumes.
+            #    Catastrophic blow-ups always start as "one more bet".
+            peak = max(
+                self.settings.bankroll_start,
+                getattr(self, "_peak_bankroll", self.settings.bankroll_start),
+            )
+            self._peak_bankroll = max(peak, self.bankroll)
+            drawdown = (self._peak_bankroll - self.bankroll) / self._peak_bankroll
+            if drawdown >= 0.20 and not getattr(self, "_halted", False):
+                logger.critical(
+                    "DRAWDOWN HALT: bankroll $%.0f is %.1f%% below peak $%.0f — "
+                    "pausing all new bets. POST /api/reset-halt to resume.",
+                    self.bankroll, drawdown * 100, self._peak_bankroll,
+                )
+                self._halted = True
+                self._save_state()
+                return None
+            if getattr(self, "_halted", False):
+                return None
+
+            # 2. Tilt dampener: after 7-of-last-10 losses, half-size.
+            #    At 8-of-10, skip. Recovers tilt-driven loss spirals.
+            recent = [
+                b for b in self.closed_bets[-10:] if b.status in ("won", "lost")
+            ]
+            losses_in_window = sum(1 for b in recent if b.status == "lost")
+            tilt_halve = losses_in_window >= 7 and len(recent) >= 8
+            if losses_in_window >= 8 and len(recent) >= 10:
+                logger.warning(
+                    "tilt skip: %d losses in last %d closed bets", losses_in_window, len(recent),
+                )
+                return None
+
             stake = self._size_stake(rec)
+            if tilt_halve:
+                stake *= 0.5
             if stake < self.settings.min_bet:
                 logger.debug("skipping rec %s: stake %.2f below min", rec.selection, stake)
                 return None
             if stake > self.bankroll:
                 logger.debug("skipping rec %s: insufficient bankroll", rec.selection)
                 return None
-            # Cap total exposure at 75% of starting bankroll. Previously
-            # 50% which fit exactly 10 min-bets — Uncle's dashboard hit
-            # the ceiling with 9 spreads, leaving zero room for totals
-            # (each min $50). 75% gives the strategies breathing room
-            # for real market diversity while still keeping bankroll
-            # safe (~1/4 untouched).
+            # 3. Dynamic exposure cap. Previously frozen at starting
+            #    bankroll — a degraded $3k bankroll could have $7.5k open
+            #    (>100% exposure). Now scales with current bankroll but
+            #    with a floor so we don't collapse into a death spiral.
+            live_cap_base = max(
+                self.bankroll, self.settings.bankroll_start * 0.5
+            )
             total_exposed = sum(b.stake for b in self.open_bets.values())
-            if total_exposed + stake > self.settings.bankroll_start * 0.75:
-                logger.debug("skipping rec %s: total exposure %.2f would exceed 75%% cap", rec.selection, total_exposed + stake)
+            if total_exposed + stake > live_cap_base * 0.75:
+                logger.debug(
+                    "skipping rec %s: exposure $%.0f would exceed 75%% of live cap $%.0f",
+                    rec.selection, total_exposed + stake, live_cap_base,
+                )
+                return None
+            # 4. Daily bet count cap. Prevents runaway "1,440 bets/day"
+            #    scenario on a loose threshold day.
+            from datetime import datetime as _dt, timezone as _tz
+            today_iso = _dt.now(_tz.utc).date().isoformat()
+            todays = sum(
+                1
+                for b in (list(self.open_bets.values()) + self.closed_bets)
+                if b.placed_at and b.placed_at.startswith(today_iso)
+            )
+            DAILY_CAP = 25
+            if todays >= DAILY_CAP:
+                logger.info(
+                    "daily cap reached (%d bets today) — skipping %s",
+                    todays, rec.selection,
+                )
+                return None
+            # 5. Per-game correlation cap. Multiple bets on the same
+            #    game_key are correlated through a single outcome. Agent-3
+            #    flagged 1 moneyline + 1 spread + 1 total = 3 correlated
+            #    bets allowed today. Cap at 1 bet per game.
+            per_game = sum(
+                1 for b in self.open_bets.values() if b.game_key == rec.game_key
+            )
+            if per_game >= 1:
+                logger.debug(
+                    "per-game cap: already have %d open bet on %s",
+                    per_game, rec.game_key,
+                )
                 return None
             # Don't double-book the same market — check BOTH open AND closed bets.
             # Exact-selection dup (e.g. two Over 9.0 picks for same game).
@@ -209,6 +304,8 @@ class PaperTrader:
                     selection=bet.selection,
                     market=bet.market,
                     american=bet.american,
+                    line=bet.line,
+                    strategy=bet.strategy,
                 )
             except Exception as exc:
                 logger.warning("CLV record_bet failed for %s: %s", bet_id, exc)
@@ -271,6 +368,41 @@ class PaperTrader:
         _place_first_n(sorted_recs, max_bets - len(placed))
 
         return placed
+
+    def resume(self) -> Dict[str, float]:
+        """Clear the drawdown halt and let bets flow again.
+
+        Called via POST /api/reset-halt. Returns the current risk
+        snapshot so Uncle can see how deep the drawdown was.
+        """
+        with self._lock:
+            was_halted = getattr(self, "_halted", False)
+            self._halted = False
+            # Rebase the peak to current bankroll so the next halt is
+            # measured from here forward, not from the pre-drawdown high.
+            self._peak_bankroll = self.bankroll
+            self._save_state()
+            return {
+                "was_halted": was_halted,
+                "bankroll": self.bankroll,
+                "peak_bankroll": self._peak_bankroll,
+            }
+
+    def risk_snapshot(self) -> Dict[str, float]:
+        """Current risk posture for the dashboard + API."""
+        peak = getattr(self, "_peak_bankroll", self.bankroll)
+        dd = (peak - self.bankroll) / peak if peak > 0 else 0.0
+        open_exposure = sum(b.stake for b in self.open_bets.values())
+        return {
+            "bankroll": self.bankroll,
+            "peak_bankroll": peak,
+            "drawdown_pct": round(dd * 100, 2),
+            "halted": getattr(self, "_halted", False),
+            "open_exposure": open_exposure,
+            "exposure_pct_of_live": (
+                round(open_exposure / max(self.bankroll, 1) * 100, 2)
+            ),
+        }
 
     def settle_bet(self, bet_id: str, outcome: str) -> Optional[Bet]:
         """Mark a bet won/lost/push/void and update bankroll."""

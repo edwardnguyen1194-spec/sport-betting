@@ -61,6 +61,145 @@ body {
   font-weight: 500;
 }
 
+/* ===== Risk Panel ===== */
+.risk-panel {
+  margin: 8px 40px 0;
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 16px 18px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.risk-panel[data-state="warn"] {
+  border-color: rgba(255, 215, 0, 0.55);
+  box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.18) inset;
+}
+.risk-panel[data-state="halted"] {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 1px rgba(255, 107, 107, 0.28) inset;
+}
+.risk-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.risk-header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--accent);
+  margin-right: auto;
+}
+.risk-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: var(--muted);
+}
+.risk-chip-ok {
+  border-color: rgba(126, 247, 161, 0.35);
+  background: rgba(126, 247, 161, 0.1);
+  color: var(--accent-2);
+}
+.risk-chip-warn {
+  border-color: rgba(255, 215, 0, 0.45);
+  background: rgba(255, 215, 0, 0.1);
+  color: #ffd700;
+}
+.risk-chip-halt {
+  border-color: rgba(255, 107, 107, 0.55);
+  background: rgba(255, 107, 107, 0.14);
+  color: var(--danger);
+}
+.market-guard-chip {
+  border-color: rgba(77, 163, 255, 0.35);
+  background: rgba(77, 163, 255, 0.08);
+  color: var(--accent);
+}
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+.risk-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.risk-label {
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.risk-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.risk-value.warn { color: #ffd700; }
+.risk-value.halt { color: var(--danger); }
+
+/* ===== Strategy Scoreboard ===== */
+.strategy-scoreboard-section {
+  padding: 20px 40px 10px;
+}
+.strategy-scoreboard-section h2 {
+  font-size: 1.3rem;
+  margin: 0;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.scoreboard-table-wrap {
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 8px;
+  margin-top: 10px;
+  overflow-x: auto;
+}
+.scoreboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.scoreboard-table thead th {
+  text-align: left;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  font-weight: 600;
+}
+.scoreboard-table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text);
+}
+.scoreboard-table tbody tr:last-child td { border-bottom: none; }
+.scoreboard-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+.scoreboard-empty {
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+}
+.score-pos { color: var(--accent-2); font-weight: 700; }
+.score-neg { color: var(--danger); font-weight: 700; }
+.score-neutral { color: var(--muted); }
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -608,6 +747,45 @@ body {
   .bet-details {
     gap: 6px;
     font-size: 0.78rem;
+  }
+
+  /* Mobile: Risk Panel */
+  .risk-panel {
+    margin: 8px 12px 0;
+    padding: 12px;
+    border-radius: 14px;
+  }
+  .risk-header h2 {
+    font-size: 0.95rem;
+  }
+  .risk-chip {
+    font-size: 0.68rem;
+    padding: 3px 10px;
+  }
+  .risk-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .risk-card {
+    padding: 8px 10px;
+    border-radius: 10px;
+  }
+  .risk-label { font-size: 0.62rem; }
+  .risk-value { font-size: 1.05rem; }
+
+  /* Mobile: Strategy Scoreboard */
+  .strategy-scoreboard-section {
+    padding: 12px 12px 8px;
+  }
+  .strategy-scoreboard-section h2 {
+    font-size: 1.1rem;
+  }
+  .scoreboard-table {
+    font-size: 0.78rem;
+  }
+  .scoreboard-table thead th,
+  .scoreboard-table tbody td {
+    padding: 8px 8px;
   }
 
   /* Mobile: News */

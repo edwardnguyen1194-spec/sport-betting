@@ -188,6 +188,120 @@ class NewsReader:
                     return True
         return False
 
+    # ------------------------------------------------------------------
+    # Injury-aware confidence penalty
+    # ------------------------------------------------------------------
+    #
+    # Scans cached headlines for injury keywords co-located with a team
+    # name. If a headline mentions both the team and one of the injury
+    # phrases below, we treat it as a real signal that our bet on this
+    # team's game carries extra risk and shave confidence accordingly.
+    #
+    # Phrases are matched as whole words/phrases to avoid false positives
+    # (e.g. "out" should not match "outstanding"). Multi-word phrases
+    # are matched as substrings since they're already specific enough.
+    INJURY_TERMS = (
+        "ruled out",
+        "day-to-day",
+        "day to day",
+        "placed on il",
+        "questionable",
+        "doubtful",
+        "scratched",
+        "inactive",
+        "injured",
+        "out",
+        "il",
+    )
+
+    # Per-headline penalty when team + injury term both present.
+    _PER_HEADLINE_PENALTY = 0.05
+    # Hard cap so a news storm doesn't zero out a bet's confidence.
+    _MAX_PENALTY = 0.15
+
+    def penalty_for_game(self, home_team: str, away_team: str) -> tuple:
+        """Return (penalty_pct, reason) for a game based on injury news.
+
+        penalty_pct is in [0, 0.15]. Reason is a human-readable string
+        (empty if no penalty). A headline must contain the team name AND
+        an injury keyword in the same headline to count. Matches against
+        both headline title and description when available.
+        """
+        import re
+
+        teams = [(home_team or "").strip(), (away_team or "").strip()]
+        teams = [t for t in teams if t]
+        if not teams:
+            return (0.0, "")
+
+        matched_reasons: List[str] = []
+        seen_titles: set = set()
+
+        # Compile team-name patterns. We look for the last "word" of the
+        # team name too (e.g. "LAFC" or "Lakers") because ESPN headlines
+        # often drop the city. We use word-boundary matching so "LA" in
+        # "LAFC" doesn't false-match a headline about "LA traffic".
+        team_patterns = []
+        for t in teams:
+            parts = [p for p in t.split() if len(p) >= 3]
+            variants = {t.lower()}
+            if parts:
+                variants.add(parts[-1].lower())  # e.g. "Lakers" from "LA Lakers"
+            for v in variants:
+                # Escape for regex, wrap in word boundaries.
+                team_patterns.append((t, re.compile(r"\b" + re.escape(v) + r"\b", re.IGNORECASE)))
+
+        for h in self.headlines:
+            title = (h.get("title") or "").strip()
+            desc = (h.get("description") or "").strip()
+            if not title:
+                continue
+            if title in seen_titles:
+                continue
+            combined = f"{title} {desc}".lower()
+
+            # Find a team match first — cheaper than scanning all injury
+            # terms on every headline.
+            matched_team = None
+            for team_name, pat in team_patterns:
+                if pat.search(title) or pat.search(desc):
+                    matched_team = team_name
+                    break
+            if not matched_team:
+                continue
+
+            # Now check injury terms. Use word boundaries for short terms
+            # like "out" / "il" so they don't false-match inside words.
+            matched_term = None
+            for term in self.INJURY_TERMS:
+                if " " in term or "-" in term:
+                    # Multi-word phrase — substring match is specific enough.
+                    if term in combined:
+                        matched_term = term
+                        break
+                else:
+                    # Single short word — require word boundaries.
+                    if re.search(r"\b" + re.escape(term) + r"\b", combined):
+                        matched_term = term
+                        break
+            if not matched_term:
+                continue
+
+            seen_titles.add(title)
+            matched_reasons.append(f"{matched_team}: '{title}' ({matched_term})")
+
+        if not matched_reasons:
+            return (0.0, "")
+
+        raw_penalty = self._PER_HEADLINE_PENALTY * len(matched_reasons)
+        penalty = min(self._MAX_PENALTY, raw_penalty)
+        # Keep the reason short — we append it to rec.reasoning which
+        # flows into the dashboard and chat summary.
+        preview = "; ".join(matched_reasons[:2])
+        extra = "" if len(matched_reasons) <= 2 else f" (+{len(matched_reasons) - 2} more)"
+        reason = f"injury_penalty={penalty:.0%} from news: {preview}{extra}"
+        return (penalty, reason)
+
     def dashboard_data(self) -> Dict:
         """Data for the dashboard display."""
         return {
