@@ -47,15 +47,17 @@ SPORT_PATHS: Dict[str, tuple[str, str, str]] = {
     "hockey_nhl": ("nhl", "hockey_nhl", "nhl"),
     "hockey_khl": ("khl", "hockey_khl", "khl"),
 
-    # Soccer — the big 5 European leagues + MLS + UEFA competitions
+    # Soccer — the big 5 European leagues + MLS + UEFA competitions.
+    # NOTE: AN uses the NO-HYPHEN form for most slugs ("laliga",
+    # "seriea", "ligue1"). Verified via empirical probe on 2026-04-17.
     "soccer_mls": ("mls", "soccer_mls", "mls"),
     "soccer_epl": ("epl", "soccer_epl", "epl"),
     "soccer_ucl": ("ucl", "soccer_ucl", "ucl"),
-    "soccer_uel": ("europa-league", "soccer_uel", "europa-league"),
-    "soccer_esp": ("la-liga", "soccer_esp", "la-liga"),
-    "soccer_ita": ("serie-a", "soccer_ita", "serie-a"),
+    "soccer_uel": ("uel", "soccer_uel", "uel"),
+    "soccer_esp": ("laliga", "soccer_esp", "laliga"),
+    "soccer_ita": ("seriea", "soccer_ita", "seriea"),
     "soccer_ger": ("bundesliga", "soccer_ger", "bundesliga"),
-    "soccer_fra": ("ligue-1", "soccer_fra", "ligue-1"),
+    "soccer_fra": ("ligue1", "soccer_fra", "ligue1"),
 
     # Combat + tennis (spread/total coverage varies; some have only ML)
     "mma_ufc": ("ufc", "mma_ufc", "ufc"),
