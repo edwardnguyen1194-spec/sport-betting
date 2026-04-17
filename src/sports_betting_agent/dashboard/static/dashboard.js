@@ -350,6 +350,78 @@
     }
   }
 
+  // --------------------------------------------------------------
+  // Market-mix panel — spread vs total breakdown of OPEN bets.
+  // Uncle wants BOTH markets firing; flag yellow if either is <20%.
+  // --------------------------------------------------------------
+  async function loadMarketMix() {
+    const panel = $("#market-mix-panel");
+    if (!panel) return;
+    const totalEl = $("#mix-total");
+    const spreadEl = $("#mix-spread");
+    const spreadPctEl = $("#mix-spread-pct");
+    const totalMarketEl = $("#mix-total-market");
+    const totalPctEl = $("#mix-total-pct");
+    const ouEl = $("#mix-ou");
+    const ouSubEl = $("#mix-ou-sub");
+    const chip = $("#market-mix-chip");
+    try {
+      const res = await fetch("/api/ledger");
+      const data = await res.json();
+      const open = data.open || [];
+      const total = open.length;
+      let spreadCount = 0;
+      let totalCount = 0;
+      let overCount = 0;
+      let underCount = 0;
+      for (const b of open) {
+        const m = (b.market || "").toLowerCase();
+        if (m === "spread") {
+          spreadCount += 1;
+        } else if (m === "total") {
+          totalCount += 1;
+          const sel = (b.selection || "").toLowerCase();
+          if (sel.includes("over")) overCount += 1;
+          else if (sel.includes("under")) underCount += 1;
+        }
+      }
+      const spreadPct = total > 0 ? (spreadCount / total) * 100 : 0;
+      const totalPct = total > 0 ? (totalCount / total) * 100 : 0;
+
+      if (totalEl) totalEl.textContent = String(total);
+      if (spreadEl) spreadEl.textContent = String(spreadCount);
+      if (spreadPctEl) spreadPctEl.textContent = total > 0 ? `${spreadPct.toFixed(0)}%` : "—";
+      if (totalMarketEl) totalMarketEl.textContent = String(totalCount);
+      if (totalPctEl) totalPctEl.textContent = total > 0 ? `${totalPct.toFixed(0)}%` : "—";
+      if (ouEl) ouEl.textContent = `${overCount} / ${underCount}`;
+      if (ouSubEl) ouSubEl.textContent = totalCount > 0 ? `Over vs Under` : "—";
+
+      // Flag yellow if either market is under-represented — Uncle
+      // wants BOTH spreads and totals firing in parallel.
+      const imbalanced = total >= 5 && (spreadPct < 20 || totalPct < 20);
+      panel.dataset.state = imbalanced ? "warn" : "ok";
+      if (chip) {
+        if (total === 0) {
+          chip.className = "risk-chip";
+          chip.textContent = "Chưa có kèo mở";
+        } else if (imbalanced) {
+          chip.className = "risk-chip risk-chip-warn";
+          chip.textContent = "Phân bổ chưa đều";
+        } else {
+          chip.className = "risk-chip risk-chip-ok";
+          chip.textContent = "Cân bằng";
+        }
+      }
+      spreadEl?.classList.toggle("warn", imbalanced && spreadPct < 20);
+      totalMarketEl?.classList.toggle("warn", imbalanced && totalPct < 20);
+    } catch (exc) {
+      if (chip) {
+        chip.className = "risk-chip";
+        chip.textContent = "Không tải được";
+      }
+    }
+  }
+
   $("#btn-refresh").addEventListener("click", loadOdds);
   $("#btn-recs").addEventListener("click", loadRecs);
   if ($("#btn-best-picks")) $("#btn-best-picks").addEventListener("click", loadBestPicks);
@@ -362,10 +434,12 @@
   loadRecs();
   loadRisk();
   loadStrategyScoreboard();
+  loadMarketMix();
 
   // Also auto-refresh both every 90s so the dashboard stays live
   // without manual clicking. Risk refresh is faster (30s) so halt
   // events surface promptly without a full page reload.
   setInterval(() => { loadOdds(); loadRecs(); loadStrategyScoreboard(); }, 90000);
   setInterval(loadRisk, 30000);
+  setInterval(loadMarketMix, 45000);
 })();

@@ -211,16 +211,25 @@ class PaperTrader:
             # audit). Order matters — cheapest checks first.
             # ------------------------------------------------------------
 
-            # 1. Drawdown circuit-breaker. If bankroll is ≥20% below its
-            #    peak, halt all new bets until Uncle manually resumes.
-            #    Catastrophic blow-ups always start as "one more bet".
+            # 1. Drawdown circuit-breaker — loosened from 20% to 40%
+            #    per Uncle's explicit "remove tam dung, keep going"
+            #    instruction. Paper-trading natural variance easily
+            #    produces 20% drawdowns during exploration; the halt
+            #    was firing too aggressively and interrupting learning.
+            #    40% = only fires on CATASTROPHIC runs (bankroll down
+            #    to 60% of peak), the true blow-up region. Still
+            #    configurable via env var SBA_MAX_DRAWDOWN_PCT.
+            import os as _os
+            halt_threshold = float(
+                _os.environ.get("SBA_MAX_DRAWDOWN_PCT", "0.40")
+            )
             peak = max(
                 self.settings.bankroll_start,
                 getattr(self, "_peak_bankroll", self.settings.bankroll_start),
             )
             self._peak_bankroll = max(peak, self.bankroll)
             drawdown = (self._peak_bankroll - self.bankroll) / self._peak_bankroll
-            if drawdown >= 0.20 and not getattr(self, "_halted", False):
+            if drawdown >= halt_threshold and not getattr(self, "_halted", False):
                 logger.critical(
                     "DRAWDOWN HALT: bankroll $%.0f is %.1f%% below peak $%.0f — "
                     "pausing all new bets. POST /api/reset-halt to resume.",

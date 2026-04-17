@@ -149,6 +149,58 @@ body {
 .risk-value.warn { color: #ffd700; }
 .risk-value.halt { color: var(--danger); }
 
+/* ===== Market Mix Panel (spread vs total breakdown of open bets) ===== */
+.market-mix-panel {
+  margin: 8px 40px 0;
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 16px 18px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.market-mix-panel[data-state="warn"] {
+  border-color: rgba(255, 215, 0, 0.55);
+  box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.18) inset;
+}
+.market-mix-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.market-mix-header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--accent);
+  margin-right: auto;
+}
+.market-mix-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+.risk-sublabel {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .market-mix-panel {
+    margin: 8px 12px 0;
+    padding: 12px;
+    border-radius: 14px;
+  }
+  .market-mix-header h2 {
+    font-size: 0.95rem;
+  }
+  .market-mix-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+}
+
 /* ===== Strategy Scoreboard ===== */
 .strategy-scoreboard-section {
   padding: 20px 40px 10px;

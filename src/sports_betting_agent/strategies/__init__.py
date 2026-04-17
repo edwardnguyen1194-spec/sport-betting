@@ -25,6 +25,7 @@ from .steam_follow import SteamFollowStrategy
 from .public_fade import PublicFadeStrategy
 from .reverse_line_movement import ReverseLineMovementStrategy
 from .mls_travel import MLSHomeTravelStrategy
+from .elo_spread import EloSpreadStrategy
 from .ensemble import EnsembleStrategy
 
 __all__ = [
@@ -37,5 +38,6 @@ __all__ = [
     "PublicFadeStrategy",
     "ReverseLineMovementStrategy",
     "MLSHomeTravelStrategy",
+    "EloSpreadStrategy",
     "EnsembleStrategy",
 ]

@@ -30,6 +30,7 @@ from ..paper_trader import PaperTrader
 from ..power_ratings import EloRatings
 from ..strategies import (
     BetRecommendation,
+    EloSpreadStrategy,
     EnsembleStrategy,
     SpreadValueStrategy,
     TotalValueStrategy,
@@ -197,6 +198,11 @@ def create_app(
         PublicFadeStrategy(settings),
         # MLS travel fatigue — static TZ table, seasonal edge.
         MLSHomeTravelStrategy(settings),
+        # Elo-derived ATS picks: home/away spread based on our own
+        # power-rating model diverging from the posted main line.
+        # Shares the same EloRatings instance that also powers
+        # /api/elo and the scoring tracker.
+        EloSpreadStrategy(settings, elo=elo),
     ]
     ensemble = EnsembleStrategy(strategies, settings, news_reader=news)
 
