@@ -90,8 +90,12 @@ class PublicFadeStrategy(Strategy):
             return []
 
         # Find the best available spread line at a sharp book for the
-        # unpopular side. Prefer handicap >= 0 (dog) — fading the
-        # public ONTO a favorite is the weaker play.
+        # unpopular side. ``line >= 0`` filter removed per audit —
+        # it was killing every favorite-side fade even when the edge
+        # was real. Historical dog-fade win-rate is stronger (63.8%
+        # at <40% tickets) than favorite-fade (~55%), so we apply a
+        # TIGHTER confidence cap to favorite-side picks below instead
+        # of excluding them entirely.
         candidates = [
             l for l in game.lines
             if l.market == "spread"
@@ -100,13 +104,16 @@ class PublicFadeStrategy(Strategy):
             and l.line is not None
             and l.book.lower() in SHARP_BOOKS
             and l.selection.lower().strip() == fade_side.lower().strip()
-            and l.line >= 0  # dog side only
         ]
         if not candidates:
             return []
         best = max(candidates, key=lambda l: l.decimal or 0.0)
 
         confidence = self._confidence_from_public(fade_pct)
+        # Weaker signal on the favorite side — cap tighter. Dog side
+        # still gets the full 0.58 ceiling from _confidence_from_public.
+        if best.line < 0:
+            confidence = min(confidence, 0.55)
         implied = american_to_implied(best.american)
         edge = confidence - implied
         if edge < MIN_EDGE:

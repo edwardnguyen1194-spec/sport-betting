@@ -20,11 +20,23 @@ logger = logging.getLogger(__name__)
 
 SHARP_BOOKS = {"pinnacle", "circa", "bovada", "betonline", "bookmaker"}
 
+# Tolerate an alt-line handicap mismatch of up to this magnitude when
+# searching for the opposite-side quote used for vig removal. Books
+# frequently offer -1.5 on one side + +1.0 on the other (not the exact
+# mirror), which previously killed the pick. ±0.5 keeps us in the same
+# juice ballpark without accepting true alt-line divergence (≥1 pt).
+OPPOSITE_HANDICAP_TOL = 0.5
+
 
 class SpreadValueStrategy(Strategy):
     name = "spread_value"
 
-    def __init__(self, settings: Optional[Settings] = None, min_edge: float = 0.025) -> None:
+    def __init__(self, settings: Optional[Settings] = None, min_edge: float = 0.015) -> None:
+        # Default lowered 0.025 → 0.015 per Agent audit: spread edges
+        # empirically cluster in [0.01, 0.03] after vig removal. The
+        # 0.025 floor killed the middle of that band and left only
+        # extreme outliers passing through. 0.015 is still well above
+        # measurement noise — we're not chasing coin flips.
         self.settings = settings or get_settings()
         self.min_edge = getattr(self.settings, "spread_value_min_edge", min_edge)
 
@@ -49,13 +61,30 @@ class SpreadValueStrategy(Strategy):
                 if not sharp_lines:
                     continue
 
-                # Find the opposite side at the opposite handicap
+                # Find the opposite side at (approximately) -handicap.
+                # Books often offer asymmetric alt-lines (e.g. home -1.5
+                # while away +1.0); tolerate ±OPPOSITE_HANDICAP_TOL so
+                # those pairs still qualify. Exact-match still preferred.
                 opposite_handicap = -handicap
                 opposite_key = None
                 for key in groups:
-                    if key[1] == opposite_handicap and key[0] != selection:
+                    if key[0] == selection:
+                        continue
+                    if key[1] == opposite_handicap:
                         opposite_key = key
                         break
+                if opposite_key is None:
+                    # Fallback: closest opposite-side key within tolerance
+                    best_delta = None
+                    for key in groups:
+                        if key[0] == selection:
+                            continue
+                        delta = abs(key[1] - opposite_handicap)
+                        if delta <= OPPOSITE_HANDICAP_TOL and (
+                            best_delta is None or delta < best_delta
+                        ):
+                            best_delta = delta
+                            opposite_key = key
                 if opposite_key is None:
                     continue
 
