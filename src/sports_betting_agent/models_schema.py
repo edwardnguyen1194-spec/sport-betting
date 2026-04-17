@@ -251,12 +251,23 @@ def _norm(name: str) -> str:
 
 
 def merge_games(games: Iterable[GameOdds]) -> List[GameOdds]:
-    """Merge `GameOdds` from multiple sources by game_key."""
+    """Merge `GameOdds` from multiple sources by game_key.
+
+    Preserves per-source meta fields across sources — first non-None
+    value wins. Critical for public-betting percentages: only
+    ActionNetwork populates ``public_spread_home_pct`` etc., and prior
+    to this fix those keys were dropped during merge, silently starving
+    RLM and PublicFade of their input signal.
+    """
 
     bucket: Dict[str, GameOdds] = {}
     for g in games:
         key = g.game_key
         if key not in bucket:
+            merged_meta = {"sources": [g.source]}
+            for mk, mv in (g.meta or {}).items():
+                if mk != "sources":
+                    merged_meta[mk] = mv
             bucket[key] = GameOdds(
                 sport=g.sport,
                 league=g.league,
@@ -266,7 +277,7 @@ def merge_games(games: Iterable[GameOdds]) -> List[GameOdds]:
                 source="merged",
                 event_id=g.event_id,
                 lines=list(g.lines),
-                meta={"sources": [g.source]},
+                meta=merged_meta,
             )
         else:
             existing = bucket[key]
@@ -274,9 +285,17 @@ def merge_games(games: Iterable[GameOdds]) -> List[GameOdds]:
             sources = existing.meta.setdefault("sources", [])
             if g.source not in sources:
                 sources.append(g.source)
-            # Propagate commence_time if the existing entry lacks one
+            # Propagate commence_time if the existing entry lacks one.
             if existing.commence_time is None and g.commence_time is not None:
                 existing.commence_time = g.commence_time
+            # Propagate any meta key the first-seen source lacked.
+            # First non-None value wins; e.g. Bovada arrives first with
+            # no public-%, AN arrives second with them populated.
+            for mk, mv in (g.meta or {}).items():
+                if mk == "sources" or mv is None:
+                    continue
+                if mk not in existing.meta or existing.meta.get(mk) is None:
+                    existing.meta[mk] = mv
     return list(bucket.values())
 
 

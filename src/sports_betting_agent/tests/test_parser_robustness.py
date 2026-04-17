@@ -191,7 +191,15 @@ def test_espn_skips_null_consensus_entry():
     assert "espn_bet" in books
 
 
-def test_espn_handles_pickem_spread():
+def test_espn_skips_synthetic_spread_and_total():
+    """ESPN's scoreboard exposes handicap/total numbers but not juice.
+
+    We used to stamp american=-110 as a sentinel, which silently
+    contaminated real book prices via provider-name collision (e.g.
+    ESPN's "DraftKings" provider overwriting AN's real DK juice).
+    Fix: skip spread/total emissions entirely. Only real moneyline
+    prices flow through.
+    """
     payload = _espn_event(
         [
             {
@@ -205,9 +213,13 @@ def test_espn_handles_pickem_spread():
     )
     games = list(ESPNFetcher()._parse(payload, "baseball_mlb", "mlb"))
     assert len(games) == 1
-    spreads = [l for l in games[0].lines if l.market == "spread"]
-    assert len(spreads) == 2
-    assert all(l.line == 0.0 for l in spreads)
+    # Real moneyline prices survive (ESPN publishes these).
+    mls = [l for l in games[0].lines if l.market == "moneyline"]
+    assert len(mls) == 2
+    assert all(l.american == -105 for l in mls)
+    # Spread + total intentionally dropped — we never had juice for them.
+    assert not any(l.market == "spread" for l in games[0].lines)
+    assert not any(l.market == "total" for l in games[0].lines)
 
 
 # ---------------------------------------------------------------------------

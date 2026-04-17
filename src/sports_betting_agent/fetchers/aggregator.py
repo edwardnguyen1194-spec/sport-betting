@@ -96,6 +96,16 @@ class OddsAggregator:
         # Remove outlier lines (bad data from alternate markets)
         for game in merged:
             self._remove_outlier_lines(game)
+        # Cross-game variance filter: a book whose american price is
+        # the SAME value across 10+ unrelated games in the same sport +
+        # market is serving fake juice, not a real scraped price. The
+        # canonical failure mode this catches: a fetcher that stamps
+        # -110 on every outcome when the source doesn't publish juice
+        # (ESPN used to do this and contaminated real DraftKings prices
+        # via book-name collision). Defense in depth on top of the
+        # per-fetcher fixes — if a future fetcher regresses, this kicks
+        # the bad data out before strategies see it.
+        self._drop_stuck_price_books(merged)
         # Strict filtering:
         # 1. Drop games with no commence_time (can't verify they're upcoming)
         # 2. Drop games that already started or start within 5 min (lines are stale)
@@ -276,12 +286,20 @@ class OddsAggregator:
         for l in game.lines:
             key = (l.book.lower(), l.market, l.selection.lower(), l.line)
             dup_keys[key].append(l)
-        # Drop later duplicates with the same key.
+        # Drop later duplicates with the same key — prefer the entry
+        # with real juice over one that only has a handicap. (Without
+        # this, ESPN/Covers/VI lines with american=None can win the
+        # dedup race if they arrive first and shadow ActionNetwork's
+        # real-juice line with the same handicap.)
         keep = set()
         for key, lines in dup_keys.items():
-            keep.add(id(lines[0]))
-            for extra in lines[1:]:
-                pass   # not added to keep set => removed below
+            # Prefer a line with a real american price; fall back to
+            # the first encountered when all tie. Avoids using
+            # last_update as a tiebreaker because it mixes datetime
+            # and None in a single max() key (TypeError-prone).
+            with_juice = [l for l in lines if l.american is not None]
+            best = with_juice[0] if with_juice else lines[0]
+            keep.add(id(best))
         # Also collapse (book, market, selection) across handicaps to
         # one entry per book — pick the line whose |handicap| matches
         # the per-team median.
@@ -309,6 +327,61 @@ class OddsAggregator:
                     cross_drops.add(id(l))
         if cross_drops:
             game.lines = [l for l in game.lines if id(l) not in cross_drops]
+
+    @staticmethod
+    def _drop_stuck_price_books(games: List[GameOdds]) -> None:
+        """Drop (book, sport, market) triples whose american price is
+        suspiciously uniform across many games.
+
+        The bug this guards against: a fetcher that stamps a fake
+        default price (e.g. -110) on every outcome because the upstream
+        source doesn't publish juice. Real sportsbooks produce varied
+        juice (-105, -115, -120, +105 etc.); a stuck feed produces the
+        same number across 20+ unrelated games. That's the tell.
+
+        Thresholds chosen generously so a small slate can't trigger it:
+        need ≥10 distinct games, AND ≥80% of those games quote the
+        same exact price. Only scoped to ``spread`` and ``total`` —
+        moneyline prices naturally cluster near even on pick'ems and
+        would false-positive.
+        """
+        from collections import Counter, defaultdict as _dd
+
+        MIN_GAMES = 10
+        DOM_RATIO = 0.80
+        MARKETS = ("spread", "total")
+
+        # (book, sport, market) -> {game_id: price}
+        buckets: Dict[tuple[str, str, str], Dict[int, float]] = _dd(dict)
+        for g in games:
+            for l in g.lines:
+                if l.market not in MARKETS or l.american is None:
+                    continue
+                # Dedup by game — both sides of one game at the same
+                # price (pick'em) shouldn't count twice.
+                buckets[(l.book.lower(), g.sport, l.market)][id(g)] = l.american
+
+        bad_keys: set = set()
+        for key, per_game in buckets.items():
+            if len(per_game) < MIN_GAMES:
+                continue
+            top_price, top_ct = Counter(per_game.values()).most_common(1)[0]
+            if top_ct / len(per_game) >= DOM_RATIO:
+                logger.warning(
+                    "stuck-price: dropping %s %s %s — %d/%d games at %s",
+                    key[0], key[1], key[2], top_ct, len(per_game), top_price,
+                )
+                bad_keys.add(key)
+
+        if not bad_keys:
+            return
+        for g in games:
+            if not g.lines:
+                continue
+            g.lines = [
+                l for l in g.lines
+                if (l.book.lower(), g.sport, l.market) not in bad_keys
+            ]
 
     @staticmethod
     def _safe_fetch(fetcher: BaseFetcher, sport_key: str) -> List[GameOdds]:

@@ -186,9 +186,11 @@ def _parse_spread_val(value: str, odds: str) -> Optional[tuple[float, float]]:
         line = abs(line)
     elif value.startswith("-"):
         line = -abs(line)
-    juice = _parse_american(odds) if odds else -110.0
-    if juice is None:
-        juice = -110.0
+    # Real juice only. Previously defaulted to -110 when scraped odds
+    # were missing or unparseable, contaminating the pipeline with fake
+    # "10-cent juice" that silently flowed through to strategies and
+    # the dashboard. Return None so downstream knows juice is unknown.
+    juice = _parse_american(odds) if odds else None
     return line, juice
 
 
@@ -210,7 +212,9 @@ def _parse_total_val(value: str, odds: str) -> Optional[tuple[float, float, Opti
         return None
     if line is None:
         return None
-    juice = _parse_american(odds) if odds else -110.0
-    if juice is None:
-        juice = -110.0
+    # Real juice only. Previously defaulted to -110 when scraped odds
+    # were missing or unparseable, contaminating the pipeline with fake
+    # "10-cent juice" that silently flowed through to strategies and
+    # the dashboard. Return None so downstream knows juice is unknown.
+    juice = _parse_american(odds) if odds else None
     return line, juice, ou_side

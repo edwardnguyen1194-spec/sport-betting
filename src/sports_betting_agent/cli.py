@@ -25,10 +25,19 @@ from .fetchers import (
     ActionNetworkFetcher,
     SBRFetcher,
 )
+from .line_movement import LineMovementStore
+from .team_scoring import TeamScoringTracker
 from .strategies import (
-    HeavyFavoriteStrategy,
-    ValueBetStrategy,
     EnsembleStrategy,
+    SpreadValueStrategy,
+    TotalValueStrategy,
+    TotalProjectionStrategy,
+    SteamFollowStrategy,
+    PublicFadeStrategy,
+    ReverseLineMovementStrategy,
+    NHLGoalieB2BStrategy,
+    MLSHomeTravelStrategy,
+    MiddleDetectorStrategy,
 )
 
 
@@ -89,10 +98,26 @@ def _cmd_odds(args) -> int:
 
 
 def _cmd_recommend(args) -> int:
+    """CLI mirror of the dashboard ensemble — useful for cron / debugging."""
     settings = get_settings()
     agg = OddsAggregator(settings)
     games = agg.fetch_sports([s.strip() for s in args.sports.split(",") if s.strip()])
-    ensemble = EnsembleStrategy([HeavyFavoriteStrategy(settings), ValueBetStrategy(settings)], settings)
+    scoring = TeamScoringTracker(settings.data_dir)
+    line_store = LineMovementStore(settings.data_dir)
+    ensemble = EnsembleStrategy(
+        [
+            SpreadValueStrategy(settings),
+            TotalValueStrategy(settings),
+            TotalProjectionStrategy(settings, scoring=scoring),
+            SteamFollowStrategy(settings, line_store=line_store),
+            PublicFadeStrategy(settings),
+            MiddleDetectorStrategy(settings),
+            ReverseLineMovementStrategy(settings, line_store=line_store),
+            NHLGoalieB2BStrategy(settings),
+            MLSHomeTravelStrategy(settings),
+        ],
+        settings,
+    )
     recs = ensemble.generate(games)
     print(json.dumps([r.to_dict() for r in recs], indent=2, default=str))
     return 0

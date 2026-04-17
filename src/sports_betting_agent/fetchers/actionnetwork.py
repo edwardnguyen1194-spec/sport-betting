@@ -17,6 +17,11 @@ from .base import BaseFetcher, FetcherError
 
 
 AN_BASE = "https://api.actionnetwork.com/web/v1/scoreboard"
+# v2 scoreboard returns public-betting bet_info (tickets + money %) for
+# every outcome. We call it as a *supplementary* request — v1 still
+# drives the main line/price data because our parser is battle-tested
+# against its structure and occasional API drift.
+AN_V2_BASE = "https://api.actionnetwork.com/web/v2/scoreboard"
 
 SPORT_PATHS: Dict[str, tuple[str, str, str]] = {
     # AN's NCAA baseball endpoint was mistakenly mapped to "ncaab"
@@ -75,8 +80,18 @@ class ActionNetworkFetcher(BaseFetcher):
         now = datetime.now(timezone.utc)
         games: List[GameOdds] = []
         seen_keys: set = set()
+        # One supplementary v2 call per day — gives us every outcome's
+        # tickets-% / money-% so RLM and PublicFade actually have data.
+        # Keyed on event_id so the per-game parse can look it up cheaply.
+        self._public_cache: Dict[str, Dict[str, float]] = {}
         for day_offset in (0, 1, 2):
             date_str = (now + timedelta(days=day_offset)).strftime("%Y%m%d")
+            try:
+                self._load_public_pcts(slug, date_str)
+            except Exception:
+                # Public-pct fetch is best-effort — never let a v2 miss
+                # block the main v1 line fetch.
+                pass
             try:
                 payload = self._get(
                     url,
@@ -98,6 +113,73 @@ class ActionNetworkFetcher(BaseFetcher):
                 seen_keys.add(g.game_key)
                 games.append(g)
         return games
+
+    def _load_public_pcts(self, slug: str, date_str: str) -> None:
+        """Query the v2 scoreboard endpoint once per day and aggregate
+        public-betting percentages (tickets + money) per game.
+
+        Writes into ``self._public_cache`` keyed by ``str(event_id)``.
+        Fails silently — the v1 parse still runs even when this misses.
+        """
+        url = f"{AN_V2_BASE}/{slug}"
+        payload = self._get(
+            url,
+            params={
+                "bookIds": ",".join(str(b) for b in BOOK_LABELS),
+                "periods": "event",
+                "date": date_str,
+            },
+            headers={
+                "Origin": "https://www.actionnetwork.com",
+                "Referer": "https://www.actionnetwork.com/",
+            },
+        )
+        for g in (payload.get("games") or []):
+            event_id = str(g.get("id") or "")
+            if not event_id:
+                continue
+            sh_t, sa_t, to_t, tu_t = [], [], [], []   # ticket % per side
+            sh_m, sa_m, to_m, tu_m = [], [], [], []   # money % per side
+            for _book_id, book in (g.get("markets") or {}).items():
+                if not isinstance(book, dict):
+                    continue
+                event = book.get("event", {}) or {}
+                for entry in event.get("spread", []) or []:
+                    bi = entry.get("bet_info") or {}
+                    t_pct = (bi.get("tickets") or {}).get("percent")
+                    m_pct = (bi.get("money") or {}).get("percent")
+                    side = entry.get("side")
+                    if t_pct and side == "home": sh_t.append(t_pct)
+                    if t_pct and side == "away": sa_t.append(t_pct)
+                    if m_pct and side == "home": sh_m.append(m_pct)
+                    if m_pct and side == "away": sa_m.append(m_pct)
+                for entry in event.get("total", []) or []:
+                    bi = entry.get("bet_info") or {}
+                    t_pct = (bi.get("tickets") or {}).get("percent")
+                    m_pct = (bi.get("money") or {}).get("percent")
+                    side = entry.get("side")
+                    if t_pct and side == "over": to_t.append(t_pct)
+                    if t_pct and side == "under": tu_t.append(t_pct)
+                    if m_pct and side == "over": to_m.append(m_pct)
+                    if m_pct and side == "under": tu_m.append(m_pct)
+
+            def avg(xs):
+                return sum(xs) / len(xs) / 100.0 if xs else None
+
+            meta = {}
+            if sh_t: meta["public_spread_home_pct"] = avg(sh_t)
+            if sa_t: meta["public_spread_away_pct"] = avg(sa_t)
+            if to_t: meta["public_total_over_pct"] = avg(to_t)
+            if tu_t: meta["public_total_under_pct"] = avg(tu_t)
+            # Money-% variants let RLM look for the signature sharp
+            # signal: low tickets % AND high money % on the same side.
+            if sh_m: meta["public_spread_home_money_pct"] = avg(sh_m)
+            if sa_m: meta["public_spread_away_money_pct"] = avg(sa_m)
+            if to_m: meta["public_total_over_money_pct"] = avg(to_m)
+            if tu_m: meta["public_total_under_money_pct"] = avg(tu_m)
+
+            if meta:
+                self._public_cache[event_id] = meta
 
     # ------------------------------------------------------------------
 
@@ -214,10 +296,29 @@ class ActionNetworkFetcher(BaseFetcher):
 
         return game
 
-    @staticmethod
-    def _extract_public_pcts(ev: Dict[str, Any], game: GameOdds) -> None:
-        """Try to extract public betting % from various AN API key paths."""
-        # AN has used different structures across versions
+    def _extract_public_pcts(self, ev: Dict[str, Any], game: GameOdds) -> None:
+        """Merge public-betting percentages into ``game.meta``.
+
+        Preferred source: the v2 scoreboard cache populated in ``fetch()``.
+        It has tickets-% and money-% per side for every outcome — strong
+        enough for RLM's sharp-money divergence signal.
+
+        Legacy fallback: scan the v1 event payload for the old key paths
+        (``betting``, ``public_betting``, …). AN hasn't populated these
+        in years but leaving the fallback in costs nothing and covers us
+        if the v2 endpoint flakes.
+        """
+        # -- v2 cache path (preferred) ---------------------------------
+        event_id = str(ev.get("id") or "")
+        cache = getattr(self, "_public_cache", None)
+        if cache and event_id in cache:
+            for meta_key, val in cache[event_id].items():
+                if val is None:
+                    continue
+                game.meta[meta_key] = val
+            return
+
+        # -- legacy v1 fallback ----------------------------------------
         for key in ("betting", "public_betting", "betting_splits", "ticket_counts"):
             data = ev.get(key)
             if isinstance(data, dict):
@@ -236,7 +337,6 @@ class ActionNetworkFetcher(BaseFetcher):
                         game.meta[meta_key] = val / 100.0 if val > 1.0 else val
                 return
 
-        # Also check top-level event keys
         for src_key, meta_key in (
             ("home_ticket_pct", "public_ml_home_pct"),
             ("away_ticket_pct", "public_ml_away_pct"),

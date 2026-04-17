@@ -92,24 +92,10 @@ class CoversFetcher(BaseFetcher):
                     OddsLine(book="covers_consensus", market="moneyline", selection=away_team, american=away_ml)
                 )
 
-            spread = _num(box.get("data-spread"))
-            total = _num(box.get("data-total"))
-            if spread is not None:
-                favored = home_team if spread < 0 else away_team
-                underdog = away_team if favored == home_team else home_team
-                game.lines.append(
-                    OddsLine(book="covers_consensus", market="spread", selection=favored, american=-110, line=-abs(spread))
-                )
-                game.lines.append(
-                    OddsLine(book="covers_consensus", market="spread", selection=underdog, american=-110, line=abs(spread))
-                )
-            if total is not None:
-                game.lines.append(
-                    OddsLine(book="covers_consensus", market="total", selection="Over", american=-110, line=total)
-                )
-                game.lines.append(
-                    OddsLine(book="covers_consensus", market="total", selection="Under", american=-110, line=total)
-                )
+            # Covers publishes consensus HANDICAP numbers only, never
+            # juice. Previously we hardcoded american=-110 which violated
+            # "no fake juice" — dropping spread/total emissions entirely.
+            # Moneyline above still contributes real consensus prices.
 
             if game.lines:
                 games.append(game)

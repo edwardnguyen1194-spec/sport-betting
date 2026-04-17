@@ -156,8 +156,13 @@ def _parse_generic_cell(text: str):
     spread_fav = None
     total_line = None
     if spreads:
-        # First "small" number is almost always the spread line at -110.
-        spread_fav = (spreads[0], -110.0)
+        # VegasInsider's scrape exposes only the handicap / total number;
+        # per-book juice isn't on the page. We used to stamp a fake
+        # american=-110 on both which contaminated the pipeline. Now:
+        # return juice=None. Downstream skips lines with no real juice,
+        # so VI contributes the reference handicap without a phantom
+        # bet price.
+        spread_fav = (spreads[0], None)
         if len(spreads) > 1:
-            total_line = (spreads[1], -110.0)
+            total_line = (spreads[1], None)
     return ml_home, ml_away, spread_fav, total_line

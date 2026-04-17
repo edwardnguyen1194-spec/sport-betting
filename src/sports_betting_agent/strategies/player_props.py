@@ -105,12 +105,18 @@ class PlayerPropsStrategy(Strategy):
                     continue
                 side = line.selection or ""
                 if side.lower().startswith("o"):
+                    # Skip props with no real juice — previously we
+                    # defaulted to -110 which inflated EV math and
+                    # produced phantom prop recommendations at prices
+                    # the book never actually offered.
+                    if line.american is None:
+                        continue
                     props.append(
                         PropMarket(
                             player=line.player,
                             prop=line.prop or "",
                             line=line.line,
-                            over_price=line.american or -110.0,
+                            over_price=line.american,
                             book=line.book,
                             game_key=game.game_key,
                             sport=game.sport,

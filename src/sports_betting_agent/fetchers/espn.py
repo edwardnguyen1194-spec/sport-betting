@@ -151,61 +151,19 @@ class ESPNFetcher(BaseFetcher):
                     )
                 )
 
-            if spread is not None:
-                # ESPN's "spread" is typically the favorite's
-                # handicap (a negative number when home is favored).
-                # Determining who's favored is a three-step fallback:
-                # explicit booleans on the team odds block, then the
-                # sign of `spread`, then home by default for pick'ems.
-                if home_odds.get("favorite") is True:
-                    favored = home_team
-                elif away_odds.get("favorite") is True:
-                    favored = away_team
-                elif spread < 0:
-                    favored = home_team
-                elif spread > 0:
-                    favored = away_team
-                else:
-                    favored = home_team  # pick'em -- arbitrary
-                under = away_team if favored == home_team else home_team
-                game.lines.append(
-                    OddsLine(
-                        book=book,
-                        market="spread",
-                        selection=favored,
-                        american=-110,
-                        line=-abs(spread) if spread != 0 else 0.0,
-                    )
-                )
-                game.lines.append(
-                    OddsLine(
-                        book=book,
-                        market="spread",
-                        selection=under,
-                        american=-110,
-                        line=abs(spread) if spread != 0 else 0.0,
-                    )
-                )
-
-            if over_under is not None:
-                game.lines.append(
-                    OddsLine(
-                        book=book,
-                        market="total",
-                        selection="Over",
-                        american=-110,
-                        line=over_under,
-                    )
-                )
-                game.lines.append(
-                    OddsLine(
-                        book=book,
-                        market="total",
-                        selection="Under",
-                        american=-110,
-                        line=over_under,
-                    )
-                )
+            # ESPN's scoreboard publishes the HANDICAP number for spreads
+            # and totals but never the juice. We used to hardcode
+            # american=-110 as a stand-in, which silently contaminated
+            # the real prices our book-keyed data came from ActionNetwork
+            # (e.g. when ESPN's provider was "DraftKings", we'd emit
+            # ``book="draftkings", american=-110`` and merge-dedup
+            # would sometimes pick ESPN's fake over AN's real juice).
+            # Fix: skip ESPN spread/total lines entirely. ESPN still
+            # contributes its real moneyline prices above.
+            #
+            # If Uncle later wants ESPN's handicap as a reference display,
+            # re-add with ``american=None`` and let the dashboard show
+            # it as "price N/A" — never invent a price we don't have.
 
         return game
 

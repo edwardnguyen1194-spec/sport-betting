@@ -30,18 +30,17 @@ from ..power_ratings import EloRatings
 from ..strategies import (
     BetRecommendation,
     EnsembleStrategy,
-    HeavyFavoriteStrategy,
-    ValueBetStrategy,
     SpreadValueStrategy,
     TotalValueStrategy,
     TotalProjectionStrategy,
     SteamFollowStrategy,
     PublicFadeStrategy,
-    ContrarianStrategy,
+    ReverseLineMovementStrategy,
+    NHLGoalieB2BStrategy,
+    MLSHomeTravelStrategy,
     MiddleDetectorStrategy,
     SituationalStrategy,
     EloEdgeStrategy,
-    PythagoreanStrategy,
 )
 from ..team_scoring import TeamScoringTracker
 
@@ -180,6 +179,20 @@ def create_app(
         # Fade the public: research shows dogs covering ~63.8% when
         # public has <40% tickets. Uses ActionNetwork public-betting %.
         PublicFadeStrategy(settings),
+        # Middle detector: when books disagree on spread by 1+ point
+        # (Book A -3 / Book B +4), bet both sides — both win if result
+        # lands in the middle (Stanford Wong, Sharp Sports Betting).
+        MiddleDetectorStrategy(settings),
+        # Reverse Line Movement: public ≥60% on side A but 2+ sharp
+        # books move the line toward side B = sharp money. 56-58%
+        # historical ATS win rate (Pinnacle research, SSRN).
+        ReverseLineMovementStrategy(settings, line_store=line_store),
+        # NHL puckline fade on back-to-back-scheduled teams — goalies
+        # on short rest give up ~0.25 more goals per Schuckers 2020.
+        NHLGoalieB2BStrategy(settings),
+        # MLS home favorite when visitor crossed 2+ timezones — ~3%
+        # historical ATS edge (largest soccer HFA effect in any league).
+        MLSHomeTravelStrategy(settings),
     ]
     ensemble = EnsembleStrategy(strategies, settings)
 
