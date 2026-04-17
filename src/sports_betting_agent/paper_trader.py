@@ -284,17 +284,25 @@ class PaperTrader:
                     todays, rec.selection,
                 )
                 return None
-            # 5. Per-game correlation cap. Multiple bets on the same
-            #    game_key are correlated through a single outcome. Agent-3
-            #    flagged 1 moneyline + 1 spread + 1 total = 3 correlated
-            #    bets allowed today. Cap at 1 bet per game.
-            per_game = sum(
-                1 for b in self.open_bets.values() if b.game_key == rec.game_key
+            # 5. Per-game-per-market cap. Uncle wants BOTH spread + total
+            #    firing per game (previous "1 total bet per game" cap
+            #    was crowding out spread_value — ensemble sort put the
+            #    higher-confidence total first, and the spread never
+            #    got a look). Now we allow exactly 1 SPREAD and 1 TOTAL
+            #    per game but no duplicates within a market, which
+            #    matches Uncle's "spreads and over/under only" rule.
+            #    Two bets are correlated through the outcome but not
+            #    perfectly — spread covers vs total goes over are
+            #    ~0.4-0.5 rho in practice, low enough that quarter-
+            #    Kelly sizing on each absorbs the joint variance.
+            per_game_market = sum(
+                1 for b in self.open_bets.values()
+                if b.game_key == rec.game_key and b.market == rec.market
             )
-            if per_game >= 1:
+            if per_game_market >= 1:
                 logger.debug(
-                    "per-game cap: already have %d open bet on %s",
-                    per_game, rec.game_key,
+                    "per-game-market cap: already have %d %s bet on %s",
+                    per_game_market, rec.market, rec.game_key,
                 )
                 return None
             # Don't double-book the same market — check BOTH open AND closed bets.
