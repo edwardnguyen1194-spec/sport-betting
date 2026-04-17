@@ -151,7 +151,17 @@ class AutoSettler:
         for comp in competitors:
             team_data = comp.get("team", {})
             name = team_data.get("displayName") or team_data.get("shortDisplayName") or ""
-            score = int(comp.get("score", 0))
+            # Null-score guard (Agent-3 finding): ESPN occasionally
+            # returns null for ``score`` on games in weird states.
+            # Coercing to 0 silently graded those as losses. Treat as
+            # not-yet-final and retry on the next cycle.
+            raw_score = comp.get("score")
+            if raw_score is None or raw_score == "":
+                return None
+            try:
+                score = int(raw_score)
+            except (TypeError, ValueError):
+                return None
             home_away = comp.get("homeAway", "")
             teams[home_away] = {"name": name, "score": score}
 

@@ -103,6 +103,7 @@ def _cmd_recommend(args) -> int:
     games = agg.fetch_sports([s.strip() for s in args.sports.split(",") if s.strip()])
     scoring = TeamScoringTracker(settings.data_dir)
     line_store = LineMovementStore(settings.data_dir)
+    news = NewsReader(settings.data_dir)
     ensemble = EnsembleStrategy(
         [
             SpreadValueStrategy(settings),
@@ -114,6 +115,7 @@ def _cmd_recommend(args) -> int:
             MLSHomeTravelStrategy(settings),
         ],
         settings,
+        news_reader=news,
     )
     recs = ensemble.generate(games)
     print(json.dumps([r.to_dict() for r in recs], indent=2, default=str))
