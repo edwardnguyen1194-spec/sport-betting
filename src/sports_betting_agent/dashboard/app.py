@@ -47,17 +47,34 @@ logger = logging.getLogger(__name__)
 
 
 DEFAULT_SPORTS = [
-    "baseball_ncaa",
+    # Baseball
     "baseball_mlb",
+    "baseball_ncaa",
+    # Basketball
     "basketball_nba",
     "basketball_ncaab",
     "basketball_wnba",
+    "basketball_euroleague",
+    # American football
     "football_nfl",
     "football_ncaaf",
+    "football_cfl",
+    # Hockey
     "hockey_nhl",
+    "hockey_khl",
+    # Soccer — big 5 European + MLS + UEFA competitions
     "soccer_mls",
     "soccer_epl",
     "soccer_ucl",
+    "soccer_uel",       # Europa League
+    "soccer_esp",       # La Liga
+    "soccer_ita",       # Serie A
+    "soccer_ger",       # Bundesliga
+    "soccer_fra",       # Ligue 1
+    # Combat + individual
+    "mma_ufc",
+    "tennis_atp",
+    "tennis_wta",
 ]
 
 

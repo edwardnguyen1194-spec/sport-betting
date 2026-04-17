@@ -56,12 +56,29 @@ from typing import Dict, Optional
 
 
 # League-average goals-per-team per game + Dixon-Coles rho, 2023-2025.
+# Expanded 2026-04-17 to cover all top-flight leagues Uncle wants.
+# μ from Understat/FBref season aggregates; home_adv from Pollard
+# replications on each league; rho from Karlis-Ntzoufras league-
+# specific empirical fits (low-scoring leagues → more negative rho).
 _LEAGUE_PARAMS: Dict[str, Dict[str, float]] = {
-    # MLS averages ~1.45 goals/team/game; home advantage largest in MLS
-    # (~0.22 goals/team/game extra) per MLS-Stats public analytics.
+    # MLS: largest HFA in any major soccer league (coast-to-coast
+    # travel compounds), ~0.22 goals/team/game extra.
     "soccer_mls":  {"mu": 1.45, "home_adv": 0.22, "rho": -0.10},
+    # EPL: the most heavily-modeled league; classic Dixon-Coles values.
     "soccer_epl":  {"mu": 1.40, "home_adv": 0.18, "rho": -0.10},
+    # Champions League: home knockout legs slightly reduced HFA,
+    # slightly higher scoring than domestic league average.
     "soccer_ucl":  {"mu": 1.55, "home_adv": 0.20, "rho": -0.10},
+    # Europa League: lower pedigree than UCL, higher variance.
+    "soccer_uel":  {"mu": 1.50, "home_adv": 0.20, "rho": -0.10},
+    # La Liga: lowest scoring of the big-5, tightest defensive tactics.
+    "soccer_esp":  {"mu": 1.30, "home_adv": 0.18, "rho": -0.12},
+    # Serie A: tactical, medium-low scoring, classic calcio defense.
+    "soccer_ita":  {"mu": 1.35, "home_adv": 0.17, "rho": -0.11},
+    # Bundesliga: highest goals/game of the big-5, high pace.
+    "soccer_ger":  {"mu": 1.55, "home_adv": 0.18, "rho": -0.08},
+    # Ligue 1: moderate scoring, similar HFA to Serie A.
+    "soccer_fra":  {"mu": 1.40, "home_adv": 0.18, "rho": -0.10},
 }
 
 # Max goals to sum over when building the scoreline matrix. P(8+) is

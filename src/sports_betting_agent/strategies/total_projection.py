@@ -70,6 +70,15 @@ MIN_LINE_EDGE = {
     "soccer_mls":      0.5,    # 0.30σ from 88 live games
     "soccer_epl":      0.25,   # 0.30σ from 36 live games
     "soccer_ucl":      0.75,   # 0.30σ from 24 live games
+    "soccer_uel":      0.6,    # Europa League — between UCL and EPL
+    "soccer_esp":      0.25,   # La Liga — lowest scoring, tightest totals
+    "soccer_ita":      0.3,    # Serie A — tactical, low variance
+    "soccer_ger":      0.5,    # Bundesliga — highest scoring of big 5
+    "soccer_fra":      0.3,    # Ligue 1 — moderate variance
+    # Additional leagues (Dixon-Coles NOT yet tuned — defaults apply):
+    "basketball_euroleague": 5.0,   # EuroLeague pace similar to NBA
+    "football_cfl":    3.5,    # 3-down football, slightly higher scoring
+    "hockey_khl":      0.75,   # similar scoring profile to NHL
 }
 DEFAULT_MIN_EDGE = 1.0
 
@@ -100,7 +109,11 @@ class TotalProjectionStrategy(Strategy):
             # Soccer sports use a dedicated Dixon-Coles Poisson model
             # that returns true scoreline probabilities — we branch
             # early and generate soccer recs in their own code path.
-            if game.sport in ("soccer_mls", "soccer_epl", "soccer_ucl"):
+            if game.sport in (
+                "soccer_mls", "soccer_epl", "soccer_ucl",
+                "soccer_uel", "soccer_esp", "soccer_ita",
+                "soccer_ger", "soccer_fra",
+            ):
                 recs.extend(self._soccer_picks(game, cfg))
                 continue
 
@@ -188,12 +201,22 @@ class TotalProjectionStrategy(Strategy):
                 "basketball_nba":   0.60,
                 "basketball_ncaab": 0.60,
                 "basketball_wnba":  0.60,
+                "basketball_euroleague": 0.60,
                 "hockey_nhl":       0.45,
+                "hockey_khl":       0.50,   # thinner data, regress harder
                 "football_nfl":     0.40,
                 "football_ncaaf":   0.45,
+                "football_cfl":     0.50,   # thinner data, regress harder
+                # Soccer: handled by Dixon-Coles path above, but kept
+                # here for the rare fallback when DC returns None.
                 "soccer_mls":       0.50,
                 "soccer_epl":       0.50,
                 "soccer_ucl":       0.50,
+                "soccer_uel":       0.55,
+                "soccer_esp":       0.55,
+                "soccer_ita":       0.55,
+                "soccer_ger":       0.50,
+                "soccer_fra":       0.55,
             }
             market_reg = MARKET_REG.get(game.sport, 0.50)
 

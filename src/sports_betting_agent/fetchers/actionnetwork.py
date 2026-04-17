@@ -24,19 +24,43 @@ AN_BASE = "https://api.actionnetwork.com/web/v1/scoreboard"
 AN_V2_BASE = "https://api.actionnetwork.com/web/v2/scoreboard"
 
 SPORT_PATHS: Dict[str, tuple[str, str, str]] = {
-    # AN's NCAA baseball endpoint was mistakenly mapped to "ncaab"
-    # (college basketball); AN itself has no college-baseball scoreboard
-    # feed, so we leave it out rather than pollute the aggregator.
+    # Expanded 2026-04-17 to give Uncle coverage across all major
+    # world sport leagues. Each tuple is (an_slug, sport_label, league_label).
+    # AN's scoreboard endpoint exposes these leagues via /web/v1/scoreboard/<slug>.
+    # Baseball
     "baseball_mlb": ("mlb", "baseball_mlb", "mlb"),
+    # NOTE: AN has no college-baseball feed — left out rather than
+    # pollute the aggregator.
+
+    # Basketball
     "basketball_nba": ("nba", "basketball_nba", "nba"),
     "basketball_ncaab": ("ncaab", "basketball_ncaab", "college-basketball"),
     "basketball_wnba": ("wnba", "basketball_wnba", "wnba"),
+    "basketball_euroleague": ("euroleague", "basketball_euroleague", "euroleague"),
+
+    # American football
     "football_nfl": ("nfl", "football_nfl", "nfl"),
     "football_ncaaf": ("ncaaf", "football_ncaaf", "college-football"),
+    "football_cfl": ("cfl", "football_cfl", "cfl"),
+
+    # Hockey
     "hockey_nhl": ("nhl", "hockey_nhl", "nhl"),
+    "hockey_khl": ("khl", "hockey_khl", "khl"),
+
+    # Soccer — the big 5 European leagues + MLS + UEFA competitions
     "soccer_mls": ("mls", "soccer_mls", "mls"),
     "soccer_epl": ("epl", "soccer_epl", "epl"),
     "soccer_ucl": ("ucl", "soccer_ucl", "ucl"),
+    "soccer_uel": ("europa-league", "soccer_uel", "europa-league"),
+    "soccer_esp": ("la-liga", "soccer_esp", "la-liga"),
+    "soccer_ita": ("serie-a", "soccer_ita", "serie-a"),
+    "soccer_ger": ("bundesliga", "soccer_ger", "bundesliga"),
+    "soccer_fra": ("ligue-1", "soccer_fra", "ligue-1"),
+
+    # Combat + tennis (spread/total coverage varies; some have only ML)
+    "mma_ufc": ("ufc", "mma_ufc", "ufc"),
+    "tennis_atp": ("atp", "tennis_atp", "atp"),
+    "tennis_wta": ("wta", "tennis_wta", "wta"),
 }
 
 # Action Network internal book-id -> human-readable label.
