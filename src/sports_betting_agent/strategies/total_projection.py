@@ -118,13 +118,40 @@ class TotalProjectionStrategy(Strategy):
 
             min_edge = MIN_LINE_EDGE.get(game.sport, DEFAULT_MIN_EDGE)
 
+            # Market-anchored regression: the book line is a MUCH better
+            # baseline than an arbitrary league mean (the market already
+            # prices in pace, star absences, refs, etc.). We shrink the
+            # raw projection 60% toward the book line, so the model only
+            # fights the market when its data strongly disagrees. This
+            # fixes the "always Over" bias Uncle kept seeing — a game
+            # projected at 225 vs book 206 now resolves to ~214 (Over
+            # with smaller edge) instead of a runaway +18 Over.
+            MARKET_REG = {
+                "baseball_mlb":     0.50,
+                "baseball_ncaa":    0.55,
+                "basketball_nba":   0.60,
+                "basketball_ncaab": 0.60,
+                "basketball_wnba":  0.60,
+                "hockey_nhl":       0.45,
+                "football_nfl":     0.40,
+                "football_ncaaf":   0.45,
+                "soccer_mls":       0.50,
+                "soccer_epl":       0.50,
+                "soccer_ucl":       0.50,
+            }
+            market_reg = MARKET_REG.get(game.sport, 0.50)
+
             for key, entry in by_book.items():
                 over = entry["over"]
                 under = entry["under"]
                 if over is None or under is None:
                     continue
                 total_num = float(entry["line"])
-                diff = projected - total_num
+                # Blend the raw projection with the book line so the
+                # model is "market-aware" instead of blindly trusting
+                # its own small-sample averages.
+                blended = (1 - market_reg) * projected + market_reg * total_num
+                diff = blended - total_num
 
                 if abs(diff) < min_edge:
                     continue
