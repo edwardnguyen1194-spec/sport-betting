@@ -94,6 +94,33 @@ def create_app(
     )
     app.config["SETTINGS"] = settings
 
+    # ---- Performance: response compression --------------------------
+    # Flask-Compress adds gzip+brotli response compression for JSON +
+    # HTML. Cuts /api/ledger + /api/agent-log payloads by ~70-80%,
+    # which means faster dashboard loads + less Fly egress cost.
+    try:
+        from flask_compress import Compress
+        Compress(app)
+    except ImportError:
+        logger.warning(
+            "flask-compress not installed; responses will NOT be gzipped. "
+            "Add flask-compress to requirements.txt for 60-80%% smaller payloads."
+        )
+
+    # ---- Performance: long-cache static assets ----------------------
+    # Static files (dashboard.css, dashboard.js) get a 1-hour cache
+    # header so browsers don't re-download on every page load. When
+    # we deploy new static content the filename stays the same, so
+    # we use max-age (not immutable) with a conservative 1h TTL.
+    @app.after_request
+    def _cache_static(resp):
+        if (resp.status_code == 200
+                and resp.mimetype in ("text/css", "application/javascript", "image/png", "image/svg+xml")):
+            resp.headers.setdefault(
+                "Cache-Control", "public, max-age=3600, stale-while-revalidate=86400",
+            )
+        return resp
+
     SPORT_VI = {
         "baseball_ncaa": "Bóng chày NCAA",
         "baseball_mlb": "MLB",
@@ -751,11 +778,19 @@ def create_app(
 
     @app.route("/api/ledger")
     def ledger():
+        # Pagination: dashboard only needs recent closed bets (default
+        # 50). Full history is rarely needed and cost is O(N) per call.
+        # Clients wanting more can pass ?closed=N (max 500 to protect
+        # Fly egress budget).
+        try:
+            closed_n = min(500, max(10, int(request.args.get("closed", 50))))
+        except (TypeError, ValueError):
+            closed_n = 50
         return jsonify(
             {
                 "stats": paper.stats(),
                 "open": [b.__dict__ for b in paper.open_bets.values()],
-                "closed": [b.__dict__ for b in paper.closed_bets[-100:]],
+                "closed": [b.__dict__ for b in paper.closed_bets[-closed_n:]],
             }
         )
 

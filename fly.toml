@@ -49,12 +49,14 @@ primary_region = "lax"
     soft_limit = 20
     hard_limit = 40
 
-  # HTTP health check — Fly will restart the machine if this fails
-  # 3× in a row. /api/health is cheap (no aggregator, no DB hit).
+  # HTTP health check — tightened 2026-04-17 for 'never down' mandate.
+  # Fly restarts the machine if this fails 3× in a row. /api/health
+  # is cheap (no aggregator, no DB hit). Aggressive 10s cadence
+  # detects hangs within ~30s; grace period 60s absorbs cold starts.
   [[http_service.checks]]
-    interval = "30s"
-    timeout = "5s"
-    grace_period = "45s"
+    interval = "10s"
+    timeout = "3s"
+    grace_period = "60s"
     method = "get"
     path = "/api/health"
     protocol = "http"
