@@ -183,7 +183,9 @@
           <div class="best-pick-sport">{{ bet.sport|upper }}</div>
           <div class="teams">{{ bet.selection }}</div>
           <div class="meta">{{ bet.away_team }} @ {{ bet.home_team }} • {{ bet.market|market_vi }}{% if bet.line %} {{ bet.line }}{% endif %}</div>
-          {% if bet.placed_at %}
+          {% if bet.game_time %}
+          <div class="bet-date">Giờ trận: <strong>{{ bet.game_time|date_vi }}</strong>{% if bet.placed_at %} • Đặt: {{ bet.placed_at|date_vi }}{% endif %}</div>
+          {% elif bet.placed_at %}
           <div class="bet-date">Đặt lúc: <strong>{{ bet.placed_at|date_vi }}</strong></div>
           {% endif %}
           <div class="bet-details">
@@ -209,10 +211,12 @@
           <div class="best-pick-sport">{{ bet.sport|upper }}</div>
           <div class="teams">{{ bet.selection }}</div>
           <div class="meta">{{ bet.away_team }} @ {{ bet.home_team }} • {{ bet.market }}{% if bet.line %} {{ bet.line }}{% endif %}</div>
-          {% if bet.settled_at %}
-          <div class="bet-date">Kết thúc: <strong>{{ bet.settled_at|date_vi }}</strong>{% if bet.placed_at %} • Đặt: {{ bet.placed_at|date_vi }}{% endif %}</div>
-          {% elif bet.placed_at %}
-          <div class="bet-date">Đặt lúc: <strong>{{ bet.placed_at|date_vi }}</strong></div>
+          {% if bet.game_time or bet.settled_at or bet.placed_at %}
+          <div class="bet-date">
+            {% if bet.game_time %}Giờ trận: <strong>{{ bet.game_time|date_vi }}</strong>{% endif %}
+            {% if bet.settled_at %}{% if bet.game_time %} • {% endif %}Kết thúc: <strong>{{ bet.settled_at|date_vi }}</strong>{% endif %}
+            {% if bet.placed_at %}{% if bet.game_time or bet.settled_at %} • {% endif %}Đặt: {{ bet.placed_at|date_vi }}{% endif %}
+          </div>
           {% endif %}
           <div class="bet-details">
             <span>Kèo: <strong>{{ "%+.0f"|format(bet.american) }}</strong></span>

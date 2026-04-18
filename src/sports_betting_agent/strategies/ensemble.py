@@ -105,13 +105,21 @@ class EnsembleStrategy(Strategy):
 
         recs = list(buckets.values())
 
-        # Stamp line_observed_at on every rec so the paper-trader's
-        # freshness guard can reject stale quotes. Matches the rec to
-        # the underlying line in the provided games and reads its
-        # ``last_update`` (backfilled by the aggregator to fetch-time).
+        # Stamp line_observed_at + game commence_time on every rec.
+        # - line_observed_at: paper-trader's freshness guard rejects
+        #   stale quotes >10 min old.
+        # - commence_time: surfaces on the dashboard bet cards so Uncle
+        #   can see when the game actually kicks off.
         from datetime import datetime as _dt, timezone as _tz
         line_index: Dict[tuple, object] = {}
+        game_commence: Dict[str, str] = {}
         for g in games:
+            if g.commence_time is not None:
+                game_commence[g.game_key] = (
+                    g.commence_time.isoformat()
+                    if hasattr(g.commence_time, "isoformat")
+                    else str(g.commence_time)
+                )
             for ln in g.lines:
                 if ln.market not in ("spread", "total"):
                     continue
@@ -139,6 +147,10 @@ class EnsembleStrategy(Strategy):
                 # current time as a conservative stamp so we never
                 # stamp a fake-fresh datetime from the distant past.
                 rec.meta["line_observed_at"] = now_iso
+            # Stamp the game start time if we know it.
+            ct = game_commence.get(rec.game_key)
+            if ct:
+                rec.meta["commence_time"] = ct
 
         # News-aware injury/scratch filter. After strategy confidences
         # are combined we check cached ESPN headlines for injury terms

@@ -67,9 +67,16 @@ class Bet:
     result: Optional[float] = None  # profit/loss
     settled_at: Optional[str] = None
     reasoning: str = ""
+    # ISO timestamp of when the game is scheduled to start. Pulled from
+    # rec.meta["commence_time"] (stamped by the ensemble). Lets Uncle
+    # see on each card "when is this game actually played" — the
+    # placed_at + settled_at tell the bet lifecycle, this tells the
+    # match time.
+    game_time: Optional[str] = None
 
     @classmethod
     def from_recommendation(cls, rec: BetRecommendation, stake: float, bet_id: str) -> "Bet":
+        meta = rec.meta or {}
         return cls(
             id=bet_id,
             placed_at=datetime.now(timezone.utc).isoformat(),
@@ -89,6 +96,7 @@ class Bet:
             edge=rec.edge,
             stake=stake,
             reasoning=rec.reasoning,
+            game_time=meta.get("commence_time") or meta.get("game_commence_time"),
         )
 
 
