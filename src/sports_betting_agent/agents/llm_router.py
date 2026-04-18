@@ -464,7 +464,11 @@ class CerebrasProvider(_ProviderBase):
     """
 
     name = "cerebras"
-    model = "qwen-3-235b-a22b-instruct"
+    # Model name confirmed via /v1/models 2026-04-17:
+    #   gpt-oss-120b, llama3.1-8b, zai-glm-4.7,
+    #   qwen-3-235b-a22b-instruct-2507  ← picked (biggest + smartest)
+    # The short name `qwen-3-235b-a22b-instruct` does NOT exist.
+    model = "qwen-3-235b-a22b-instruct-2507"
     ENDPOINT = "https://api.cerebras.ai/v1/chat/completions"
 
     def ready(self) -> bool:
