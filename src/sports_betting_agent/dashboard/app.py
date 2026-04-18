@@ -214,7 +214,7 @@ def create_app(
     # Hourly health monitor — logs per-hour snapshots and flags
     # anomalies (all-Over bias, stale open bets, drawdown approach,
     # quiet strategies). Read-only; it never auto-tunes.
-    hourly_monitor = HourlyMonitor(paper, settings.data_dir)
+    hourly_monitor = HourlyMonitor(paper, settings.data_dir, agent_log=agent_log)
 
     # OpportunityScout is an on-demand "top 3 plays right now" concierge
     # Uncle fires via a dashboard button. Read-only; does not affect the

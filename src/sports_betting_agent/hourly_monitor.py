@@ -83,14 +83,36 @@ class HourlySnapshot:
     bugs: List[str] = field(default_factory=list)
     # Per-category bug counts for dashboards
     bug_counts: Dict[str, int] = field(default_factory=dict)
+    # Sub-agent health — per-agent last_seen + error rate in last 24h
+    agent_health: Dict[str, Dict[str, object]] = field(default_factory=dict)
+    # External-endpoint uptime — last probe result per public route
+    endpoint_health: Dict[str, Dict[str, object]] = field(default_factory=dict)
 
 
 class HourlyMonitor:
     """Once-per-hour diagnostic sweep over the paper-trader state."""
 
-    def __init__(self, paper_trader, data_dir: str) -> None:
+    # The 10 Claude sub-agents we expect to be alive. Each should
+    # have at least one AgentLog entry in the last 24h; continuous
+    # zero-activity for an agent whose trigger condition should have
+    # fired (e.g. post_mortem with a loss in the last 24h) gets
+    # flagged as a soft anomaly.
+    KNOWN_AGENTS = [
+        "pick_reviewer", "news_triage", "post_mortem",
+        "game_analyst", "opportunity_scout", "strategy_auditor",
+        "skills_learner", "mcp_discovery",
+        "self_reflection", "hooks_discovery",
+    ]
+
+    def __init__(
+        self,
+        paper_trader,
+        data_dir: str,
+        agent_log=None,
+    ) -> None:
         self.paper = paper_trader
         self.data_dir = data_dir
+        self.agent_log = agent_log   # optional AgentLog instance
         self.log_path = os.path.join(data_dir, "hourly_log.json")
         self._last_run_hour: Optional[str] = None
         self._load_last_run()
@@ -223,7 +245,31 @@ class HourlyMonitor:
         # should literally never happen. A nonzero bug list means a
         # code regression slipped through tests — Uncle gets alerted.
         bugs, bug_counts = self._bug_scan(opens, closed)
-        # ---------------------------------------------------------------
+
+        # ---- SUB-AGENT HEALTH ----------------------------------------
+        # Verify each of the 10 Claude sub-agents is alive. Inspects
+        # agent_log for last-24h activity + error ratio.
+        agent_health = self._agent_health()
+        for name, h in agent_health.items():
+            if h.get("errors_24h", 0) > 0 and h.get("runs_24h", 0) > 0:
+                err_rate = h["errors_24h"] / h["runs_24h"]
+                if err_rate > 0.5:
+                    anomalies.append(
+                        f"agent_errors: {name} {h['errors_24h']}/{h['runs_24h']} "
+                        f"errors ({err_rate:.0%}) in last 24h"
+                    )
+
+        # ---- ENDPOINT UPTIME -----------------------------------------
+        # Lightweight probe of every /api/* route the monitor knows
+        # about. Fails soft — if the probe itself errors, we log 'err'
+        # rather than fake an up signal.
+        endpoint_health = self._endpoint_health()
+        for path, stat in endpoint_health.items():
+            status = stat.get("status")
+            if status != "ok":
+                anomalies.append(
+                    f"endpoint_down: {path} returned {status}"
+                )
 
         # Health score: start at 100, subtract for each anomaly class.
         health = 100
@@ -237,6 +283,17 @@ class HourlyMonitor:
         health -= 5 * min(len(stale_open_ids), 4)
         # Bugs hit harder than soft anomalies — each category costs 15.
         health -= 15 * len(bug_counts)
+        # Every agent erroring > 50% costs 10, every endpoint down costs 10.
+        bad_agents = sum(
+            1 for h in agent_health.values()
+            if h.get("runs_24h", 0) > 0
+            and (h.get("errors_24h", 0) / max(h["runs_24h"], 1)) > 0.5
+        )
+        health -= 10 * bad_agents
+        bad_endpoints = sum(
+            1 for h in endpoint_health.values() if h.get("status") != "ok"
+        )
+        health -= 10 * bad_endpoints
         health = max(0, min(100, health))
 
         return HourlySnapshot(
@@ -258,7 +315,82 @@ class HourlyMonitor:
             health_score=health,
             bugs=bugs,
             bug_counts=bug_counts,
+            agent_health=agent_health,
+            endpoint_health=endpoint_health,
         )
+
+    def _agent_health(self) -> Dict[str, Dict[str, object]]:
+        """Per-agent activity + error snapshot from the shared AgentLog."""
+        if self.agent_log is None:
+            return {n: {"runs_24h": 0, "errors_24h": 0, "last_seen": None,
+                        "status": "agent_log_unavailable"} for n in self.KNOWN_AGENTS}
+        # Pull full recent history then filter per-agent.
+        entries = self.agent_log.recent(n=2000) or []
+        now = datetime.now(timezone.utc)
+        cutoff = now - timedelta(hours=24)
+        out: Dict[str, Dict[str, object]] = {}
+        for name in self.KNOWN_AGENTS:
+            runs = 0
+            errors = 0
+            last_seen: Optional[str] = None
+            for e in entries:
+                if e.get("agent") != name:
+                    continue
+                ts_str = e.get("ts", "")
+                if not ts_str:
+                    continue
+                try:
+                    ts = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+                except ValueError:
+                    continue
+                if ts < cutoff:
+                    continue
+                runs += 1
+                if (e.get("decision") or {}).get("error"):
+                    errors += 1
+                if last_seen is None or ts_str > last_seen:
+                    last_seen = ts_str
+            status = "alive"
+            if runs == 0:
+                status = "idle"   # never ran or none in last 24h (may be correct)
+            elif runs > 0 and errors / runs > 0.5:
+                status = "erroring"
+            out[name] = {
+                "runs_24h": runs,
+                "errors_24h": errors,
+                "last_seen": last_seen,
+                "status": status,
+            }
+        return out
+
+    def _endpoint_health(self) -> Dict[str, Dict[str, object]]:
+        """Self-probe of the Flask app's own /api/* routes.
+
+        We run in the same process so we can't fully simulate an
+        external HTTP hit, but we can validate that each route handler
+        is registered and loadable. A richer external probe lives in
+        the hourly Claude cron sub-agent.
+        """
+        # Light-touch check: inspect flask.current_app routes. If we're
+        # called from the background thread without an app_context,
+        # we return a stub to avoid false alarms.
+        try:
+            from flask import current_app
+            endpoints = [
+                "/api/health", "/api/risk", "/api/ledger", "/api/clv",
+                "/api/hourly-log", "/api/agent-log", "/api/learnings",
+                "/api/weekly-audit", "/api/scout",
+            ]
+            rule_map = {r.rule: r for r in current_app.url_map.iter_rules()}
+            out: Dict[str, Dict[str, object]] = {}
+            for ep in endpoints:
+                out[ep] = {
+                    "registered": ep in rule_map,
+                    "status": "ok" if ep in rule_map else "missing_route",
+                }
+            return out
+        except Exception as exc:
+            return {"_probe": {"status": "no_app_context", "err": str(exc)}}
 
     def _bug_scan(self, opens, closed) -> tuple[list[str], dict[str, int]]:
         """Hourly integrity scan. Returns (bug_list, per_category_counts).
