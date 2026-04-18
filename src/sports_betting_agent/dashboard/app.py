@@ -623,13 +623,20 @@ def create_app(
 
     @app.route("/api/purge-voids", methods=["POST"])
     def purge_voids():
-        """Remove every status='void' entry from closed history.
+        """Remove every HÒA (push/void) entry from closed history.
         Leaves real win/loss results untouched so the agent's actual
         performance record stays intact. Uncle finds HÒA rows visually
         noisy on the dashboard."""
+        # Include BOTH 'void' AND 'push' — both render as HÒA on the
+        # dashboard. Previously this only removed voids, so pushes
+        # lingered and Uncle had to ask again.
+        HIDE_STATUSES = {"void", "voided", "push"}
         with paper._lock:
             before = len(paper.closed_bets)
-            paper.closed_bets = [b for b in paper.closed_bets if b.status != "void"]
+            paper.closed_bets = [
+                b for b in paper.closed_bets
+                if (b.status or "").lower() not in HIDE_STATUSES
+            ]
             removed = before - len(paper.closed_bets)
             paper._save_state()
         return jsonify({"ok": True, "removed": removed, "remaining": len(paper.closed_bets)})
