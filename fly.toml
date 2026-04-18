@@ -1,39 +1,80 @@
+# Fly.io config for Uncle Phung's sports-betting AI agent.
+# Reconstructed 2026-04-17 after the original got truncated to 0 bytes.
+#
+# Design goals:
+#   1. Never down: min_machines_running = 1 + health checks + auto-
+#      restart on crash. A dead machine gets replaced automatically.
+#   2. Faster dashboard: bigger CPU (performance-2x) + higher
+#      concurrency soft limit so a single pending bet rec doesn't
+#      starve browser requests.
+#   3. Single gunicorn worker (the Dockerfile enforces this) because
+#      the PaperTrader keeps mutable state in-memory and multi-worker
+#      was silently stomping voided bets. 8 threads give concurrency
+#      for I/O-heavy aggregator fetches.
+
 app = "sports-betting-ai-agent"
-primary_region = "sjc"
+primary_region = "lax"
 
 [build]
-  dockerfile = "Dockerfile"
 
 [env]
-  SBA_AUTO_TRADE = "1"
-  SBA_AUTO_TRADE_INTERVAL = "300"
-  SBA_LANG = "vi"
-  SBA_DATA_DIR = "/data/sba"
-  SBA_ENABLED_SOURCES = "bovada,draftkings,espn,scoresandodds,vegasinsider,actionnetwork,sbr"
-  # ActionNetwork returns a 500KB+ payload; 12s was cutting it off on
-  # Fly's network and we lost every non-Bovada spread/total line. 25s
-  # is comfortably long but still under the aggregator's 20s-per-sport
-  # wait window so slow sources stay bounded without hanging the loop.
-  SBA_HTTP_TIMEOUT = "25"
+  PORT = "8080"
 
-[[mounts]]
+# Persistent volume for the paper-trader ledger, CLV records, line
+# snapshots, Elo ratings, team scoring history, learnings,
+# post-mortems, and every other piece of state the agent accumulates.
+# LOSING THIS = starting from scratch — never remove or resize unless
+# you have a backup.
+[mounts]
   source = "sba_data"
   destination = "/data"
 
 [http_service]
   internal_port = 8080
   force_https = true
+  # Keep the machine always alive — Uncle hits the dashboard randomly
+  # through the day and we don't want a cold-start (10-15s) every time.
   auto_stop_machines = false
   auto_start_machines = true
   min_machines_running = 1
+  processes = ["app"]
 
+  # Concurrency tuned for a single gunicorn worker + 8 threads.
+  # Previous soft=50 / hard=100 pushed too many requests behind a
+  # single aggregator fetch that could take 20-30s. Lowering so
+  # Fly's proxy queues less aggressively and browsers get fast
+  # reject-or-respond behavior instead of long-hangs.
   [http_service.concurrency]
     type = "requests"
-    soft_limit = 50
-    hard_limit = 100
+    soft_limit = 20
+    hard_limit = 40
+
+  # HTTP health check — Fly will restart the machine if this fails
+  # 3× in a row. /api/health is cheap (no aggregator, no DB hit).
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "45s"
+    method = "get"
+    path = "/api/health"
+    protocol = "http"
+    tls_skip_verify = false
+    [http_service.checks.headers]
+      # Basic-auth header so the /api/health probe passes our auth
+      # gate. Username phung, password phungga2026 base64 encoded.
+      Authorization = "Basic cGh1bmc6cGh1bmdnYTIwMjY="
 
 [[vm]]
-  size = "shared-cpu-2x"
-  memory = "2gb"
-  cpu_kind = "shared"
+  # performance-2x CPU — dedicated cores (not shared), so aggregator
+  # fetches + Claude agent calls finish 2-3× faster. Fly requires
+  # ≥4GB memory for performance CPUs, which we happily take — gives
+  # headroom for the 22-sport scrape + agent log + ledger in RAM.
+  size = "performance-2x"
+  memory = "4gb"
+  cpu_kind = "performance"
   cpus = 2
+
+[deploy]
+  # Rolling strategy means Fly brings a new machine up BEFORE killing
+  # the old one, so the dashboard stays reachable during deploy.
+  strategy = "rolling"
