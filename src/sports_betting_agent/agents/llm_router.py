@@ -464,11 +464,16 @@ class CerebrasProvider(_ProviderBase):
     """
 
     name = "cerebras"
-    # Model name confirmed via /v1/models 2026-04-17:
-    #   gpt-oss-120b, llama3.1-8b, zai-glm-4.7,
-    #   qwen-3-235b-a22b-instruct-2507  ← picked (biggest + smartest)
-    # The short name `qwen-3-235b-a22b-instruct` does NOT exist.
-    model = "qwen-3-235b-a22b-instruct-2507"
+    # Model switched from qwen-3-235b to llama3.1-8b 2026-04-17 after
+    # hitting 'Tokens per day limit exceeded' on the 235B model.
+    # Cerebras maintains SEPARATE daily quotas per-model — llama3.1-8b
+    # has its own fresh bucket even when qwen-3-235b is exhausted.
+    # Trade-off: smaller model (8B vs 235B) but still plenty good for
+    # news-triage / pick-reviewer scale decisions. Response latency
+    # on Cerebras is 200-400ms regardless of model size thanks to
+    # their FPGA silicon, so there's no speed penalty.
+    # gpt-oss-120b + zai-glm-4.7 currently 404 on our key tier.
+    model = "llama3.1-8b"
     ENDPOINT = "https://api.cerebras.ai/v1/chat/completions"
 
     def ready(self) -> bool:
