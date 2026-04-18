@@ -141,12 +141,14 @@
   </div>
 
   <div class="column">
-    <h2>Trò chuyện với Claude</h2>
-    <div id="chat-log" class="chat-log"></div>
-    <form id="chat-form">
-      <input id="chat-input" type="text" placeholder="Hỏi về một trận hoặc chiến lược..." />
-      <button type="submit">Gửi</button>
-    </form>
+    <h2>Hoạt động AI trực tiếp</h2>
+    <div class="agent-activity-subtitle">
+      <span id="agent-activity-count">—</span> quyết định hôm nay •
+      <span id="agent-activity-tokens">—</span> tokens
+    </div>
+    <div id="agent-activity" class="agent-activity">
+      <div class="agent-activity-empty">Đang tải hoạt động…</div>
+    </div>
   </div>
 </section>
 

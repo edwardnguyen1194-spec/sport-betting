@@ -164,24 +164,29 @@
     chatLog.scrollTop = chatLog.scrollHeight;
   }
 
-  chatForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const message = chatInput.value.trim();
-    if (!message) return;
-    appendChat("user", message);
-    chatInput.value = "";
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      });
-      const data = await res.json();
-      appendChat("bot", data.content || "(trống)");
-    } catch (exc) {
-      appendChat("bot", `Lỗi: ${exc}`);
-    }
-  });
+  // Chat form removed (replaced by live agent activity feed).
+  // Null-guard so existing handler-wiring code doesn't crash on
+  // missing #chat-form.
+  if (chatForm) {
+    chatForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = chatInput.value.trim();
+      if (!message) return;
+      appendChat("user", message);
+      chatInput.value = "";
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message }),
+        });
+        const data = await res.json();
+        appendChat("bot", data.content || "(trống)");
+      } catch (exc) {
+        appendChat("bot", `Lỗi: ${exc}`);
+      }
+    });
+  }
 
   const sportLabels = {
     baseball_ncaa: "NCAA Baseball",
@@ -427,6 +432,89 @@
   if ($("#btn-best-picks")) $("#btn-best-picks").addEventListener("click", loadBestPicks);
   sportSelect.addEventListener("change", () => { loadOdds(); loadRecs(); });
 
+  // Agent activity feed — shows what the 10 Claude sub-agents are
+  // currently doing/thinking in real time. Replaces the old chat
+  // panel so Uncle can watch the AI brain live.
+  const AGENT_VI = {
+    pick_reviewer:      "Chuyên gia xét kèo",
+    news_triage:        "Lọc tin tức",
+    post_mortem:        "Phân tích thua",
+    game_analyst:       "Phân tích trận",
+    opportunity_scout:  "Săn cơ hội",
+    strategy_auditor:   "Kiểm tra chiến lược",
+    skills_learner:     "Học kỹ năng mới",
+    mcp_discovery:      "Tìm MCP",
+    self_reflection:    "Tự kiểm điểm",
+    hooks_discovery:    "Tìm hooks",
+  };
+
+  async function loadAgentActivity() {
+    try {
+      const data = await fetchJSON("/api/agent-log?n=30");
+      const entries = data.entries || [];
+      const tokens = data.today_tokens || {};
+      $("#agent-activity-count").textContent = entries.length;
+      $("#agent-activity-tokens").textContent = (
+        (tokens.total || 0).toLocaleString()
+      );
+      const container = $("#agent-activity");
+      if (!entries.length) {
+        container.innerHTML = '<div class="agent-activity-empty">Chưa có hoạt động. Các sub-agent đang chờ trigger.</div>';
+        return;
+      }
+      // Most recent first
+      const recent = [...entries].reverse().slice(0, 15);
+      container.innerHTML = recent.map(e => {
+        const ts = e.ts ? new Date(e.ts).toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'}) : "";
+        const agent = e.agent || "unknown";
+        const agentVi = AGENT_VI[agent] || agent;
+        const dec = e.decision || {};
+        const approved = dec.approved !== false;
+        const err = dec.error;
+        const reasoning = (dec.reasoning || "").slice(0, 220);
+        const ctx = (e.context_summary || "").slice(0, 60);
+        const stakeMult = dec.stake_multiplier;
+        const confDelta = dec.confidence_delta;
+        const latency = e.latency_ms || 0;
+        const tokIn = e.tokens_in || 0;
+        const tokOut = e.tokens_out || 0;
+        let statusIcon, statusClass;
+        if (err) { statusIcon = "⚠️"; statusClass = "err"; }
+        else if (!approved) { statusIcon = "🚫"; statusClass = "veto"; }
+        else { statusIcon = "✅"; statusClass = "ok"; }
+        let detailChips = "";
+        if (stakeMult !== undefined && stakeMult !== 1.0 && stakeMult !== null) {
+          detailChips += `<span class="chip">stake ×${stakeMult.toFixed(2)}</span>`;
+        }
+        if (confDelta !== undefined && confDelta !== 0 && confDelta !== null) {
+          const sign = confDelta > 0 ? "+" : "";
+          detailChips += `<span class="chip">conf ${sign}${(confDelta * 100).toFixed(1)}%</span>`;
+        }
+        if (latency) {
+          detailChips += `<span class="chip chip-muted">${(latency / 1000).toFixed(1)}s</span>`;
+        }
+        if (tokIn || tokOut) {
+          detailChips += `<span class="chip chip-muted">${tokIn}+${tokOut} tok</span>`;
+        }
+        return `
+          <div class="agent-entry agent-${statusClass}">
+            <div class="agent-entry-head">
+              <span class="agent-icon">${statusIcon}</span>
+              <span class="agent-name">${agentVi}</span>
+              <span class="agent-time">${ts}</span>
+            </div>
+            <div class="agent-ctx">${ctx}</div>
+            ${reasoning ? `<div class="agent-reasoning">${reasoning}${(dec.reasoning || "").length > 220 ? "…" : ""}</div>` : ""}
+            ${err ? `<div class="agent-err">${err}</div>` : ""}
+            ${detailChips ? `<div class="agent-chips">${detailChips}</div>` : ""}
+          </div>
+        `;
+      }).join("");
+    } catch (err) {
+      $("#agent-activity").innerHTML = `<div class="agent-activity-empty">Không tải được (${err.message}).</div>`;
+    }
+  }
+
   // Auto-load on page open so Uncle doesn't have to click Làm mới /
   // Đề xuất từ AI every time. Both fire in parallel — odds from
   // the 60s cache is instant, recs take a couple seconds.
@@ -435,6 +523,7 @@
   loadRisk();
   loadStrategyScoreboard();
   loadMarketMix();
+  loadAgentActivity();
 
   // Also auto-refresh both every 90s so the dashboard stays live
   // without manual clicking. Risk refresh is faster (30s) so halt
@@ -442,4 +531,6 @@
   setInterval(() => { loadOdds(); loadRecs(); loadStrategyScoreboard(); }, 90000);
   setInterval(loadRisk, 30000);
   setInterval(loadMarketMix, 45000);
+  // Agent activity refreshes faster (10s) so Uncle sees live decisions.
+  setInterval(loadAgentActivity, 10000);
 })();

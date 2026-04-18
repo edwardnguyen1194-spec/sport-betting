@@ -358,6 +358,89 @@ body {
   flex-direction: column;
   gap: 8px;
 }
+
+/* Agent activity feed — replaces the chat panel. Shows live sub-agent
+   decisions as a rolling list Uncle can watch the AI "think" in. */
+.agent-activity-subtitle {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: -6px 0 10px 0;
+}
+.agent-activity-subtitle span {
+  color: var(--text);
+  font-weight: 600;
+}
+.agent-activity {
+  background: rgba(0,0,0,0.25);
+  border-radius: 10px;
+  padding: 8px;
+  height: 480px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.agent-activity-empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 24px 12px;
+}
+.agent-entry {
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.03);
+  border-left: 3px solid rgba(255,255,255,0.15);
+  font-size: 0.86rem;
+}
+.agent-entry.agent-ok   { border-left-color: #4ade80; }
+.agent-entry.agent-veto { border-left-color: #fbbf24; }
+.agent-entry.agent-err  { border-left-color: #ef4444; }
+.agent-entry-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--text);
+}
+.agent-entry-head .agent-icon { font-size: 1rem; }
+.agent-entry-head .agent-name { flex: 1; }
+.agent-entry-head .agent-time { color: var(--muted); font-weight: 400; font-size: 0.78rem; }
+.agent-ctx {
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-top: 2px;
+}
+.agent-reasoning {
+  color: var(--text);
+  font-size: 0.82rem;
+  margin-top: 5px;
+  line-height: 1.35;
+  opacity: 0.88;
+}
+.agent-err {
+  color: #fca5a5;
+  font-size: 0.78rem;
+  margin-top: 4px;
+  font-family: ui-monospace, monospace;
+}
+.agent-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.agent-chips .chip {
+  font-size: 0.72rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.18);
+  color: #c7d2fe;
+}
+.agent-chips .chip-muted {
+  background: rgba(255,255,255,0.05);
+  color: var(--muted);
+}
 .chat-log .msg { padding: 8px 10px; border-radius: 8px; max-width: 90%; }
 .chat-log .user { align-self: flex-end; background: #1c3457; }
 .chat-log .bot { align-self: flex-start; background: #253263; }
