@@ -212,7 +212,15 @@ class StrategyAuditor(BaseAgent):
     max_tokens = 2048
 
     def system_prompt(self) -> str:
-        return SYSTEM_PROMPT
+        # Strategy audits should be written by someone who knows
+        # per-sport edge sources, key-number sensitivity, and how
+        # public bias drifts by sport. Inject the shared master
+        # preamble so the audit narrative speaks that language.
+        try:
+            from .betting_expertise import master_bettor_preamble
+            return master_bettor_preamble() + "\n\n" + SYSTEM_PROMPT
+        except Exception:
+            return SYSTEM_PROMPT
 
     def build_user_message(self, context: Dict[str, Any]) -> str:
         audit_date = context.get("audit_date") or datetime.now(timezone.utc).strftime("%Y-%m-%d")

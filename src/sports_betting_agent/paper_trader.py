@@ -490,6 +490,40 @@ class PaperTrader:
                             same_side + 1, sel_lower, conf, edge,
                         )
 
+            # 2c. KEY-NUMBER GUARD (master-bettor rule).
+            #    Historically, NFL games land on 3 ~15% of the time,
+            #    NHL/MLB games land on 1-goal margin ~28% of the time,
+            #    etc. Buying ONTO these key numbers (e.g. taking -3
+            #    instead of -2.5) is systematically -EV. We downgrade
+            #    stake when the rec is on the wrong side of a key
+            #    number. Spreads only — totals have weaker cluster
+            #    patterns per sport.
+            try:
+                from .agents.betting_expertise import KEY_NUMBERS_SPREAD
+                if rec.market == "spread" and rec.line is not None:
+                    sport_key = (rec.sport or "").lower()
+                    key_list = KEY_NUMBERS_SPREAD.get(sport_key, [])
+                    abs_line = abs(float(rec.line))
+                    for k in key_list[:3]:  # top-3 key numbers per sport
+                        key_val = float(k["number"])
+                        # If our line is EXACTLY on a top-3 key number,
+                        # note it in meta so PickReviewer sees it and
+                        # can veto / shrink. We don't outright skip
+                        # here — a strategy might legitimately have
+                        # found that the current market is mispriced
+                        # AT the key number itself.
+                        if abs(abs_line - key_val) < 0.01:
+                            (rec.meta or {}).setdefault(
+                                "on_key_number", True
+                            )
+                            logger.info(
+                                "key_number stamp: %s spread line=%.1f sits on key %.1f (%.1f%% hit rate)",
+                                rec.selection, rec.line, key_val, k.get("hit_rate_pct", 0),
+                            )
+                            break
+            except Exception as exc:  # pragma: no cover
+                logger.debug("key_number guard skipped: %s", exc)
+
             stake = self._size_stake(rec)
             if tilt_halve:
                 stake *= 0.5

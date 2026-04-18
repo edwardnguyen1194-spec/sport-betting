@@ -86,21 +86,37 @@ class NewsTriage(BaseAgent):
     # ------------------------------------------------------------------
 
     def system_prompt(self) -> str:
+        return self._base_system_prompt()
+
+    def _base_system_prompt(self) -> str:
         return (
-            "You are a sports news triage agent for live betting. "
-            "Given an open bet and a short list of recent headlines "
-            "about the teams involved, decide whether any headline "
-            "is likely to move the line against or in favor of the "
-            "bet.\n\n"
+            "You are a sports news triage agent for live betting, "
+            "trained on 20+ years of injury-to-line-movement patterns "
+            "across all major sports.\n\n"
+            "Given an open SPREAD or OVER/UNDER bet and a short list "
+            "of recent headlines about the teams involved, decide "
+            "whether any headline is likely to move the line against "
+            "or in favor of the bet.\n\n"
             "Attend especially to these injury keywords: "
             f"{', '.join(INJURY_KEYWORDS)}. "
             "Attend to these weather / logistics keywords: "
-            f"{', '.join(WEATHER_KEYWORDS)}. "
-            "A headline about a star player on the side of the bet "
-            "being 'ruled out', 'scratched', or 'placed on IL' is "
-            "bet-negative. A headline about a star player on the "
-            "OPPOSING team being ruled out is bet-positive. A rain "
-            "delay / postponement is bet-negative for totals.\n\n"
+            f"{', '.join(WEATHER_KEYWORDS)}.\n\n"
+            "IMPACT MATRIX — apply this hierarchy:\n"
+            "• QB/starting-pitcher/goalie OUT on our side → -0.05\n"
+            "  (line moves 3+ points NFL, 1 run MLB, 0.3 on NHL total)\n"
+            "• Star player OUT on our side (NBA top-3 rotation, MLB 3-4 hitter) → -0.04\n"
+            "• Role player OUT (questionable → doubtful today) → -0.02\n"
+            "• Weather: wind 15+mph out (MLB) = bet-POSITIVE for Over, "
+            "bet-NEGATIVE for Under. Heavy rain / wind-in = opposite.\n"
+            "• OPPOSITE team's star ruled out → up to +0.02 (bet-positive)\n"
+            "• Postponement / suspension → -0.05 on any total bet\n"
+            "• 'Optimistic' / 'trending to play' / 'game-time decision' = no move\n\n"
+            "MARKET-TYPE NUANCE:\n"
+            "- Injuries to OFFENSIVE stars lower the total; injuries to "
+            "DEFENSIVE stars raise it (and sportsbooks often under-react).\n"
+            "- For SPREAD bets: QB loss ~= 7 NFL points, star PG ~= 3-4 NBA points.\n"
+            "- For TOTAL bets: bullpen fatigue, starting pitcher, and weather "
+            "dominate. Individual position-player absences matter less.\n\n"
             "Output STRICT JSON (no prose, no code fences) with the "
             "following schema and nothing else:\n"
             "{\n"
@@ -114,16 +130,33 @@ class NewsTriage(BaseAgent):
             "}\n\n"
             "Rules:\n"
             "- approved is ALWAYS true. You never veto a bet.\n"
-            "- confidence_delta is negative ONLY for bet-negative news "
-            "(injury, scratch, postponement on our side). Bound: "
-            "-0.05 to 0.\n"
-            "- confidence_delta is positive ONLY for confirmed "
-            "bet-positive news (opponent's star ruled out). Bound: "
-            "0 to +0.02.\n"
-            "- If no headline matches the bet, set confidence_delta "
-            "to 0, alert_level to 'green', matched_headline to ''.\n"
+            "- confidence_delta negative for bet-negative news. Bound -0.05..0.\n"
+            "- confidence_delta positive for opponent-star-out. Bound 0..+0.02.\n"
+            "- If no headline matches the bet, delta 0, alert_level green, matched_headline empty.\n"
             "- Keep reasoning under 140 chars."
         )
+
+    def analyze(self, context):
+        """Inject per-sport expertise so the triager knows which
+        headlines matter most (goalie for NHL, SP for MLB, QB for NFL)."""
+        try:
+            from .betting_expertise import full_expertise_preamble
+        except Exception:
+            return super().analyze(context)
+
+        bet = context.get("bet")
+        sport = ""
+        if bet is not None:
+            sport = (getattr(bet, "sport", "") or "").lower()
+        preamble = full_expertise_preamble(sport=sport)
+
+        orig_fn = self.system_prompt
+        upgraded = "\n\n".join([preamble, self._base_system_prompt()])
+        self.system_prompt = lambda: upgraded  # type: ignore
+        try:
+            return super().analyze(context)
+        finally:
+            self.system_prompt = orig_fn  # type: ignore
 
     def build_user_message(self, context: Dict[str, Any]) -> str:
         bet = context.get("bet")

@@ -103,7 +103,15 @@ class OpportunityScout(BaseAgent):
     max_tokens = _SCOUT_MAX_TOKENS
 
     def system_prompt(self) -> str:
-        return (
+        # Prepend master-bettor preamble so Scout's top-3 picks come
+        # from someone who actually knows key numbers, public bias,
+        # and edge factors — not just a generic "expert handicapper".
+        try:
+            from .betting_expertise import master_bettor_preamble
+            preamble = master_bettor_preamble() + "\n\n"
+        except Exception:
+            preamble = ""
+        return preamble + (
             "You are an expert sports handicapper briefing Uncle — a "
             "careful bettor who wants the THREE best plays available "
             "right now, nothing more.\n\n"

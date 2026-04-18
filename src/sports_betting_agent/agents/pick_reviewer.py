@@ -130,7 +130,54 @@ class PickReviewer(BaseAgent):
     max_tokens = 512
 
     def system_prompt(self) -> str:
+        """Base prompt — when ``analyze()`` runs with context we
+        layer sport-specific expertise on top via the override
+        below. This default is kept for backwards compat + tests
+        that inspect the prompt without context."""
         return SYSTEM_PROMPT
+
+    def analyze(self, context):
+        """Override so we can build a sport-aware system prompt
+        BEFORE the base class makes the HTTP call. Injects the
+        master bettor preamble + per-sport expertise + the
+        market-specific block (spread vs total) into the model's
+        working context. This is what turns a generic 'sports
+        bettor' prompt into a specialist that knows the key
+        numbers, public bias, and edge factors for the specific
+        game at hand."""
+        try:
+            from .betting_expertise import (
+                full_expertise_preamble,
+                market_expertise,
+            )
+        except Exception:
+            # Fall through to default prompt if expertise module
+            # somehow can't be loaded — never break the bet flow.
+            return super().analyze(context)
+
+        rec = context.get("rec")
+        sport = ""
+        market = ""
+        if rec is not None:
+            sport = (getattr(rec, "sport", "") or "").lower()
+            market = (getattr(rec, "market", "") or "").lower()
+
+        preamble = full_expertise_preamble(sport=sport)
+        market_block = market_expertise(market)
+
+        # Stash the base prompt; swap in the upgraded one for this
+        # single call; restore after to keep the class pristine.
+        orig_fn = self.system_prompt
+        upgraded = "\n\n".join([
+            preamble,
+            market_block,
+            SYSTEM_PROMPT,
+        ])
+        self.system_prompt = lambda: upgraded  # type: ignore
+        try:
+            return super().analyze(context)
+        finally:
+            self.system_prompt = orig_fn  # type: ignore
 
     def build_user_message(self, context: Dict[str, Any]) -> str:
         rec = context.get("rec")

@@ -55,6 +55,12 @@ class GameAnalyst(BaseAgent):
     # --------------------------------------------------------------
 
     def system_prompt(self) -> str:
+        """Base prompt used by tests + the first call. During
+        ``analyze()`` we layer the sport-specific expertise
+        block on top via dynamic replacement below."""
+        return self._base_system_prompt()
+
+    def _base_system_prompt(self) -> str:
         return (
             "You are a sharp pregame sports analyst advising a betting "
             "syndicate. Synthesize the context the user provides — "
@@ -71,7 +77,13 @@ class GameAnalyst(BaseAgent):
             "neutral delta near zero.\n"
             "4. ``confidence_delta`` is capped by the caller to "
             "[-0.05, +0.05]. Use the full range only when you have a "
-            "concrete, named reason. Default to 0.0 when unsure.\n\n"
+            "concrete, named reason. Default to 0.0 when unsure.\n"
+            "5. Reference KEY NUMBERS when applicable — if the book total "
+            "is at a historical cluster (e.g. NFL 41/44, MLB 8/9, "
+            "NBA 225), say so explicitly.\n"
+            "6. Call out REVERSE LINE MOVEMENT if visible in the book "
+            "lines summary — lines moving against the public is the "
+            "highest-quality sharp signal available.\n\n"
             "Output a single JSON object. Do not wrap it in code "
             "fences. Schema:\n"
             "{\n"
@@ -84,6 +96,26 @@ class GameAnalyst(BaseAgent):
             "  }\n"
             "}"
         )
+
+    def analyze(self, context):
+        """Inject sport-specific expertise so the model gets key
+        numbers, public bias, and edge factors for THIS sport
+        before it reads the game context. Master-bettor mode."""
+        try:
+            from .betting_expertise import full_expertise_preamble
+        except Exception:
+            return super().analyze(context)
+
+        sport = (context.get("sport") or "").lower()
+        preamble = full_expertise_preamble(sport=sport)
+
+        orig_fn = self.system_prompt
+        upgraded = "\n\n".join([preamble, self._base_system_prompt()])
+        self.system_prompt = lambda: upgraded  # type: ignore
+        try:
+            return super().analyze(context)
+        finally:
+            self.system_prompt = orig_fn  # type: ignore
 
     def build_user_message(self, context: Dict[str, Any]) -> str:
         # Context is a plain dict prepared by ``analyze_game``; keep

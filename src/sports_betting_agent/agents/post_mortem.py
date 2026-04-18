@@ -114,7 +114,15 @@ class PostMortem(BaseAgent):
     # -- BaseAgent hooks -------------------------------------------------
 
     def system_prompt(self) -> str:
-        return SYSTEM_PROMPT
+        # Post-mortems are more useful when written from a master
+        # bettor's perspective — prepend the shared preamble so the
+        # model frames losses through CLV / key-number / public-bias
+        # lenses instead of generic "bad luck" takes.
+        try:
+            from .betting_expertise import master_bettor_preamble
+            return master_bettor_preamble() + "\n\n" + SYSTEM_PROMPT
+        except Exception:
+            return SYSTEM_PROMPT
 
     def build_user_message(self, context: Dict[str, Any]) -> str:
         """Serialize the loss context into a compact JSON user-message.
