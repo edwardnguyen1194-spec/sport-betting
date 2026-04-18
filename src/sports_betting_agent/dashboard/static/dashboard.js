@@ -517,6 +517,45 @@
     }
   }
 
+  // Provider names in Vietnamese for the chip row.
+  const PROVIDER_VI = {
+    gemini:     "Gemini",
+    openrouter: "OpenRouter",
+    groq:       "Groq",
+    legacy:     "cũ",
+    none:       "không có",
+  };
+
+  async function loadCostBreakdown() {
+    try {
+      const res = await fetch("/api/cost-breakdown");
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      const today = data.today || {};
+      const configured = data.configured_providers || [];
+      // Sort providers by call count descending so the top one is obvious.
+      const rows = Object.entries(today).sort((a, b) => b[1].calls - a[1].calls);
+      const totalCalls = rows.reduce((s, [, v]) => s + v.calls, 0) || 1;
+      const chipsEl = $("#provider-chips");
+      if (!configured.length) {
+        chipsEl.innerHTML = '<span class="provider-chip provider-chip-warn">⚠ Chưa cấu hình provider free</span>';
+        return;
+      }
+      const chipBits = configured.map(p => {
+        const stats = today[p];
+        if (!stats) {
+          return `<span class="provider-chip provider-chip-idle">${PROVIDER_VI[p] || p} · sẵn sàng</span>`;
+        }
+        const pct = Math.round((stats.calls / totalCalls) * 100);
+        const errTag = stats.errors ? ` · ${stats.errors} lỗi` : "";
+        return `<span class="provider-chip provider-chip-active">${PROVIDER_VI[p] || p} · ${stats.calls} (${pct}%)${errTag}</span>`;
+      });
+      chipsEl.innerHTML = chipBits.join("");
+    } catch (err) {
+      $("#provider-chips").innerHTML = `<span class="provider-chip provider-chip-warn">${err.message}</span>`;
+    }
+  }
+
   // Auto-load on page open so Uncle doesn't have to click Làm mới /
   // Đề xuất từ AI every time. Both fire in parallel — odds from
   // the 60s cache is instant, recs take a couple seconds.
@@ -526,6 +565,7 @@
   loadStrategyScoreboard();
   loadMarketMix();
   loadAgentActivity();
+  loadCostBreakdown();
 
   // Also auto-refresh both every 90s so the dashboard stays live
   // without manual clicking. Risk refresh is faster (30s) so halt
@@ -535,4 +575,6 @@
   setInterval(loadMarketMix, 45000);
   // Agent activity refreshes faster (10s) so Uncle sees live decisions.
   setInterval(loadAgentActivity, 10000);
+  // Cost + provider-mix refresh every 20s.
+  setInterval(loadCostBreakdown, 20000);
 })();

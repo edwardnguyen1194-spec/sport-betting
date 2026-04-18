@@ -46,12 +46,18 @@ from typing import Any, Dict, List, Optional
 try:
     from anthropic import Anthropic
 except ImportError:
-    Anthropic = None  # agents silently disabled if SDK missing
+    Anthropic = None  # legacy, kept so tests still import cleanly
+
+from .llm_router import LLMRouter, get_router
 
 
 logger = logging.getLogger(__name__)
 
 
+# Kept for backwards compatibility with subclasses that set their own
+# ``model`` override. The router ignores this — it routes to whatever
+# free provider is ready. Anthropic model string lingers as a
+# conceptual label only.
 DEFAULT_MODEL = "claude-haiku-4-5"
 DEFAULT_MAX_TOKENS = 1024
 DEFAULT_DAILY_TOKEN_BUDGET = 500_000
@@ -101,6 +107,12 @@ class AgentLogEntry:
     tokens_in: int = 0
     tokens_out: int = 0
     latency_ms: int = 0
+    # Which free provider actually answered this call. Populated by
+    # ``BaseAgent.analyze`` so the dashboard can show a provider-mix
+    # chart ("47% Gemini, 31% Groq, 22% OpenRouter"). Empty string
+    # for legacy entries logged before the 100%-free switch.
+    provider: str = ""
+    model: str = ""
 
 
 class AgentLog:
@@ -169,11 +181,16 @@ class BaseAgent(ABC):
         api_key: Optional[str] = None,
         daily_token_budget: int = DEFAULT_DAILY_TOKEN_BUDGET,
         enabled: Optional[bool] = None,
+        router: Optional[LLMRouter] = None,
     ) -> None:
         self.agent_log = agent_log
         self.daily_token_budget = daily_token_budget
+        # api_key arg kept for backwards compat with old test code —
+        # it's now ignored because the router reads its own per-
+        # provider secrets (GOOGLE_AI_API_KEY / OPENROUTER_API_KEY /
+        # GROQ_API_KEY) directly from env.
         self._api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
-        self._client: Optional[Anthropic] = None
+        self.router = router or get_router()
         # Per-agent env-gate: SBA_AGENT_<NAME>_ENABLED=0 disables it.
         env_key = f"SBA_AGENT_{self.name.upper()}_ENABLED"
         env_val = os.environ.get(env_key)
@@ -185,12 +202,12 @@ class BaseAgent(ABC):
             self.enabled = True
 
     @property
-    def client(self) -> Optional[Anthropic]:
-        if Anthropic is None or not self._api_key:
-            return None
-        if self._client is None:
-            self._client = Anthropic(api_key=self._api_key)
-        return self._client
+    def client(self) -> Optional[Any]:
+        """Legacy property preserved so any old subclass that checks
+        ``self.client is None`` still works. The router is the real
+        transport now. Returns a truthy sentinel when ANY free
+        provider has a key configured."""
+        return self.router if self.router.available() else None
 
     # -- subclass hooks ---------------------------------------------
 
@@ -236,7 +253,12 @@ class BaseAgent(ABC):
     def analyze(self, context: Dict[str, Any]) -> AgentDecision:
         if not self.enabled:
             return AgentDecision(reasoning="disabled")
-        if self.client is None:
+        # "No client" now means "no free provider key configured"
+        # (Gemini / OpenRouter / Groq). Fail SAFE — the hardcoded
+        # strategies still run, we just skip the agent polish.
+        if not self.router.available():
+            # Keep the legacy "no_client" string so existing tests
+            # and dashboard displays still match what they expect.
             return AgentDecision(error="no_client")
 
         # Daily budget enforcement.
@@ -246,36 +268,42 @@ class BaseAgent(ABC):
 
         system = self.system_prompt()
         user_msg = self.build_user_message(context)
-        start = time.time()
-        try:
-            resp = self.client.messages.create(
-                model=self.model,
-                max_tokens=self.max_tokens,
-                system=system,
-                messages=[{"role": "user", "content": user_msg}],
+
+        result = self.router.complete(
+            system_prompt=system,
+            user_message=user_msg,
+            max_tokens=self.max_tokens,
+        )
+        if result.error is not None and not result.text:
+            logger.warning(
+                "agent %s router error: %s", self.name, result.error,
             )
-        except Exception as exc:
-            logger.warning("agent %s HTTP error: %s", self.name, exc)
-            return AgentDecision(error=f"http_error: {exc}")
+            # Log the attempt anyway so the dashboard shows provider
+            # failures — Uncle needs to see when Gemini is down.
+            self.agent_log.record(AgentLogEntry(
+                ts=datetime.now(timezone.utc).isoformat(),
+                agent=self.name,
+                context_summary=self._summarize_context(context),
+                decision=asdict(AgentDecision(error=result.error)),
+                tokens_in=0,
+                tokens_out=0,
+                latency_ms=result.latency_ms,
+                provider=result.provider or "none",
+                model=result.model or "",
+            ))
+            return AgentDecision(error=f"router_error: {result.error}")
 
-        latency_ms = int((time.time() - start) * 1000)
-        text = ""
-        if resp.content:
-            for block in resp.content:
-                if getattr(block, "type", None) == "text":
-                    text += block.text
-        tokens_in = getattr(resp.usage, "input_tokens", 0)
-        tokens_out = getattr(resp.usage, "output_tokens", 0)
-
-        decision = self.parse_response(text, context)
+        decision = self.parse_response(result.text, context)
         self.agent_log.record(AgentLogEntry(
             ts=datetime.now(timezone.utc).isoformat(),
             agent=self.name,
             context_summary=self._summarize_context(context),
             decision=asdict(decision),
-            tokens_in=tokens_in,
-            tokens_out=tokens_out,
-            latency_ms=latency_ms,
+            tokens_in=result.tokens_in,
+            tokens_out=result.tokens_out,
+            latency_ms=result.latency_ms,
+            provider=result.provider,
+            model=result.model,
         ))
         return decision
 

@@ -51,7 +51,12 @@ class _FakeResponse:
 
 
 class _FakeClient:
-    """Stand-in for anthropic.Anthropic with a ``messages.create`` API."""
+    """Stand-in for anthropic.Anthropic with a ``messages.create`` API.
+
+    Kept for legacy tests that probe the Anthropic shape directly.
+    Current BaseAgent.analyze() uses ``self.router`` instead — see
+    ``_FakeRouter`` below.
+    """
 
     def __init__(self, payload: Dict[str, Any]):
         self._payload = payload
@@ -59,6 +64,34 @@ class _FakeClient:
 
     def create(self, **_kw):
         return _FakeResponse(json.dumps(self._payload))
+
+
+class _FakeRouter:
+    """Stand-in for llm_router.LLMRouter.
+
+    Returns a canned ``CompletionResult`` every call, so unit tests
+    don't need network access or real free-provider keys.
+    """
+
+    def __init__(self, payload: Dict[str, Any], provider: str = "fake"):
+        # Mirror the router's public surface: ``available()`` (truthy
+        # list) and ``complete(...)`` returning a CompletionResult.
+        self._payload = payload
+        self._provider = provider
+
+    def available(self) -> List[str]:
+        return [self._provider]
+
+    def complete(self, system_prompt: str, user_message: str, max_tokens: int = 1024):
+        from sports_betting_agent.agents.llm_router import CompletionResult
+        return CompletionResult(
+            text=json.dumps(self._payload),
+            tokens_in=42,
+            tokens_out=7,
+            provider=self._provider,
+            model="fake-model",
+            latency_ms=5,
+        )
 
 
 class _FakeScoring:
@@ -85,14 +118,15 @@ class _FakeNews:
 
 
 def _make_agent(payload: Dict[str, Any], tmp_path) -> GameAnalyst:
-    # Force the ``client`` property to return our fake by patching
-    # Anthropic to a sentinel (so the "is None" early-return is
-    # skipped) and pre-assigning ``_client``.
-    import sports_betting_agent.agents.base as _base
-    _base.Anthropic = object  # any non-None value
+    # Inject a fake router so analyze() returns our canned payload
+    # without needing real Google / OpenRouter / Groq keys.
     log = AgentLog(str(tmp_path))
-    agent = GameAnalyst(agent_log=log, api_key="fake-key", enabled=True)
-    agent._client = _FakeClient(payload)
+    agent = GameAnalyst(
+        agent_log=log,
+        api_key="fake-key",
+        enabled=True,
+        router=_FakeRouter(payload),
+    )
     return agent
 
 

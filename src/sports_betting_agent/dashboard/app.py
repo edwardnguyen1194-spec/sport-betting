@@ -468,6 +468,50 @@ def create_app(
             "today_tokens": agent_log.today_token_usage(),
         })
 
+    @app.route("/api/cost-breakdown")
+    def api_cost_breakdown():
+        """Per-provider token + cost breakdown for today + all-time.
+
+        Uncle switched to 100% free providers so ``cost_usd`` is $0.00
+        across the board — this endpoint exists so the dashboard can
+        visualize the provider mix (Gemini vs OpenRouter vs Groq) and
+        prove to Uncle that NO Anthropic calls are happening.
+        """
+        # Pull every entry from the log (in-memory list, already bounded).
+        from datetime import datetime as _dt, timezone as _tz
+        today = _dt.now(_tz.utc).date().isoformat()
+        all_entries = agent_log.entries
+        def _tally(entries):
+            by_provider: dict = {}
+            for e in entries:
+                p = e.get("provider") or "legacy"
+                row = by_provider.setdefault(p, {
+                    "calls": 0, "tokens_in": 0, "tokens_out": 0, "errors": 0,
+                })
+                row["calls"] += 1
+                row["tokens_in"] += int(e.get("tokens_in", 0) or 0)
+                row["tokens_out"] += int(e.get("tokens_out", 0) or 0)
+                if e.get("decision", {}).get("error"):
+                    row["errors"] += 1
+            return by_provider
+        today_entries = [e for e in all_entries
+                         if str(e.get("ts", "")).startswith(today)]
+        try:
+            from ..agents.llm_router import get_router
+            router_providers = get_router().available()
+        except Exception:
+            router_providers = []
+        return jsonify({
+            "today": _tally(today_entries),
+            "all_time": _tally(all_entries),
+            "cost_usd_total": 0.00,  # 100% free providers
+            "configured_providers": router_providers,
+            "savings_note": (
+                "All providers free tier. Estimated monthly savings vs "
+                "claude-haiku-4-5: ~$15-40 depending on agent activity."
+            ),
+        })
+
     @app.route("/api/learnings")
     def api_learnings():
         """Daily SkillsLearner output — new techniques, tools, MCPs,
