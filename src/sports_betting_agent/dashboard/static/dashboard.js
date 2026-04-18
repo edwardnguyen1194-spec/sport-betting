@@ -498,6 +498,14 @@
         if (tokIn || tokOut) {
           detailChips += `<span class="chip chip-muted">${tokIn}+${tokOut} tok</span>`;
         }
+        // Show which free provider answered this call so Uncle
+        // sees Groq/Cerebras/Gemini/etc rotating live.
+        const providerName = e.provider && e.provider !== "none"
+          ? (PROVIDER_VI[e.provider] || e.provider)
+          : null;
+        if (providerName) {
+          detailChips += `<span class="chip chip-muted">via ${providerName}</span>`;
+        }
         return `
           <div class="agent-entry agent-${statusClass}">
             <div class="agent-entry-head">
@@ -519,9 +527,11 @@
 
   // Provider names in Vietnamese for the chip row.
   const PROVIDER_VI = {
-    gemini:     "Gemini",
-    openrouter: "OpenRouter",
     groq:       "Groq",
+    cerebras:   "Cerebras",
+    gemini:     "Gemini",
+    mistral:    "Mistral",
+    openrouter: "OpenRouter",
     legacy:     "cũ",
     none:       "không có",
   };
@@ -573,8 +583,9 @@
   setInterval(() => { loadOdds(); loadRecs(); loadStrategyScoreboard(); }, 90000);
   setInterval(loadRisk, 30000);
   setInterval(loadMarketMix, 45000);
-  // Agent activity refreshes faster (10s) so Uncle sees live decisions.
-  setInterval(loadAgentActivity, 10000);
-  // Cost + provider-mix refresh every 20s.
-  setInterval(loadCostBreakdown, 20000);
+  // Agent activity refreshes fast (5s) so Uncle sees live decisions
+  // flow in without feeling like the panel is frozen.
+  setInterval(loadAgentActivity, 5000);
+  // Cost + provider-mix refresh every 15s.
+  setInterval(loadCostBreakdown, 15000);
 })();

@@ -55,6 +55,13 @@ logger = logging.getLogger(__name__)
 COOL_DOWN_SECONDS = 30
 
 
+# Every outbound request sends this User-Agent. Cloudflare (which
+# fronts Groq + several OpenRouter upstreams) blocks urllib's default
+# ``Python-urllib/3.x`` with error code 1010. A real browser-ish UA
+# sails through.
+DEFAULT_UA = "sports-betting-ai-agent/1.0 (+https://sports-betting-ai-agent.fly.dev)"
+
+
 @dataclass
 class CompletionResult:
     """What the router returns to callers.
@@ -157,7 +164,10 @@ class GeminiProvider(_ProviderBase):
         req = _urlreq.Request(
             url,
             data=json.dumps(body).encode("utf-8"),
-            headers={"Content-Type": "application/json"},
+            headers={
+                "Content-Type": "application/json",
+                "User-Agent": DEFAULT_UA,
+            },
             method="POST",
         )
         try:
@@ -225,13 +235,15 @@ class OpenRouterProvider(_ProviderBase):
     name = "openrouter"
     # Listed best-first. Each call picks the next model in the list
     # (round-robin) so we spread load across free quotas.
-    # Verified live 2026-04-18 — old flash-exp / llama-3.3-instruct /
-    # qwen-2.5-72b were all deprecated. These are the current crop.
+    # Verified live 2026-04-18 via direct curl smoke test — many free
+    # models (llama-3.3-70b-instruct, qwen3-coder, gemma-3-27b,
+    # gpt-oss-120b) were 429/404 under heavy traffic. Stuck with the
+    # two that consistently return 200: GLM 4.5 air + Nemotron Nano.
     MODELS = [
-        "openai/gpt-oss-120b:free",           # OpenAI OSS 120B, json-native
-        "qwen/qwen3-next-80b-a3b-instruct:free",  # Qwen 3 Next 80B
-        "z-ai/glm-4.5-air:free",              # GLM 4.5 air, 131k ctx
-        "google/gemma-4-31b-it:free",         # Google Gemma 4 31B
+        "z-ai/glm-4.5-air:free",              # GLM 4.5 air, 131k ctx — reliable
+        "nvidia/nemotron-nano-9b-v2:free",    # Nvidia Nemotron Nano 9B
+        "qwen/qwen3-next-80b-a3b-instruct:free",  # Qwen 3 Next 80B (backup)
+        "openai/gpt-oss-120b:free",           # OpenAI OSS 120B (backup, often 503)
     ]
     ENDPOINT = "https://openrouter.ai/api/v1/chat/completions"
 
@@ -272,6 +284,7 @@ class OpenRouterProvider(_ProviderBase):
             headers={
                 "Authorization": f"Bearer {key}",
                 "Content-Type": "application/json",
+                "User-Agent": DEFAULT_UA,
                 # OpenRouter asks for these for analytics — harmless.
                 "HTTP-Referer": "https://sports-betting-ai-agent.fly.dev",
                 "X-Title": "Sports Betting AI Agent",
@@ -375,6 +388,10 @@ class GroqProvider(_ProviderBase):
             headers={
                 "Authorization": f"Bearer {key}",
                 "Content-Type": "application/json",
+                # Cloudflare fronts api.groq.com and returns 1010 for
+                # urllib's default Python-urllib/3.x UA. DEFAULT_UA
+                # makes us look like a well-behaved HTTP client.
+                "User-Agent": DEFAULT_UA,
             },
             method="POST",
         )
@@ -433,6 +450,193 @@ class GroqProvider(_ProviderBase):
         )
 
 
+class CerebrasProvider(_ProviderBase):
+    """Cerebras Cloud — OpenAI-compatible endpoint, blazing fast.
+
+    Free tier (email signup, no credit card): 30 RPM / 60K TPM /
+    1M tokens/day — the most generous daily ceiling of any free
+    provider. Cerebras runs on their own silicon and delivers
+    2000+ tokens/sec, so this is the fastest fallback in the chain.
+    Activated when ``CEREBRAS_API_KEY`` is set.
+    """
+
+    name = "cerebras"
+    model = "qwen-3-235b-a22b-instruct"
+    ENDPOINT = "https://api.cerebras.ai/v1/chat/completions"
+
+    def ready(self) -> bool:
+        return bool(os.environ.get("CEREBRAS_API_KEY"))
+
+    def complete(
+        self,
+        system_prompt: str,
+        user_message: str,
+        max_tokens: int,
+    ) -> CompletionResult:
+        key = os.environ["CEREBRAS_API_KEY"]
+        body = {
+            "model": self.model,
+            "max_tokens": max_tokens,
+            "temperature": 0.2,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message},
+            ],
+        }
+        start = time.time()
+        req = _urlreq.Request(
+            self.ENDPOINT,
+            data=json.dumps(body).encode("utf-8"),
+            headers={
+                "Authorization": f"Bearer {key}",
+                "Content-Type": "application/json",
+                "User-Agent": DEFAULT_UA,
+            },
+            method="POST",
+        )
+        try:
+            with _urlreq.urlopen(req, timeout=30) as resp:
+                raw = resp.read().decode("utf-8")
+        except _urlerr.HTTPError as exc:
+            try:
+                body_snip = exc.read().decode("utf-8", errors="replace")[:400]
+            except Exception:
+                body_snip = ""
+            logger.warning(
+                "llm_router: %s http_%s body: %s",
+                self.name, exc.code, body_snip,
+            )
+            if exc.code == 429:
+                self.mark_cooldown()
+                return CompletionResult(
+                    provider=self.name, model=self.model,
+                    error=f"rate_limit:{exc.code}",
+                )
+            return CompletionResult(
+                provider=self.name, model=self.model,
+                error=f"http_{exc.code}",
+            )
+        except Exception as exc:
+            return CompletionResult(
+                provider=self.name, model=self.model, error=str(exc),
+            )
+        latency_ms = int((time.time() - start) * 1000)
+        try:
+            data = json.loads(raw)
+        except Exception as exc:
+            return CompletionResult(
+                provider=self.name, model=self.model,
+                error=f"bad_json:{exc}", latency_ms=latency_ms,
+            )
+        choices = data.get("choices") or []
+        text = (
+            choices[0].get("message", {}).get("content", "")
+            if choices else ""
+        )
+        usage = data.get("usage", {}) or {}
+        return CompletionResult(
+            text=text,
+            tokens_in=int(usage.get("prompt_tokens", 0)),
+            tokens_out=int(usage.get("completion_tokens", 0)),
+            provider=self.name,
+            model=self.model,
+            latency_ms=latency_ms,
+        )
+
+
+class MistralProvider(_ProviderBase):
+    """Mistral La Plateforme Experiment tier (free, 1B tokens/month).
+
+    Free signup requires email + phone, no credit card. The monthly
+    ceiling is by far the highest of any free provider, making it
+    an excellent "big-ticket" fallback. Activated when
+    ``MISTRAL_API_KEY`` is set.
+    """
+
+    name = "mistral"
+    model = "mistral-large-latest"
+    ENDPOINT = "https://api.mistral.ai/v1/chat/completions"
+
+    def ready(self) -> bool:
+        return bool(os.environ.get("MISTRAL_API_KEY"))
+
+    def complete(
+        self,
+        system_prompt: str,
+        user_message: str,
+        max_tokens: int,
+    ) -> CompletionResult:
+        key = os.environ["MISTRAL_API_KEY"]
+        body = {
+            "model": self.model,
+            "max_tokens": max_tokens,
+            "temperature": 0.2,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message},
+            ],
+        }
+        start = time.time()
+        req = _urlreq.Request(
+            self.ENDPOINT,
+            data=json.dumps(body).encode("utf-8"),
+            headers={
+                "Authorization": f"Bearer {key}",
+                "Content-Type": "application/json",
+                "User-Agent": DEFAULT_UA,
+            },
+            method="POST",
+        )
+        try:
+            with _urlreq.urlopen(req, timeout=30) as resp:
+                raw = resp.read().decode("utf-8")
+        except _urlerr.HTTPError as exc:
+            try:
+                body_snip = exc.read().decode("utf-8", errors="replace")[:400]
+            except Exception:
+                body_snip = ""
+            logger.warning(
+                "llm_router: %s http_%s body: %s",
+                self.name, exc.code, body_snip,
+            )
+            if exc.code == 429:
+                self.mark_cooldown()
+                return CompletionResult(
+                    provider=self.name, model=self.model,
+                    error=f"rate_limit:{exc.code}",
+                )
+            return CompletionResult(
+                provider=self.name, model=self.model,
+                error=f"http_{exc.code}",
+            )
+        except Exception as exc:
+            return CompletionResult(
+                provider=self.name, model=self.model, error=str(exc),
+            )
+        latency_ms = int((time.time() - start) * 1000)
+        try:
+            data = json.loads(raw)
+        except Exception as exc:
+            return CompletionResult(
+                provider=self.name, model=self.model,
+                error=f"bad_json:{exc}", latency_ms=latency_ms,
+            )
+        choices = data.get("choices") or []
+        text = (
+            choices[0].get("message", {}).get("content", "")
+            if choices else ""
+        )
+        usage = data.get("usage", {}) or {}
+        return CompletionResult(
+            text=text,
+            tokens_in=int(usage.get("prompt_tokens", 0)),
+            tokens_out=int(usage.get("completion_tokens", 0)),
+            provider=self.name,
+            model=self.model,
+            latency_ms=latency_ms,
+        )
+
+
 class LLMRouter:
     """Try each free provider in order; return the first success.
 
@@ -454,10 +658,22 @@ class LLMRouter:
 
     def __init__(self, providers: Optional[List[_ProviderBase]] = None) -> None:
         if providers is None:
-            # Default order is Gemini → OpenRouter → Groq. Gemini
-            # first because its 1M req/day is the most generous and
-            # its quality is closest to Claude.
-            providers = [GeminiProvider(), OpenRouterProvider(), GroqProvider()]
+            # Priority order tuned 2026-04-18 after live traffic:
+            #   1. Groq          — 200 OK, fastest, User-Agent-safe
+            #   2. Cerebras      — 1M tok/day (activates when key set)
+            #   3. Gemini        — good quality, frequent 429s
+            #   4. Mistral       — 1B tok/month (activates when key set)
+            #   5. OpenRouter    — many free models but flaky upstreams
+            # Providers not "ready()" (missing keys) get skipped so
+            # it's safe to have all five registered even if only 3
+            # have keys configured.
+            providers = [
+                GroqProvider(),
+                CerebrasProvider(),
+                GeminiProvider(),
+                MistralProvider(),
+                OpenRouterProvider(),
+            ]
         self.providers = providers
 
     def available(self) -> List[str]:
