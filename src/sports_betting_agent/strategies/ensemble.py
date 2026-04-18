@@ -216,7 +216,12 @@ class EnsembleStrategy(Strategy):
             if median <= 1.0:
                 return False
             uplift = (r.decimal - median) / median
-            return uplift > 0.12
+            # 8% matches paper_trader.place() so dashboard + place
+            # enforcement are consistent. Uncle was seeing Bovada
+            # MIN +10.6% still showing in Gợi ý AI under the old
+            # 12% filter; anchoring both layers at 8% eliminates
+            # the gap.
+            return uplift > 0.08
         before_filter = len(recs)
         recs = [r for r in recs if not _is_off_market(r)]
         filtered_off = before_filter - len(recs)
