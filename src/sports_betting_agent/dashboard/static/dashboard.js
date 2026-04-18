@@ -450,7 +450,9 @@
 
   async function loadAgentActivity() {
     try {
-      const data = await fetchJSON("/api/agent-log?n=30");
+      const res = await fetch("/api/agent-log?n=30");
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
       const entries = data.entries || [];
       const tokens = data.today_tokens || {};
       $("#agent-activity-count").textContent = entries.length;
