@@ -175,6 +175,11 @@ def create_app(
     # daily_learner.run(); no-ops otherwise. Reuses the shared
     # ``agent_log`` so its decisions show up in /api/agent-log too.
     strategy_auditor = StrategyAuditor(agent_log=agent_log)
+    # SkillsLearner — daily self-improvement. Reads yesterday's
+    # performance + scans research topics (rotating weekly bucket)
+    # and saves structured learnings for Uncle to review.
+    from ..agents import SkillsLearner
+    skills_learner = SkillsLearner(agent_log=agent_log, data_dir=settings.data_dir)
     paper = PaperTrader(settings, pick_reviewer=pick_reviewer)
     chat = ClaudeChat(settings)
     learn_log = LearningLog(settings.data_dir)
@@ -429,6 +434,42 @@ def create_app(
             "today_tokens": agent_log.today_token_usage(),
         })
 
+    @app.route("/api/learnings")
+    def api_learnings():
+        """Daily SkillsLearner output — new techniques, tools, MCPs,
+        hooks, prompt improvements, code-change proposals.
+
+        Query params:
+          - n: entries to return (default 14 = 2 weeks, max 365)
+        """
+        try:
+            n = min(365, max(1, int(request.args.get("n", 14))))
+        except (TypeError, ValueError):
+            n = 14
+        return jsonify({
+            "latest": skills_learner.latest(),
+            "recent": skills_learner.recent(n),
+        })
+
+    @app.route("/api/learnings/run", methods=["POST"])
+    def api_learnings_run():
+        """Force-run the SkillsLearner now (for testing / on-demand learning)."""
+        recent_stats = {}
+        try:
+            recent_stats = paper.clv.stats_by_strategy()
+        except Exception:
+            pass
+        current_strats = [s.name for s in strategies]
+        entry = skills_learner.learn_today(
+            current_strategies=current_strats,
+            recent_closed_stats=recent_stats,
+            force=True,
+        )
+        if entry is None:
+            return jsonify({"ok": False, "error": "learner skipped or errored"})
+        from dataclasses import asdict as _asdict
+        return jsonify({"ok": True, "entry": _asdict(entry)})
+
     @app.route("/api/purge-voids", methods=["POST"])
     def purge_voids():
         """Remove every status='void' entry from closed history.
@@ -631,6 +672,34 @@ def create_app(
                     logger.info("daily_learner: ran for %s (skill=%s)", entry.date, entry.skill_title)
             except Exception as exc:
                 logger.warning("daily_learner failed: %s", exc)
+            # SkillsLearner: daily web scan for new techniques/tools/
+            # MCPs/hooks/prompt improvements. Idempotent per UTC day.
+            try:
+                # Build the recent-perf summary from CLV stats_by_strategy
+                # + paper.stats() so the Learner has context.
+                recent_stats = {}
+                try:
+                    recent_stats = paper.clv.stats_by_strategy()
+                except Exception:
+                    pass
+                current_strats = [s.name for s in strategies]
+                skill_entry = skills_learner.learn_today(
+                    current_strategies=current_strats,
+                    recent_closed_stats=recent_stats,
+                )
+                if skill_entry is not None:
+                    logger.info(
+                        "skills_learner: recorded %s on %s "
+                        "(%d techniques, %d tools, %d mcps, %d hooks, %d prompts)",
+                        skill_entry.date, skill_entry.topic,
+                        len(skill_entry.new_techniques),
+                        len(skill_entry.new_tools),
+                        len(skill_entry.new_mcps),
+                        len(skill_entry.new_hooks),
+                        len(skill_entry.prompt_improvements),
+                    )
+            except Exception as exc:
+                logger.warning("skills_learner failed: %s", exc)
         # 8. Hourly self-monitor. Idempotent — fires once per UTC
         # hour regardless of how many trade cycles hit it. Logs a
         # snapshot + flags bias/stale/drawdown anomalies.

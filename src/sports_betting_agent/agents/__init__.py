@@ -13,6 +13,7 @@ from .strategy_auditor import (
     save_weekly_audit_markdown,
     list_recent_weekly_audits,
 )
+from .skills_learner import SkillsLearner, LearningEntry, RESEARCH_TOPICS
 
 __all__ = [
     "BaseAgent",
@@ -34,4 +35,7 @@ __all__ = [
     "run_weekly_audit",
     "save_weekly_audit_markdown",
     "list_recent_weekly_audits",
+    "SkillsLearner",
+    "LearningEntry",
+    "RESEARCH_TOPICS",
 ]
