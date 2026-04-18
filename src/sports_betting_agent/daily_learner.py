@@ -43,6 +43,13 @@ from .agents.strategy_auditor import (
     run_weekly_audit,
     save_weekly_audit_markdown,
 )
+from .agents.base import AgentLog
+from .agents.self_reflection import (
+    SelfReflection,
+    VALID_TARGETS as SELF_REFLECTION_TARGETS,
+    run_self_reflection,
+    save_proposals as save_self_reflection_proposals,
+)
 from .clv_tracker import CLVTracker
 from .config import Settings
 from .line_movement import LineMovementStore
@@ -107,6 +114,8 @@ class DailyLearner:
         clv: CLVTracker,
         line_store: LineMovementStore,
         strategy_auditor: Optional[StrategyAuditor] = None,
+        self_reflection: Optional[SelfReflection] = None,
+        agent_log: Optional[AgentLog] = None,
     ) -> None:
         self.settings = settings
         self.clv = clv
@@ -115,12 +124,21 @@ class DailyLearner:
         # call sites / tests don't need to inject it; the Monday run
         # is a no-op when it is absent.
         self.strategy_auditor = strategy_auditor
+        # Weekly introspective learner. Iterates the 6 sub-agents
+        # once per Sunday UTC and writes proposed prompt/config
+        # patches to ``agent_prompt_proposals.json``. No-op when
+        # absent (tests, partial wiring).
+        self.self_reflection = self_reflection
+        self.agent_log = agent_log
         self.data_dir = settings.data_dir
         self.entries: List[DailyEntry] = []
         # Weekly-audit idempotency: record the YYYY-MM-DD of the most
         # recent successful weekly audit so repeated Monday triggers
         # don't spam the filesystem or the agent log.
         self._last_weekly_audit_date: Optional[str] = None
+        # Same idempotency guard for the Sunday introspection loop —
+        # without it, a mid-day restart would double-append proposals.
+        self._last_self_reflection_date: Optional[str] = None
         self._load()
 
     # -- persistence -------------------------------------------------
@@ -175,6 +193,11 @@ class DailyLearner:
         # ``force=False`` still kicks off Monday's review on the first
         # hit of the new week).
         self._maybe_run_weekly_audit(paper=paper, closed_bets=closed_list)
+
+        # Sunday self-reflection (same outside-the-idempotent-guard
+        # pattern — we want the introspection loop to fire on the
+        # first Sunday hit even when the daily entry already exists).
+        self._maybe_run_self_reflection()
 
         if not force and self.already_ran_today():
             return None
@@ -255,6 +278,63 @@ class DailyLearner:
             if path:
                 logger.info("weekly audit saved to %s", path)
         self._last_weekly_audit_date = today
+
+    # -- self-reflection (Sunday UTC) -------------------------------
+
+    def _maybe_run_self_reflection(self) -> None:
+        """Once-per-Sunday introspective pass over the 6 sub-agents.
+
+        Iterates :data:`SELF_REFLECTION_TARGETS`, pulls the last 50
+        AgentLog entries per agent, and appends the resulting
+        proposals to ``/data/sba/agent_prompt_proposals.json``.
+
+        Safe no-op when:
+        (a) no :class:`SelfReflection` agent was injected,
+        (b) no :class:`AgentLog` is available (nothing to reflect on),
+        (c) today is not Sunday (weekday == 6) UTC,
+        (d) today's pass already ran.
+        """
+        if self.self_reflection is None or self.agent_log is None:
+            return
+        now = datetime.now(timezone.utc)
+        if now.weekday() != 6:  # Sunday == 6
+            return
+        today = now.strftime("%Y-%m-%d")
+        if self._last_self_reflection_date == today:
+            return
+        wrote_any = False
+        for target in SELF_REFLECTION_TARGETS:
+            try:
+                decision = run_self_reflection(
+                    self.self_reflection,
+                    target_name=target,
+                    agent_log=self.agent_log,
+                    n=50,
+                )
+            except Exception as exc:
+                logger.warning(
+                    "self_reflection on %s failed: %s", target, exc
+                )
+                continue
+            if decision is None:
+                continue
+            try:
+                path = save_self_reflection_proposals(
+                    self.data_dir, target, decision, audit_date=today
+                )
+                if path:
+                    wrote_any = True
+            except Exception as exc:  # pragma: no cover
+                logger.warning(
+                    "save_self_reflection_proposals %s failed: %s",
+                    target, exc,
+                )
+        if wrote_any:
+            logger.info(
+                "self_reflection pass complete for %s targets on %s",
+                len(SELF_REFLECTION_TARGETS), today,
+            )
+        self._last_self_reflection_date = today
 
     # -- review ------------------------------------------------------
 

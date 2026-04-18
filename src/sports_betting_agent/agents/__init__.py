@@ -14,6 +14,22 @@ from .strategy_auditor import (
     list_recent_weekly_audits,
 )
 from .skills_learner import SkillsLearner, LearningEntry, RESEARCH_TOPICS
+from .hooks_discovery import (
+    HooksDiscovery,
+    discover_hooks,
+    recent_hook_candidates,
+    write_hooks_template,
+    DEFAULT_HOOKS,
+)
+from .mcp_discovery import MCPDiscovery, discover_mcps
+from .self_reflection import (
+    SelfReflection,
+    VALID_TARGETS as SELF_REFLECTION_TARGETS,
+    run_self_reflection,
+    save_proposals as save_self_reflection_proposals,
+    load_proposals as load_self_reflection_proposals,
+    latest_proposals_by_agent as latest_self_reflection_proposals,
+)
 
 __all__ = [
     "BaseAgent",
@@ -38,4 +54,17 @@ __all__ = [
     "SkillsLearner",
     "LearningEntry",
     "RESEARCH_TOPICS",
+    "HooksDiscovery",
+    "discover_hooks",
+    "recent_hook_candidates",
+    "write_hooks_template",
+    "DEFAULT_HOOKS",
+    "MCPDiscovery",
+    "discover_mcps",
+    "SelfReflection",
+    "SELF_REFLECTION_TARGETS",
+    "run_self_reflection",
+    "save_self_reflection_proposals",
+    "load_self_reflection_proposals",
+    "latest_self_reflection_proposals",
 ]

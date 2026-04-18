@@ -180,6 +180,17 @@ def create_app(
     # and saves structured learnings for Uncle to review.
     from ..agents import SkillsLearner
     skills_learner = SkillsLearner(agent_log=agent_log, data_dir=settings.data_dir)
+    # MCPDiscovery — optional weekly scan for new Model Context Protocol
+    # servers the agent could adopt. Wired as an optional sub-call on
+    # skills_learner.learn_today() below. Reuses the shared agent_log.
+    from ..agents import MCPDiscovery
+    mcp_discovery = MCPDiscovery(agent_log=agent_log, data_dir=settings.data_dir)
+    # SelfReflection — introspective meta-agent. Once a week (Sunday UTC)
+    # it reads each sub-agent's last 50 AgentLog entries and proposes
+    # prompt / token / temperature / schema patches to
+    # ``agent_prompt_proposals.json``. Reuses the shared agent_log.
+    from ..agents import SelfReflection
+    self_reflection = SelfReflection(agent_log=agent_log)
     paper = PaperTrader(settings, pick_reviewer=pick_reviewer)
     chat = ClaudeChat(settings)
     learn_log = LearningLog(settings.data_dir)
@@ -197,6 +208,8 @@ def create_app(
     daily_learner = DailyLearner(
         settings, paper.clv, line_store,
         strategy_auditor=strategy_auditor,
+        self_reflection=self_reflection,
+        agent_log=agent_log,
     )
     # Hourly health monitor — logs per-hour snapshots and flags
     # anomalies (all-Over bias, stale open bets, drawdown approach,
@@ -464,11 +477,84 @@ def create_app(
             current_strategies=current_strats,
             recent_closed_stats=recent_stats,
             force=True,
+            mcp_discovery=mcp_discovery,
         )
         if entry is None:
             return jsonify({"ok": False, "error": "learner skipped or errored"})
         from dataclasses import asdict as _asdict
         return jsonify({"ok": True, "entry": _asdict(entry)})
+
+    @app.route("/api/mcp-candidates")
+    def api_mcp_candidates():
+        """Return the persisted MCPDiscovery candidate store.
+
+        Query params:
+          - n: max entries to return (default 50, max 200).
+        """
+        try:
+            n = min(200, max(1, int(request.args.get("n", 50))))
+        except (TypeError, ValueError):
+            n = 50
+        return jsonify({
+            "count": len(mcp_discovery.all_entries()),
+            "entries": mcp_discovery.recent(n),
+        })
+
+    @app.route("/api/hook-candidates")
+    def api_hook_candidates():
+        """HooksDiscovery proposals — Claude Code hooks Uncle could adopt.
+
+        Returns the most recent hook-discovery runs (each entry carries
+        a full AgentDecision with ``metadata.hooks``) plus the
+        deterministic catalog so the dashboard always has something to
+        render on cold systems. Also resolves the on-disk template path
+        at ``.claude/hooks_proposed.json`` for a one-click-adopt copy.
+
+        Query params:
+          - n: max entries (default 25, max 100).
+          - run: pass ``1`` to fire a fresh discovery pass inline.
+        """
+        from ..agents import (
+            HooksDiscovery,
+            discover_hooks,
+            recent_hook_candidates,
+            DEFAULT_HOOKS,
+        )
+        try:
+            n = min(100, max(1, int(request.args.get("n", 25))))
+        except (TypeError, ValueError):
+            n = 25
+
+        # Repo root = three levels up from dashboard/app.py.
+        repo_root = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..", "..", "..")
+        )
+
+        latest = None
+        if request.args.get("run") == "1":
+            hooks_agent = HooksDiscovery(agent_log=agent_log)
+            decision = discover_hooks(
+                hooks_agent,
+                existing_hooks=[],
+                data_dir=settings.data_dir,
+                repo_root=repo_root,
+            )
+            latest = {
+                "reasoning": decision.reasoning,
+                "hooks": (decision.metadata or {}).get("hooks") or [],
+                "error": decision.error,
+            }
+
+        entries = recent_hook_candidates(settings.data_dir, n=n)
+        template_path = os.path.join(repo_root, ".claude", "hooks_proposed.json")
+        return jsonify({
+            "count": len(entries),
+            "entries": entries,
+            "latest": latest,
+            "default_hooks": DEFAULT_HOOKS,
+            "template_path": template_path,
+            "template_exists": os.path.exists(template_path),
+        })
 
     @app.route("/api/purge-voids", methods=["POST"])
     def purge_voids():
@@ -824,6 +910,31 @@ def create_app(
             "latest": audits[0] if audits else None,
             "recent": audits,
         })
+
+    @app.route("/api/self-reflection")
+    def self_reflection_status():
+        """SelfReflection output — introspective prompt-improvement proposals.
+
+        Returns the latest proposal entry per sub-agent plus the full
+        history bucket per agent. On cold systems (no reflection has
+        fired yet) every ``latest`` value is ``null``.
+
+        Query params:
+          - history: include full per-agent history (default false)
+        """
+        from ..agents import (
+            latest_self_reflection_proposals,
+            load_self_reflection_proposals,
+            SELF_REFLECTION_TARGETS,
+        )
+        latest = latest_self_reflection_proposals(settings.data_dir)
+        body: Dict = {
+            "targets": list(SELF_REFLECTION_TARGETS),
+            "latest": latest,
+        }
+        if request.args.get("history", "").lower() in ("1", "true", "yes"):
+            body["history"] = load_self_reflection_proposals(settings.data_dir)
+        return jsonify(body)
 
     @app.route("/api/steam")
     def steam_status():

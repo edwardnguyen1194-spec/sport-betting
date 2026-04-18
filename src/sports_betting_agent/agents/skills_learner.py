@@ -199,8 +199,16 @@ class SkillsLearner(BaseAgent):
         current_strategies: List[str],
         recent_closed_stats: Dict[str, Any],
         force: bool = False,
+        mcp_discovery: Optional[Any] = None,
     ) -> Optional[LearningEntry]:
-        """Main entry point. Fires once per UTC day unless ``force=True``."""
+        """Main entry point. Fires once per UTC day unless ``force=True``.
+
+        If ``mcp_discovery`` is provided, we also run the MCPDiscovery
+        sub-agent after the main synthesis succeeds and merge its
+        candidate list into ``entry.new_mcps``. Keeps the two agents
+        loosely coupled — caller decides when (and whether) to run
+        the optional MCP scan.
+        """
         if not force and self._already_learned_today():
             return None
         today = datetime.now(timezone.utc)
@@ -217,12 +225,33 @@ class SkillsLearner(BaseAgent):
             logger.warning("SkillsLearner error: %s", decision.error)
             return None
         meta = decision.metadata or {}
+        new_mcps = list(meta.get("new_mcps", []) or [])
+
+        # OPTIONAL sub-call: weekly MCP registry scan. Best-effort —
+        # any failure here is swallowed so the main learning entry
+        # still persists. Dedupe against MCP_CANDIDATES + whatever
+        # Claude already surfaced in new_mcps above.
+        if mcp_discovery is not None:
+            try:
+                from .mcp_discovery import discover_mcps
+                seen = [c[0] for c in MCP_CANDIDATES]
+                seen += [
+                    (m.get("name") if isinstance(m, dict) else str(m))
+                    for m in new_mcps
+                ]
+                mcp_decision = discover_mcps(mcp_discovery, existing_mcps=seen)
+                extra = (mcp_decision.metadata or {}).get("candidates") or []
+                if extra:
+                    new_mcps.extend(extra)
+            except Exception as exc:  # pragma: no cover — best-effort
+                logger.warning("mcp_discovery sub-call failed: %s", exc)
+
         entry = LearningEntry(
             date=today.isoformat(),
             topic=topic,
             new_techniques=meta.get("new_techniques", []),
             new_tools=meta.get("new_tools", []),
-            new_mcps=meta.get("new_mcps", []),
+            new_mcps=new_mcps,
             new_hooks=meta.get("new_hooks", []),
             prompt_improvements=meta.get("prompt_improvements", []),
             code_changes=meta.get("code_changes", []),
