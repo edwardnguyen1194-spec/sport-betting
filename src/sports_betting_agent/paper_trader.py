@@ -433,6 +433,63 @@ class PaperTrader:
                 )
                 return None
 
+            # 2b. CONCENTRATION GUARD (Uncle Phung's request 2026-04-17):
+            #    public_fade + reverse_line_movement strategies are BY
+            #    DESIGN contrarian to the public, and the public nearly
+            #    always loads the Over. Result: 4-5 open Unders in a
+            #    row, all highly correlated. A bad-weather night or a
+            #    single sharp-miss pattern wipes the whole slate.
+            #
+            #    Rule:
+            #      - Count open bets with the same total selection
+            #        (Over vs Under). Spreads don't suffer this
+            #        correlation so they're exempt.
+            #      - 1st-3rd same-side Under/Over: allow normally.
+            #      - 4th same-side:  require confidence >= 0.65.
+            #      - 5th+ same-side: require edge >= 0.10 AND conf >= 0.65.
+            #
+            #    Env overrides so we can tune without redeploy:
+            #      SBA_CONC_SOFT_LIMIT  (default 3 — when checks start)
+            #      SBA_CONC_HARD_CONF   (default 0.65 — needed >= soft+1)
+            #      SBA_CONC_HARD_EDGE   (default 0.10 — needed >= soft+2)
+            if rec.market == "total" and rec.selection:
+                sel_lower = rec.selection.lower().strip()
+                if sel_lower in ("over", "under"):
+                    soft_limit = int(_os.environ.get("SBA_CONC_SOFT_LIMIT", "3"))
+                    hard_conf = float(_os.environ.get("SBA_CONC_HARD_CONF", "0.65"))
+                    hard_edge = float(_os.environ.get("SBA_CONC_HARD_EDGE", "0.10"))
+                    same_side = sum(
+                        1 for b in self.open_bets.values()
+                        if b.market == "total"
+                        and (b.selection or "").lower().strip() == sel_lower
+                    )
+                    if same_side >= soft_limit:
+                        # Hitting the concentration ceiling — require
+                        # higher conviction to add more of the same side.
+                        conf = rec.confidence or 0.0
+                        edge = rec.edge or 0.0
+                        if conf < hard_conf:
+                            logger.warning(
+                                "concentration skip: %s would be #%d open %s "
+                                "but confidence %.3f < %.2f",
+                                rec.selection, same_side + 1, sel_lower,
+                                conf, hard_conf,
+                            )
+                            return None
+                        if same_side >= soft_limit + 1 and edge < hard_edge:
+                            logger.warning(
+                                "concentration skip: %s would be #%d open %s "
+                                "but edge %.3f < %.2f",
+                                rec.selection, same_side + 1, sel_lower,
+                                edge, hard_edge,
+                            )
+                            return None
+                        logger.info(
+                            "concentration warn: #%d %s passes tighter gates "
+                            "(conf=%.3f edge=%.3f)",
+                            same_side + 1, sel_lower, conf, edge,
+                        )
+
             stake = self._size_stake(rec)
             if tilt_halve:
                 stake *= 0.5
