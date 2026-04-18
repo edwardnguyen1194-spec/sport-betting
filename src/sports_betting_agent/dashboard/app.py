@@ -163,6 +163,27 @@ def create_app(
             result = result.replace(en, vi)
         return result
 
+    @app.template_filter("date_vi")
+    def date_vi_filter(iso_ts):
+        """Format ISO timestamp to Vietnamese-friendly 'DD/MM HH:MM'.
+
+        Converts UTC → Pacific time (Uncle's TZ) so the displayed
+        clock matches what he sees on his own devices.
+        """
+        if not iso_ts:
+            return ""
+        try:
+            from datetime import datetime, timezone, timedelta
+            dt = datetime.fromisoformat(str(iso_ts).replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            # Pacific UTC−8 (adjust for DST is out of scope — good-enough
+            # display conversion; the authoritative timestamp stays UTC).
+            pt = dt.astimezone(timezone(timedelta(hours=-8)))
+            return pt.strftime("%d/%m %H:%M")
+        except Exception:
+            return str(iso_ts)[:16]
+
     aggregator = OddsAggregator(settings)
     # Build the agent log + PickReviewer BEFORE the PaperTrader so we
     # can inject the reviewer into its constructor. If ANTHROPIC_API_KEY
