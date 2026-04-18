@@ -149,7 +149,7 @@ class PriceDispersionStrategy(Strategy):
                     reasoning=(
                         f"Price dispersion: {len(lines)} books average implied "
                         f"{avg_implied:.1%}; {best_line.book} at "
-                        f"{best_line.american:+d} implies {best_implied:.1%} "
+                        f"{int(best_line.american):+d} implies {best_implied:.1%} "
                         f"(+{edge_pct:.1%} edge). Taking best price."
                     ),
                 )
