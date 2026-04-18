@@ -214,10 +214,13 @@ class OpenRouterProvider(_ProviderBase):
     name = "openrouter"
     # Listed best-first. Each call picks the next model in the list
     # (round-robin) so we spread load across free quotas.
+    # Verified live 2026-04-18 — old flash-exp / llama-3.3-instruct /
+    # qwen-2.5-72b were all deprecated. These are the current crop.
     MODELS = [
-        "google/gemini-2.0-flash-exp:free",
-        "meta-llama/llama-3.3-70b-instruct:free",
-        "qwen/qwen-2.5-72b-instruct:free",
+        "openai/gpt-oss-120b:free",           # OpenAI OSS 120B, json-native
+        "qwen/qwen3-next-80b-a3b-instruct:free",  # Qwen 3 Next 80B
+        "z-ai/glm-4.5-air:free",              # GLM 4.5 air, 131k ctx
+        "google/gemma-4-31b-it:free",         # Google Gemma 4 31B
     ]
     ENDPOINT = "https://openrouter.ai/api/v1/chat/completions"
 
@@ -327,12 +330,18 @@ class GroqProvider(_ProviderBase):
         max_tokens: int,
     ) -> CompletionResult:
         key = os.environ["GROQ_API_KEY"]
+        # Groq rejects response_format=json_object if the word "json"
+        # doesn't appear in any message. Suffix the system prompt with
+        # the magic word so they stop screaming 400 at us.
+        sys_msg = system_prompt
+        if "json" not in (sys_msg + user_message).lower():
+            sys_msg = sys_msg + " Reply in JSON."
         body = {
             "model": self.model,
             "max_tokens": max_tokens,
             "temperature": 0.2,
             "messages": [
-                {"role": "system", "content": system_prompt},
+                {"role": "system", "content": sys_msg},
                 {"role": "user", "content": user_message},
             ],
             "response_format": {"type": "json_object"},
