@@ -457,6 +457,24 @@ def create_app(
         result = paper.resume()
         return jsonify({"ok": True, **result})
 
+    @app.route("/api/reset-peak", methods=["POST"])
+    def api_reset_peak():
+        """Reset peak_bankroll to the current bankroll so the
+        drawdown calc restarts from here. Clears any halt too.
+        Uncle uses this after a normal variance dip when he wants
+        the agent to keep betting without triggering the 40% halt."""
+        with paper._lock:
+            paper._peak_bankroll = float(paper.bankroll)
+            paper._halted = False
+            paper._save_state()
+        return jsonify({
+            "ok": True,
+            "bankroll": paper.bankroll,
+            "peak_bankroll": paper._peak_bankroll,
+            "halted": False,
+            "note": "Peak reset to current bankroll. Drawdown = 0%.",
+        })
+
     @app.route("/api/halt", methods=["POST"])
     def api_halt():
         """Manually halt all new bet placement.

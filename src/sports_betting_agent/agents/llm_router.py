@@ -52,7 +52,10 @@ logger = logging.getLogger(__name__)
 
 # Per-provider cool-down window in seconds. Bumps when we get a 429
 # or a repeated 5xx. Expires naturally, no manual reset required.
-COOL_DOWN_SECONDS = 30
+# Tightened 2026-04-17: was 30s, now 15s. Groq + Gemini recover
+# from rate-limits within 10-20s; a 30s blackout was too punishing
+# and triggered spurious all_providers_failed when multiple hit at once.
+COOL_DOWN_SECONDS = 15
 
 
 # Every outbound request sends this User-Agent. Cloudflare (which
@@ -686,8 +689,15 @@ class LLMRouter:
         user_message: str,
         max_tokens: int = 1024,
     ) -> CompletionResult:
+        """Two-pass cascade: first try providers NOT on cool-down,
+        then if ALL were cool, try them anyway (Uncle's bug report —
+        simultaneous cool-downs were returning no_providers_configured
+        even though we had 3 valid keys). Better to attempt a possibly-
+        still-rate-limited provider than return no-op."""
         errors: List[str] = []
         tried_any = False
+
+        # Pass 1 — skip cool-down providers (normal path)
         for provider in self.providers:
             if not provider.ready():
                 errors.append(f"{provider.name}:no_key")
@@ -709,6 +719,31 @@ class LLMRouter:
                 provider.name,
                 result.error or "empty",
             )
+
+        # Pass 2 — if nothing was tried (everyone on cool-down), try
+        # the cool-down'd ones anyway. Cool-down is a heuristic, not
+        # a guarantee the provider is still rate-limited.
+        if not tried_any:
+            for provider in self.providers:
+                if not provider.ready():
+                    continue
+                # Still cool? Try it — we have nothing else.
+                logger.info(
+                    "llm_router: all providers on cool-down, forcing "
+                    "retry on %s", provider.name,
+                )
+                result = provider.complete(
+                    system_prompt=system_prompt,
+                    user_message=user_message,
+                    max_tokens=max_tokens,
+                )
+                tried_any = True
+                if result.error is None and result.text:
+                    # Success on a supposedly-cool provider means the
+                    # cool-down expired earlier than tracked. Reset it.
+                    provider._cooldown_until = 0.0
+                    return result
+                errors.append(f"{provider.name}(cool):{result.error or 'empty'}")
 
         return CompletionResult(
             error="all_providers_failed" if tried_any else "no_providers_configured",
