@@ -164,6 +164,17 @@ class GeminiProvider(_ProviderBase):
             with _urlreq.urlopen(req, timeout=30) as resp:
                 raw = resp.read().decode("utf-8")
         except _urlerr.HTTPError as exc:
+            # Read the body so we can see WHY (wrong model, bad key,
+            # malformed request). Truncate to 400 chars so we don't
+            # flood the log with multi-page HTML error pages.
+            try:
+                body_snip = exc.read().decode("utf-8", errors="replace")[:400]
+            except Exception:
+                body_snip = ""
+            logger.warning(
+                "llm_router: %s http_%s body: %s",
+                self.name, exc.code, body_snip,
+            )
             if exc.code == 429:
                 self.mark_cooldown()
                 return CompletionResult(
@@ -249,7 +260,10 @@ class OpenRouterProvider(_ProviderBase):
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_message},
             ],
-            "response_format": {"type": "json_object"},
+            # Don't pin response_format=json_object — most free models
+            # on OpenRouter (gpt-oss, gemma, glm, qwen3) silently 404
+            # or 400 when it's set. The parse_response fallback in
+            # base.py already strips ```json fences, so we're fine.
         }
         start = time.time()
         req = _urlreq.Request(
@@ -268,6 +282,14 @@ class OpenRouterProvider(_ProviderBase):
             with _urlreq.urlopen(req, timeout=30) as resp:
                 raw = resp.read().decode("utf-8")
         except _urlerr.HTTPError as exc:
+            try:
+                body_snip = exc.read().decode("utf-8", errors="replace")[:400]
+            except Exception:
+                body_snip = ""
+            logger.warning(
+                "llm_router: %s (%s) http_%s body: %s",
+                self.name, model, exc.code, body_snip,
+            )
             if exc.code == 429:
                 self.mark_cooldown()
                 return CompletionResult(
@@ -360,6 +382,17 @@ class GroqProvider(_ProviderBase):
             with _urlreq.urlopen(req, timeout=30) as resp:
                 raw = resp.read().decode("utf-8")
         except _urlerr.HTTPError as exc:
+            # Read the body so we can see WHY (wrong model, bad key,
+            # malformed request). Truncate to 400 chars so we don't
+            # flood the log with multi-page HTML error pages.
+            try:
+                body_snip = exc.read().decode("utf-8", errors="replace")[:400]
+            except Exception:
+                body_snip = ""
+            logger.warning(
+                "llm_router: %s http_%s body: %s",
+                self.name, exc.code, body_snip,
+            )
             if exc.code == 429:
                 self.mark_cooldown()
                 return CompletionResult(
