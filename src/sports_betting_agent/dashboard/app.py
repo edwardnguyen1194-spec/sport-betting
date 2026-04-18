@@ -32,6 +32,7 @@ from ..strategies import (
     BetRecommendation,
     EloSpreadStrategy,
     EnsembleStrategy,
+    PriceDispersionStrategy,
     SpreadValueStrategy,
     TotalValueStrategy,
     TotalProjectionStrategy,
@@ -285,6 +286,10 @@ def create_app(
         # Shares the same EloRatings instance that also powers
         # /api/elo and the scoring tracker.
         EloSpreadStrategy(settings, elo=elo),
+        # Universal price-dispersion: works on ANY sport with 3+
+        # books at the same line. Ensures tennis/MMA/WNBA/KHL/etc
+        # all get coverage even if no structural model fires.
+        PriceDispersionStrategy(settings),
     ]
     ensemble = EnsembleStrategy(strategies, settings, news_reader=news)
 

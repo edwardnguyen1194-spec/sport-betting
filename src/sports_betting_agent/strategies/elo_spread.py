@@ -69,14 +69,34 @@ SHARP_BOOKS = {"pinnacle", "circa", "bovada", "bookmaker", "betonline"}
 ELO_PER_POINT = {
     "football_nfl": 25.0,
     "football_ncaaf": 25.0,
+    "football_cfl": 25.0,
     "basketball_nba": 28.0,
     "basketball_wnba": 28.0,
     "basketball_ncaab": 28.0,
+    "basketball_euroleague": 30.0,  # slightly higher — European pace is lower
     # NHL: 0.3 goals per 100 Elo => 100 / 0.3 ~= 333 Elo per goal.
     "hockey_nhl": 333.33,
+    "hockey_khl": 333.33,
     # MLB: 0.3 runs per 50 Elo => 50 / 0.3 ~= 166.67 Elo per run.
     "baseball_mlb": 166.67,
     "baseball_ncaa": 166.67,
+    # Soccer: ~300 Elo per goal scored margin (tighter than hockey
+    # because games are lower-scoring). Covers MLS/EPL/La Liga etc.
+    "soccer_mls": 300.0,
+    "soccer_epl": 300.0,
+    "soccer_ucl": 300.0,
+    "soccer_uel": 300.0,
+    "soccer_esp": 300.0,
+    "soccer_ita": 300.0,
+    "soccer_ger": 300.0,
+    "soccer_fra": 300.0,
+    # Tennis: spreads are ATP/WTA "games spread" (e.g. -4.5, +2.5).
+    # Elo diff ~120 per game advantage is a reasonable mapping from
+    # published tennis Elo regressions (Sackmann, Riles).
+    "tennis_atp": 120.0,
+    "tennis_wta": 120.0,
+    # MMA: no true spread market — skip (moneyline + method props only
+    # which Uncle's rule forbids). MMA gets no elo_spread picks.
 }
 
 
@@ -87,11 +107,24 @@ MIN_GAP_BY_SPORT = {
     "baseball_mlb": 0.5,
     "baseball_ncaa": 0.5,
     "hockey_nhl": 0.4,
+    "hockey_khl": 0.4,
     "basketball_nba": 2.0,
     "basketball_wnba": 2.0,
     "basketball_ncaab": 2.5,
+    "basketball_euroleague": 2.5,
     "football_nfl": 1.5,
     "football_ncaaf": 2.0,
+    "football_cfl": 2.0,
+    "soccer_mls": 0.4,
+    "soccer_epl": 0.4,
+    "soccer_ucl": 0.4,
+    "soccer_uel": 0.4,
+    "soccer_esp": 0.4,
+    "soccer_ita": 0.4,
+    "soccer_ger": 0.4,
+    "soccer_fra": 0.4,
+    "tennis_atp": 1.0,   # 1 full game edge minimum before betting
+    "tennis_wta": 1.0,
 }
 
 

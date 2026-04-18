@@ -26,6 +26,7 @@ from .public_fade import PublicFadeStrategy
 from .reverse_line_movement import ReverseLineMovementStrategy
 from .mls_travel import MLSHomeTravelStrategy
 from .elo_spread import EloSpreadStrategy
+from .price_dispersion import PriceDispersionStrategy
 from .ensemble import EnsembleStrategy
 
 __all__ = [
@@ -39,5 +40,6 @@ __all__ = [
     "ReverseLineMovementStrategy",
     "MLSHomeTravelStrategy",
     "EloSpreadStrategy",
+    "PriceDispersionStrategy",
     "EnsembleStrategy",
 ]
