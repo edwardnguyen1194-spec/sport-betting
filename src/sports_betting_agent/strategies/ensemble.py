@@ -195,6 +195,37 @@ class EnsembleStrategy(Strategy):
             rec.meta["all_book_prices"] = peers
             rec.meta["peer_book_count"] = len(peers)
 
+        # Off-market filter at ENSEMBLE level (in addition to the
+        # paper_trader guard). Reason: Uncle's dashboard surfaces
+        # these recs BEFORE paper_trader sees them. We don't want
+        # misleading phantom picks showing in "Gợi ý AI" even if
+        # they'd get blocked at place time. Use a slightly looser
+        # threshold here (12% vs 8% at place time) so borderline
+        # cases still surface for review but clear outliers are gone.
+        def _is_off_market(r):
+            if not r.decimal or r.decimal <= 1.0:
+                return False
+            other_decs = [
+                p.get("decimal") for p in r.meta.get("all_book_prices", [])
+                if p.get("book") != r.book and p.get("decimal")
+            ]
+            if len(other_decs) < 3:
+                return False
+            other_decs_sorted = sorted(other_decs)
+            median = other_decs_sorted[len(other_decs_sorted) // 2]
+            if median <= 1.0:
+                return False
+            uplift = (r.decimal - median) / median
+            return uplift > 0.12
+        before_filter = len(recs)
+        recs = [r for r in recs if not _is_off_market(r)]
+        filtered_off = before_filter - len(recs)
+        if filtered_off > 0:
+            logger.warning(
+                "ensemble: filtered %d off-market recs (>12%% above peer median)",
+                filtered_off,
+            )
+
         # News-aware injury/scratch filter. After strategy confidences
         # are combined we check cached ESPN headlines for injury terms
         # co-mentioned with either team. A match shaves confidence
