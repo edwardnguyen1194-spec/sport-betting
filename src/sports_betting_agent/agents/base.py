@@ -273,25 +273,35 @@ class BaseAgent(ABC):
         # (agent, context_summary) for 30 min so repeated re-reviews
         # of the same bet within a cycle reuse the answer. Saves
         # ~60-80% of tokens typically.
+        # Instance-level cache so each agent has its own dedup store.
+        # Class-level caused test pollution; instance-level is also
+        # fine in production since agents are module-singletons (one
+        # instance per agent type living for the dashboard lifetime).
+        # Env override: SBA_DISABLE_AGENT_CACHE=1 disables caching
+        # entirely — useful in tests that need fresh LLM calls.
+        cache_disabled = os.environ.get(
+            "SBA_DISABLE_AGENT_CACHE", ""
+        ).lower() in ("1", "true", "yes")
         cache_key = (self.name, self._summarize_context(context))
         cache_ttl_s = 30 * 60
         import time as _time
         now_s = _time.time()
-        cached = getattr(self.__class__, "_decision_cache", None)
+        cached = getattr(self, "_decision_cache", None)
         if cached is None:
             cached = {}
-            self.__class__._decision_cache = cached  # type: ignore
-        # Prune old entries opportunistically.
-        for k in list(cached.keys()):
-            if now_s - cached[k]["ts"] > cache_ttl_s:
-                del cached[k]
-        entry = cached.get(cache_key)
-        if entry and (now_s - entry["ts"] < cache_ttl_s):
-            logger.debug(
-                "agent %s cache hit for %s (age=%.0fs)",
-                self.name, cache_key[1][:40], now_s - entry["ts"],
-            )
-            return entry["decision"]
+            self._decision_cache = cached  # instance attr
+        if not cache_disabled:
+            # Prune old entries opportunistically.
+            for k in list(cached.keys()):
+                if now_s - cached[k]["ts"] > cache_ttl_s:
+                    del cached[k]
+            entry = cached.get(cache_key)
+            if entry and (now_s - entry["ts"] < cache_ttl_s):
+                logger.debug(
+                    "agent %s cache hit for %s (age=%.0fs)",
+                    self.name, cache_key[1][:40], now_s - entry["ts"],
+                )
+                return entry["decision"]
 
         system = self.system_prompt()
         user_msg = self.build_user_message(context)
@@ -323,13 +333,14 @@ class BaseAgent(ABC):
         decision = self.parse_response(result.text, context)
         # Cache the decision so subsequent re-reviews of the same
         # bet within 30 min reuse it instead of burning more tokens.
-        cached[cache_key] = {"ts": now_s, "decision": decision}
-        # Keep cache bounded — 500 entries covers the full daily
-        # unique-bet set for Uncle's 23-sport slate.
-        if len(cached) > 500:
-            # Drop oldest entry.
-            oldest_key = min(cached.keys(), key=lambda k: cached[k]["ts"])
-            del cached[oldest_key]
+        if not cache_disabled:
+            cached[cache_key] = {"ts": now_s, "decision": decision}
+            # Keep cache bounded — 500 entries covers the full daily
+            # unique-bet set for Uncle's 23-sport slate.
+            if len(cached) > 500:
+                # Drop oldest entry.
+                oldest_key = min(cached.keys(), key=lambda k: cached[k]["ts"])
+                del cached[oldest_key]
         self.agent_log.record(AgentLogEntry(
             ts=datetime.now(timezone.utc).isoformat(),
             agent=self.name,
