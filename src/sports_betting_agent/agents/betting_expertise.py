@@ -284,11 +284,15 @@ MASTER_BETTOR_PRINCIPLES: List[str] = [
 # ---------------------------------------------------------------------
 
 
-def master_bettor_preamble() -> str:
+def master_bettor_preamble(data_dir: str = "/data/sba") -> str:
     """Return a preamble every agent should include at the top of
-    its system prompt. Keeps everyone aligned on fundamentals."""
+    its system prompt. Keeps everyone aligned on fundamentals AND
+    on the latest internet research the SkillsLearner brought in
+    today. Updated 2026-04-17 per Uncle: 'both agent and sub agents'
+    must have access to the fresh daily learnings, not just the
+    learner itself."""
     bullets = "\n".join(f"- {p}" for p in MASTER_BETTOR_PRINCIPLES)
-    return (
+    preamble = (
         "You are a professional sports bettor with 20+ years of"
         " experience specialising EXCLUSIVELY in point spreads and"
         " over/under totals across major American and global sports."
@@ -296,6 +300,13 @@ def master_bettor_preamble() -> str:
         " Your north-star principles:\n"
         f"{bullets}\n"
     )
+    # Append today's fresh learnings so OpportunityScout, PostMortem,
+    # StrategyAuditor, and any other agent using master_bettor_preamble
+    # benefits from the internet research pulled in earlier today.
+    learnings = todays_learnings_block(data_dir)
+    if learnings:
+        preamble += "\n" + learnings
+    return preamble
 
 
 def sport_expertise_block(sport: str) -> str:
@@ -338,14 +349,29 @@ def sport_expertise_block(sport: str) -> str:
     return "\n".join(lines)
 
 
-def full_expertise_preamble(sport: str = "") -> str:
+def full_expertise_preamble(sport: str = "", data_dir: str = "/data/sba") -> str:
     """Full preamble: master principles + optional sport-specific
-    block. Use this at the top of any agent system prompt so the
-    model is oriented before it sees the user's task."""
+    block + TODAY's fresh internet learnings. Use this at the top
+    of any agent system prompt so the model is oriented before it
+    sees the user's task.
+
+    Uncle's mandate 2026-04-17: 'make sure they will learn new and
+    best skills, tools and strategies on internet everyday'. This
+    pulls the latest SkillsLearner output from disk so EVERY sub-
+    agent benefits from today's research, not just the learner
+    that ran it.
+    """
     parts = [master_bettor_preamble()]
     if sport:
         parts.append("")
         parts.append(sport_expertise_block(sport))
+    # Inject today's learnings so the model sees fresh research
+    # + prompt improvements on every call. Cheap (disk-read) —
+    # file is small (<365 entries of 1KB each).
+    learnings = todays_learnings_block(data_dir)
+    if learnings:
+        parts.append("")
+        parts.append(learnings)
     return "\n".join(parts)
 
 
@@ -375,3 +401,56 @@ def market_expertise(market: str) -> str:
             " defensive stars raise it (and are underpriced).\n"
         )
     return ""
+
+
+# =====================================================================
+# LEARNINGS INJECTION — read the latest SkillsLearner output and fold
+# into every agent's prompt so knowledge compounds day-over-day.
+# =====================================================================
+
+def todays_learnings_block(data_dir: str = "/data/sba") -> str:
+    """Read /data/sba/learnings.json and return a prompt block with
+    the 3 latest learning entries (techniques + tools + prompt
+    improvements). Called by every agent's system_prompt builder so
+    fresh internet research shows up in the agent's reasoning.
+
+    Silently returns empty string if the file is missing — never
+    breaks an agent call over a failed read.
+    """
+    import os as _os
+    import json as _json
+
+    path = _os.path.join(data_dir, "learnings.json")
+    if not _os.path.exists(path):
+        return ""
+    try:
+        with open(path) as fh:
+            entries = _json.load(fh).get("entries", [])
+    except Exception:
+        return ""
+    if not entries:
+        return ""
+    # Latest 3 entries — most recent first. Each entry can have up to
+    # 5 items per category; we trim further to keep the injected block
+    # under ~800 chars so it doesn't bloat every call.
+    latest = entries[-3:]
+    bullets: List[str] = []
+    for e in latest:
+        for tech in (e.get("new_techniques") or [])[:2]:
+            name = tech.get("name", "") if isinstance(tech, dict) else str(tech)
+            rationale = tech.get("rationale", "") if isinstance(tech, dict) else ""
+            if name:
+                bullets.append(f"- {name}: {rationale[:120]}")
+        for tip in (e.get("prompt_improvements") or [])[:1]:
+            name = tip.get("name", "") if isinstance(tip, dict) else str(tip)
+            rationale = tip.get("rationale", "") if isinstance(tip, dict) else ""
+            if name:
+                bullets.append(f"- [prompt tip] {name}: {rationale[:120]}")
+    if not bullets:
+        return ""
+    return (
+        "=== RECENT INTERNET LEARNINGS (from daily SkillsLearner scans) ===\n"
+        "Apply these fresh insights when they're relevant to the pick:\n"
+        + "\n".join(bullets[:8])  # hard cap 8 bullets
+        + "\n"
+    )

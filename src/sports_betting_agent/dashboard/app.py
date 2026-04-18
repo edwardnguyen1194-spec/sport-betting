@@ -922,12 +922,23 @@ def create_app(
         )
         # 7. Every-morning self-improvement. Uncle asked for the agent
         # to learn new skills each morning while he sleeps. Window is
-        # 12:00-17:00 UTC (5am-10am Pacific / 8am-1pm Eastern) — wide
-        # enough that a single background cycle lands inside it every
-        # day and the learner is idempotent across duplicate triggers.
+        # Learners fire in 3 windows per UTC day so we catch news
+        # across time zones — morning Asia, morning Europe, morning
+        # Americas. The learner is idempotent (won't re-write today's
+        # entry if one already exists), so multiple triggers inside
+        # the same window are fine. Uncle's mandate: agents MUST learn
+        # new skills / tools / strategies from the internet every day.
+        #   Window 1: 01:00-05:00 UTC — Asia morning (HK/SG/Tokyo sharps)
+        #   Window 2: 10:00-14:00 UTC — Europe morning (London/LadBrokes)
+        #   Window 3: 15:00-19:00 UTC — Americas morning (US sharp community)
         from datetime import datetime, timezone as _tz
         utc_hour = datetime.now(_tz.utc).hour
-        if 12 <= utc_hour < 17:
+        in_learning_window = (
+            1 <= utc_hour < 5
+            or 10 <= utc_hour < 14
+            or 15 <= utc_hour < 19
+        )
+        if in_learning_window:
             try:
                 entry = daily_learner.run(paper.closed_bets, paper=paper)
                 if entry is not None:

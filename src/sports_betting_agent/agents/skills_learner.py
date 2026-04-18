@@ -99,7 +99,13 @@ class SkillsLearner(BaseAgent):
     max_tokens = 4096   # larger than other agents — this is a deep synthesis
 
     def __init__(self, agent_log: AgentLog, data_dir: str,
-                 daily_token_budget: int = 100_000) -> None:
+                 daily_token_budget: int = 2_000_000) -> None:
+        # Raised 2026-04-17 from 100K → 2M because we now route across
+        # 5 free providers (Groq + Cerebras + Gemini + Mistral +
+        # OpenRouter) for a combined ~35M tokens/day capacity. The
+        # 100K cap was blocking the learner every afternoon when the
+        # rest of the agent fleet had already spent 100K total. 2M
+        # still leaves plenty of headroom for bet-reviewers.
         super().__init__(agent_log=agent_log, daily_token_budget=daily_token_budget)
         self.data_dir = data_dir
         self.storage_path = os.path.join(data_dir, "learnings.json")
@@ -191,6 +197,7 @@ class SkillsLearner(BaseAgent):
         # Pick 3 feeds per day based on day-of-week so we rotate
         # and don't hammer one source.
         FEEDS = [
+            # Mainstream sharp-oriented sports betting content
             ("Action Network Sports Betting",
              "https://www.actionnetwork.com/feed"),
             ("The Athletic Gambling",
@@ -205,9 +212,38 @@ class SkillsLearner(BaseAgent):
              "https://www.sportsbettingdime.com/feed/"),
             ("Odds Shark",
              "https://www.oddsshark.com/rss.xml"),
+            # Data-science + sports-analytics blogs
+            ("FiveThirtyEight Sports",
+             "https://fivethirtyeight.com/sports/feed/"),
+            ("FanGraphs MLB Analytics",
+             "https://blogs.fangraphs.com/feed/"),
+            ("MIT Sloan Sports Analytics blog",
+             "https://www.sloansportsconference.com/content/feed"),
+            # Per-sport sharp/analytical content
+            ("Sharp Football Analysis (NFL)",
+             "https://www.sharpfootballanalysis.com/feed/"),
+            ("CleaningTheGlass (NBA)",
+             "https://cleaningtheglass.com/feed/"),
+            # Academic papers / research
+            ("arXiv sports-betting + ML papers (stat.ML new)",
+             "https://export.arxiv.org/rss/stat.ML"),
+            # Algorithmic/quant betting communities
+            ("r/sportsbook weekly threads (Reddit JSON)",
+             "https://www.reddit.com/r/sportsbook/top.json?t=week"),
+            ("r/sportsbettingtheory",
+             "https://www.reddit.com/r/sportsbettingtheory/top.json?t=week"),
+            # Market-making + sharp-book perspective
+            ("Pinnacle Betting Resources",
+             "https://www.pinnacle.com/en/betting-resources/rss"),
         ]
+        # Pick 4 feeds per run (up from 3) so more diverse signal;
+        # rotate by UTC day so we still rotate through all 16 over ~4 days.
         today_idx = datetime.now(timezone.utc).timetuple().tm_yday
-        picked = [FEEDS[(today_idx + i) % len(FEEDS)] for i in range(3)]
+        hour_idx = datetime.now(timezone.utc).hour
+        # Mix day + hour so three learning windows per day hit
+        # different feed subsets.
+        seed_offset = today_idx * 3 + hour_idx
+        picked = [FEEDS[(seed_offset + i) % len(FEEDS)] for i in range(4)]
 
         notes: List[Dict[str, str]] = []
         for source_name, url in picked:
