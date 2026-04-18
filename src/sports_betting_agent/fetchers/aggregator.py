@@ -309,13 +309,36 @@ class OddsAggregator:
         # dedup race if they arrive first and shadow ActionNetwork's
         # real-juice line with the same handicap.)
         keep = set()
+        # Direct-source preference: when both the direct fetcher (e.g.
+        # BovadaFetcher) AND ActionNetwork's secondary mapping return
+        # a line for the same book/market/selection/handicap, the
+        # direct fetcher is almost always fresher. ActionNetwork's
+        # book prices can lag several minutes — which is why Uncle
+        # saw Bovada MIN -0.5 at -108 while the real market was -135.
+        # Prefer direct > mapped > anything else.
+        DIRECT_SOURCE_PREF = {
+            "bovada": "bovada",
+            "draftkings": "draftkings",
+        }
         for key, lines in dup_keys.items():
-            # Prefer a line with a real american price; fall back to
-            # the first encountered when all tie. Avoids using
-            # last_update as a tiebreaker because it mixes datetime
-            # and None in a single max() key (TypeError-prone).
+            book_lower = key[0]
             with_juice = [l for l in lines if l.american is not None]
-            best = with_juice[0] if with_juice else lines[0]
+            if not with_juice:
+                keep.add(id(lines[0]))
+                continue
+            # If this is a known direct-source book, prefer the line
+            # whose ``source`` attribute matches the book name itself.
+            preferred_src = DIRECT_SOURCE_PREF.get(book_lower)
+            best = None
+            if preferred_src:
+                direct = [
+                    l for l in with_juice
+                    if getattr(l, "source", "").lower() == preferred_src
+                ]
+                if direct:
+                    best = direct[0]
+            if best is None:
+                best = with_juice[0]
             keep.add(id(best))
         # Also collapse (book, market, selection) across handicaps to
         # one entry per book — pick the line whose |handicap| matches

@@ -130,6 +130,36 @@ class EnsembleStrategy(Strategy):
                     ln.book.lower(),
                 )
                 line_index[key] = ln
+        # Build a secondary index of peer prices per (game, market,
+        # selection) across ALL books so paper_trader can compare this
+        # rec's price vs the market consensus and reject phantom/stale
+        # quotes (Uncle's bug report 2026-04-17: Bovada showed MIN
+        # -0.5 at -108 while every other book had -130 to -145).
+        peer_index: Dict[tuple, List[Dict[str, Any]]] = {}
+        for g in games:
+            for ln in g.lines:
+                if ln.market not in ("spread", "total"):
+                    continue
+                if ln.american is None:
+                    continue
+                # Group by game+market+selection+LINE so we only
+                # compare apples-to-apples (same handicap).
+                peer_key = (
+                    g.game_key,
+                    ln.market,
+                    (ln.selection or "").lower().strip(),
+                    round(float(ln.line or 0), 2),
+                )
+                peer_index.setdefault(peer_key, []).append({
+                    "book": ln.book,
+                    "american": ln.american,
+                    "decimal": (
+                        1.0 + (ln.american / 100.0) if ln.american > 0
+                        else 1.0 + (100.0 / abs(ln.american))
+                    ),
+                    "line": float(ln.line or 0),
+                })
+
         now_iso = _dt.now(_tz.utc).isoformat()
         for rec in recs:
             k = (
@@ -141,16 +171,29 @@ class EnsembleStrategy(Strategy):
             ln = line_index.get(k)
             if ln is not None and getattr(ln, "last_update", None) is not None:
                 rec.meta["line_observed_at"] = ln.last_update.isoformat()
+                rec.meta["line_has_real_timestamp"] = True
             else:
-                # No matching line (ensembled across books, or the
-                # rec's exact selection/book didn't line up) — use the
-                # current time as a conservative stamp so we never
-                # stamp a fake-fresh datetime from the distant past.
+                # Real timestamp missing — flag explicitly so the
+                # paper-trader's freshness guard can treat as
+                # suspect rather than trusting "now".
                 rec.meta["line_observed_at"] = now_iso
+                rec.meta["line_has_real_timestamp"] = False
             # Stamp the game start time if we know it.
             ct = game_commence.get(rec.game_key)
             if ct:
                 rec.meta["commence_time"] = ct
+            # Stamp peer prices — same game, market, selection, line
+            # across ALL books. Paper trader uses this to detect when
+            # this rec's price is an off-market outlier.
+            peer_key = (
+                rec.game_key,
+                rec.market,
+                rec.selection.lower().strip(),
+                round(float(rec.line or 0), 2),
+            )
+            peers = peer_index.get(peer_key, [])
+            rec.meta["all_book_prices"] = peers
+            rec.meta["peer_book_count"] = len(peers)
 
         # News-aware injury/scratch filter. After strategy confidences
         # are combined we check cached ESPN headlines for injury terms

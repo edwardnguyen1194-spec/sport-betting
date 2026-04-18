@@ -386,6 +386,54 @@ class PaperTrader:
                 return None
 
             # ------------------------------------------------------------
+            # OFF-MARKET PRICE GUARD (Uncle's bug report 2026-04-17).
+            # If one book's price is WAY better than the market
+            # consensus, it's either:
+            #   (a) Truly the best price (rare — sharps would've hit it)
+            #   (b) Stale/phantom price from a broken scraper
+            #   (c) A book-specific promo we can't actually access
+            # In every one of those scenarios, placing the bet at the
+            # phantom price inflates our apparent edge by 3-10% and
+            # produces fake paper P&L.
+            #
+            # Rule: if this rec's decimal price is >8% better than the
+            # median decimal price across 3+ other books at the same
+            # line, skip the bet. The ensemble should pick from the
+            # median-fair book instead.
+            #
+            # Env override: SBA_OFF_MARKET_TOLERANCE=0.08
+            try:
+                rec_meta = rec.meta or {}
+                all_lines = rec_meta.get("all_book_prices") or []
+                if len(all_lines) >= 4 and rec.decimal:
+                    import statistics as _st
+                    other_decimals = [
+                        float(l.get("decimal"))
+                        for l in all_lines
+                        if l.get("book") != rec.book
+                        and l.get("decimal")
+                        and abs(float(l.get("line", 0)) - float(rec.line or 0)) < 0.01
+                    ]
+                    if len(other_decimals) >= 3:
+                        median_decimal = _st.median(other_decimals)
+                        tolerance = float(_os.environ.get(
+                            "SBA_OFF_MARKET_TOLERANCE", "0.08"
+                        ))
+                        uplift = (rec.decimal - median_decimal) / median_decimal
+                        if uplift > tolerance:
+                            logger.warning(
+                                "off-market skip: %s %s at %s decimal=%.3f is "
+                                "%.1f%% better than median %.3f across %d other "
+                                "books — likely stale/phantom price",
+                                rec.selection, rec.market, rec.book,
+                                rec.decimal, uplift * 100,
+                                median_decimal, len(other_decimals),
+                            )
+                            return None
+            except Exception as exc:  # pragma: no cover
+                logger.debug("off-market guard skipped: %s", exc)
+
+            # ------------------------------------------------------------
             # Risk management gates (world-class safeguards per Agent-3
             # audit). Order matters — cheapest checks first.
             # ------------------------------------------------------------
