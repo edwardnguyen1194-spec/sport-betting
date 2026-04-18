@@ -147,20 +147,98 @@ class SkillsLearner(BaseAgent):
         topic = context.get("topic", RESEARCH_TOPICS[0])
         current_strategies = context.get("current_strategies", [])
         recent_closed_stats = context.get("recent_closed_stats", {})
+        # Real-world research context — headlines fetched live from
+        # trusted betting-research sources so the model synthesizes
+        # actual current thinking instead of hallucinating plausible-
+        # sounding techniques.
+        fresh_research = self._fetch_fresh_research()
         return json.dumps({
             "today_topic": topic,
             "current_strategies": current_strategies,
             "recent_closed_stats": recent_closed_stats,
             "mcp_candidates_seen": [c[0] for c in MCP_CANDIDATES],
+            "fresh_research_notes": fresh_research,
             "instructions": (
                 "Return JSON with exactly these keys: "
                 "new_techniques, new_tools, new_mcps, new_hooks, "
                 "prompt_improvements, code_changes, summary. "
                 "Each list item is a dict with {name, rationale, citation, "
                 "proposed_action}. summary is 3-5 sentences. Keep each list "
-                "to 2-4 items."
+                "to 2-4 items. GROUND your proposals in fresh_research_notes "
+                "above when possible — prefer concrete items cited in those "
+                "notes over speculative ones."
             ),
         })
+
+    def _fetch_fresh_research(self) -> List[Dict[str, str]]:
+        """Pull real headline snippets from trusted sports-betting
+        research sources. Keeps the learning grounded in CURRENT
+        public discourse — not pure model-world hallucination.
+
+        Sources chosen because they're:
+          - Free / no-auth
+          - RSS or lightweight HTML endpoints (cheap to fetch)
+          - Updated frequently with sharp-bettor-oriented content
+          - Historically reliable (not content farms)
+
+        Network failure or 429 → return empty list; the learner
+        still runs, just without the fresh-research layer.
+        """
+        import urllib.request as _ur
+        import urllib.error as _ue
+        import re
+
+        # Pick 3 feeds per day based on day-of-week so we rotate
+        # and don't hammer one source.
+        FEEDS = [
+            ("Action Network Sports Betting",
+             "https://www.actionnetwork.com/feed"),
+            ("The Athletic Gambling",
+             "https://theathletic.com/category/gambling/feed/"),
+            ("SportsHandle (free) betting RSS",
+             "https://www.sportshandle.com/feed/"),
+            ("VSiN",
+             "https://www.vsin.com/feed/"),
+            ("Covers Betting News",
+             "https://contests.covers.com/news/rss.aspx"),
+            ("SBD Sports Betting Dime",
+             "https://www.sportsbettingdime.com/feed/"),
+            ("Odds Shark",
+             "https://www.oddsshark.com/rss.xml"),
+        ]
+        today_idx = datetime.now(timezone.utc).timetuple().tm_yday
+        picked = [FEEDS[(today_idx + i) % len(FEEDS)] for i in range(3)]
+
+        notes: List[Dict[str, str]] = []
+        for source_name, url in picked:
+            try:
+                req = _ur.Request(url, headers={
+                    "User-Agent": (
+                        "sports-betting-ai-agent/1.0 "
+                        "(+https://sports-betting-ai-agent.fly.dev)"
+                    ),
+                    "Accept": "application/rss+xml, application/xml, text/xml, */*",
+                })
+                with _ur.urlopen(req, timeout=8) as resp:
+                    raw = resp.read().decode("utf-8", errors="replace")
+            except (_ue.URLError, _ue.HTTPError, Exception) as exc:
+                logger.debug("skills_learner: fetch %s failed: %s", url, exc)
+                continue
+            # Pull the first 10 <title>...</title> entries (crude but
+            # works for both RSS + Atom without a parser dep).
+            titles = re.findall(
+                r"<title[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</title>",
+                raw, flags=re.IGNORECASE | re.DOTALL,
+            )
+            for t in titles[1:11]:  # skip feed-level title
+                cleaned = re.sub(r"\s+", " ", t).strip()[:200]
+                if cleaned and len(cleaned) > 15:
+                    notes.append({"source": source_name, "headline": cleaned})
+        logger.info(
+            "skills_learner: fetched %d fresh-research notes from %d feeds",
+            len(notes), len(picked),
+        )
+        return notes[:30]  # keep token footprint bounded
 
     def parse_response(self, text: str, context: Dict[str, Any]) -> AgentDecision:
         # Re-use base parser for the JSON header, but stash the full

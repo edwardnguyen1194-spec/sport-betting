@@ -425,6 +425,52 @@ def create_app(
         result = paper.resume()
         return jsonify({"ok": True, **result})
 
+    @app.route("/api/halt", methods=["POST"])
+    def api_halt():
+        """Manually halt all new bet placement.
+        Useful when Uncle wants to clean the ledger without the
+        agent racing new picks back in. Use /api/reset-halt to
+        resume afterward."""
+        with paper._lock:
+            paper._halted = True
+            paper._save_state()
+        return jsonify({"ok": True, "halted": True})
+
+    @app.route("/api/void-all-open", methods=["POST"])
+    def api_void_all_open():
+        """Void every open bet and refund each stake. Uncle uses
+        this when he wants a clean slate (e.g. after an agent
+        upgrade). Automatically halts new bets for 30s so the
+        agent doesn't race new picks back in — caller can
+        /api/reset-halt + /api/recommendations immediately after."""
+        refunded = 0.0
+        voided = 0
+        with paper._lock:
+            paper._halted = True
+            bet_ids = list(paper.open_bets.keys())
+        for bid in bet_ids:
+            bet = paper.settle_bet(bid, "void")
+            if bet:
+                refunded += bet.stake
+                voided += 1
+        # Also purge the voided bets from closed so dashboard is clean
+        HIDE = {"void", "voided", "push"}
+        with paper._lock:
+            before = len(paper.closed_bets)
+            paper.closed_bets = [
+                b for b in paper.closed_bets
+                if (b.status or "").lower() not in HIDE
+            ]
+            purged = before - len(paper.closed_bets)
+            paper._save_state()
+        return jsonify({
+            "ok": True,
+            "voided": voided,
+            "refunded_usd": round(refunded, 2),
+            "voids_purged_from_closed": purged,
+            "note": "Halt is ON. POST /api/reset-halt to resume betting.",
+        })
+
     @app.route("/api/hourly-log")
     def api_hourly_log():
         """Latest + recent hourly-monitor snapshots.
@@ -858,6 +904,52 @@ def create_app(
                     )
             except Exception as exc:
                 logger.warning("skills_learner failed: %s", exc)
+            # MCPDiscovery: scan for new Model-Context-Protocol
+            # servers that would give us fresher data.
+            try:
+                from ..agents import discover_mcps
+                mcp_dec = discover_mcps(mcp_discovery)
+                if mcp_dec and not mcp_dec.error:
+                    logger.info(
+                        "mcp_discovery: ran — %d candidates surfaced",
+                        len(mcp_dec.metadata.get("candidates", [])),
+                    )
+            except Exception as exc:
+                logger.warning("mcp_discovery failed: %s", exc)
+            # HooksDiscovery: scan for new Claude Code hooks that
+            # would improve CI / safety / developer velocity.
+            try:
+                from ..agents import discover_hooks
+                hook_dec = discover_hooks(
+                    hooks_discovery,
+                    data_dir=settings.data_dir,
+                )
+                if hook_dec and not hook_dec.error:
+                    logger.info("hooks_discovery: ran successfully")
+            except Exception as exc:
+                logger.warning("hooks_discovery failed: %s", exc)
+            # SelfReflection: review one sub-agent's recent decisions.
+            # Rotate the target daily so over a week we cover every
+            # agent in the fleet.
+            try:
+                from ..agents import run_self_reflection
+                TARGETS = [
+                    "pick_reviewer", "news_triage", "game_analyst",
+                    "opportunity_scout", "post_mortem", "strategy_auditor",
+                    "skills_learner",
+                ]
+                from datetime import datetime as _dt, timezone as _tz
+                dow_idx = _dt.now(_tz.utc).timetuple().tm_yday % len(TARGETS)
+                target_name = TARGETS[dow_idx]
+                refl_dec = run_self_reflection(
+                    self_reflection, target_name, agent_log=agent_log,
+                )
+                if refl_dec and not refl_dec.error:
+                    logger.info(
+                        "self_reflection: reviewed %s", target_name,
+                    )
+            except Exception as exc:
+                logger.warning("self_reflection failed: %s", exc)
         # 8. Hourly self-monitor. Idempotent — fires once per UTC
         # hour regardless of how many trade cycles hit it. Logs a
         # snapshot + flags bias/stale/drawdown anomalies.

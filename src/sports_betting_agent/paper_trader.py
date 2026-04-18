@@ -490,6 +490,47 @@ class PaperTrader:
                             same_side + 1, sel_lower, conf, edge,
                         )
 
+            # 2bb. MARKET-MIX GUARD (Uncle's request 2026-04-17):
+            #   "make sure agent and sub agents will bet on BOTH point
+            #    spreads AND over/under please". Without a guard the
+            #    ensemble emits mostly totals (4 strategies produce
+            #    totals, only 2 produce spreads) so the open book
+            #    naturally skews. Enforce a rough 60/40 ceiling —
+            #    any single market type can be at most 70% of open
+            #    bets beyond the first 3. After that, the minority
+            #    market needs a slot or the bet is skipped.
+            total_open = len(self.open_bets)
+            if total_open >= 3:
+                spread_count = sum(
+                    1 for b in self.open_bets.values() if b.market == "spread"
+                )
+                total_count = sum(
+                    1 for b in self.open_bets.values() if b.market == "total"
+                )
+                max_ratio = float(_os.environ.get("SBA_MAX_MARKET_RATIO", "0.70"))
+                # If adding this bet would push its market past the
+                # max ratio threshold, block it and wait for the
+                # other market to catch up.
+                hypothetical = total_open + 1
+                if rec.market == "total":
+                    new_total_pct = (total_count + 1) / hypothetical
+                    if new_total_pct > max_ratio:
+                        logger.warning(
+                            "market-mix skip: %s would push totals to %.0f%% "
+                            "of open (cap %.0f%%). Need a spread slot first.",
+                            rec.selection, new_total_pct * 100, max_ratio * 100,
+                        )
+                        return None
+                elif rec.market == "spread":
+                    new_spread_pct = (spread_count + 1) / hypothetical
+                    if new_spread_pct > max_ratio:
+                        logger.warning(
+                            "market-mix skip: %s would push spreads to %.0f%% "
+                            "of open (cap %.0f%%). Need a total slot first.",
+                            rec.selection, new_spread_pct * 100, max_ratio * 100,
+                        )
+                        return None
+
             # 2c. KEY-NUMBER GUARD (master-bettor rule).
             #    Historically, NFL games land on 3 ~15% of the time,
             #    NHL/MLB games land on 1-goal margin ~28% of the time,
