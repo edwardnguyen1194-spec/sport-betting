@@ -4,5 +4,12 @@
     "allow": [
       "Bash(curl*)"
     ]
+  },
+  "sandbox": {
+    "network": {
+      "allowedDomains": [
+        "sports-betting-ai-agent.fly.dev"
+      ]
+    }
   }
 }
